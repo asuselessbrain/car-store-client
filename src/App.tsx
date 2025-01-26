@@ -1,4 +1,4 @@
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router";
 import NavBar from "./pages/shared/NavBar";
 import { useGetAllCarsQuery } from "./redux/api/baseApi";
 
@@ -10,12 +10,12 @@ function App() {
   console.log(data.data);
 
   return (
-    <>
-      <div className="h-20 md:h-16">
+    <div className="max-w-[1440px] mx-auto">
+      <div className="">
         <NavBar />
       </div>
-      <Button>Click me</Button>
-    </>
+      <Outlet />
+    </div>
   );
 }
 

@@ -12,24 +12,28 @@ const NavBar = () => {
 
   const menuItems = [
     {
+      id: 1,
       label: "Home",
       path: "/",
     },
     {
+      id: 2,
       label: "About",
       path: "/about",
     },
     {
+      id: 3,
       label: "Contact",
       path: "/contact",
     },
     {
+      id: 4,
       label: "Services",
       path: "/services",
     },
   ];
   return (
-    <nav className="bg-white fixed w-full z-50 border-gray-200 dark:bg-gray-900">
+    <nav className="bg-[#1515157F] fixed w-full z-50 border-gray-200 dark:bg-[#1515157F]">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to="/"
@@ -40,7 +44,7 @@ const NavBar = () => {
             className="h-8"
             alt="Flowbite Logo"
           />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
             Flowbite
           </span>
         </Link>
@@ -75,15 +79,18 @@ const NavBar = () => {
           })}
           id="navbar-default"
         >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-2 md:space-y-0 border border-gray-100 rounded-lg bg-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-            {menuItems.map(menuItem => <li>
-              <Link to={menuItem.path}
-                className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                aria-current="page"
-              >
-                {menuItem.label}
-              </Link>
-            </li>)}
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-2 md:space-y-0 border bg-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+            {menuItems.map((menuItem) => (
+              <li key={menuItem.id}>
+                <Link
+                  to={menuItem.path}
+                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]"
+                  aria-current="page"
+                >
+                  {menuItem.label}
+                </Link>
+              </li>
+            ))}
             <li>
               <ThemeToggle />
             </li>
