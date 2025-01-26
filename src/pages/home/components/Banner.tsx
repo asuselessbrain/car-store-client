@@ -28,7 +28,7 @@ export const Banner = () => {
   return (
     <Carousel>
       {images.map((image) => (
-        <div>
+        <div key={image.src}>
           <img src={image.src} alt={image.alt} />
         </div>
       ))}

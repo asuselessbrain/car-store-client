@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
+import logo from "../../assets/logo.png"
 
 const NavBar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,8 +19,8 @@ const NavBar = () => {
     },
     {
       id: 2,
-      label: "About",
-      path: "/about",
+      label: "Products",
+      path: "/products",
     },
     {
       id: 3,
@@ -40,8 +41,8 @@ const NavBar = () => {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
+            src={logo}
+            className="h-16"
             alt="Flowbite Logo"
           />
           <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
