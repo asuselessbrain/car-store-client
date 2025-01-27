@@ -7,7 +7,10 @@ export const allCarsApi = createApi({
     getAllCars: builder.query({
       query: () => `/cars`,
     }),
+    getSingleCar: builder.query({
+      query: ((id: string) => `/cars/${id}`)
+    })
   }),
 });
 
-export const { useGetAllCarsQuery } = allCarsApi;
+export const { useGetAllCarsQuery, useGetSingleCarQuery } = allCarsApi;

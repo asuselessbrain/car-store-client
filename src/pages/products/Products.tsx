@@ -1,15 +1,32 @@
 import { useGetAllCarsQuery } from "../../redux/api/baseApi";
+import Loader from "../shared/Loader";
 import ProductCard from "./components/ProductCard";
 
+export interface Cars {
+    _id: string
+    brand: string;
+    model: string;
+    year: number;
+    price: number;
+    category: string;
+    description: string;
+    quantity: number;
+    inStock: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  
 const Products = () => {
   const { data, isLoading } = useGetAllCarsQuery(undefined);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />
 
-  const products = data.data;
+  const products = data;
+  console.log(products);
 
   return (
-    <section className="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-24">
+    <section className="bg-gray-50 antialiased dark:bg-gray-900">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         {/* <!-- Heading & Filters --> */}
         <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
@@ -170,7 +187,7 @@ const Products = () => {
           </div>
         </div>
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product) => (
+          {products.data.map((product: Cars) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
