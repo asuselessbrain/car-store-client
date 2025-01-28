@@ -30,7 +30,7 @@ const NavBar = () => {
     {
       id: 4,
       label: "Dashboard",
-      path: "/dashboard",
+      path: "/user/dashboard",
     },
   ];
   return (

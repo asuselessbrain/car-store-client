@@ -6,6 +6,7 @@ import ViewDetails from "../pages/viewDetails/ViewDetails";
 import Dashboard from "../pages/dashboard/Dashboard";
 import { routerGenerator } from "../utils/routerGenerator";
 import { AdminPath } from "./admin.router";
+import { userRouterPath } from "./user.router";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,6 @@ export const router = createBrowserRouter([
     {
         path: "/user",
         Component: Dashboard,
-        children: routerGenerator(AdminPath)
+        children: routerGenerator(userRouterPath)
     },
 ])
