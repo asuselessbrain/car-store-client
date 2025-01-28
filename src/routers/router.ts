@@ -3,6 +3,9 @@ import App from "../App";
 import Home from "../pages/home/Home";
 import Products from "../pages/products/Products";
 import ViewDetails from "../pages/viewDetails/ViewDetails";
+import Dashboard from "../pages/dashboard/Dashboard";
+import { routerGenerator } from "../utils/routerGenerator";
+import { AdminPath } from "./admin.router";
 
 export const router = createBrowserRouter([
     {
@@ -14,13 +17,23 @@ export const router = createBrowserRouter([
                 Component: Home
             },
             {
-                path: "/products",
+                path: "products",
                 Component: Products
             },
             {
-                path: "/view-details/:id",
+                path: "view-details/:id",
                 Component: ViewDetails
             }
         ]
-    }
+    },
+    {
+        path: "/admin",
+        Component: Dashboard,
+        children: routerGenerator(AdminPath)
+    },
+    {
+        path: "/user",
+        Component: Dashboard,
+        children: routerGenerator(AdminPath)
+    },
 ])

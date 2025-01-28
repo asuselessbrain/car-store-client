@@ -29,8 +29,8 @@ const NavBar = () => {
     },
     {
       id: 4,
-      label: "Services",
-      path: "/services",
+      label: "Dashboard",
+      path: "/dashboard",
     },
   ];
   return (

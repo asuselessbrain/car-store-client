@@ -41,7 +41,7 @@ const ViewDetails = () => {
 
           {/* Price Section */}
           <div className="flex items-center space-x-4 mb-4">
-            <span className="text-2xl font-semibold text-green-600">
+            <span className="text-2xl font-semibold text-red-600">
               {product.price}{" "}
               <span className="text-gray-900 dark:text-gray-300">Tk</span>
             </span>
