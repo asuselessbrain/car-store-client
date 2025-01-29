@@ -1,5 +1,5 @@
-import { useGetAllCarsQuery } from "../../redux/api/baseApi";
-import Loader from "../shared/Loader";
+import { Loader } from "lucide-react";
+import { useGetAllCarsQuery } from "../../redux/fetchers/cars/carApi";
 import ProductCard from "./components/ProductCard";
 
 export interface Cars {

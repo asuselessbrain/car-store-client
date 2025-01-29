@@ -7,34 +7,44 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import { routerGenerator } from "../utils/routerGenerator";
 import { AdminPath } from "./admin.router";
 import { userRouterPath } from "./user.router";
+import Login from "../pages/login/Login";
+import Registration from "../registratio/Registration";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        Component: App,
-        children: [
-            {
-                index: true,
-                Component: Home
-            },
-            {
-                path: "products",
-                Component: Products
-            },
-            {
-                path: "view-details/:id",
-                Component: ViewDetails
-            }
-        ]
-    },
-    {
-        path: "/admin",
-        Component: Dashboard,
-        children: routerGenerator(AdminPath)
-    },
-    {
-        path: "/user",
-        Component: Dashboard,
-        children: routerGenerator(userRouterPath)
-    },
-])
+  {
+    path: "/",
+    Component: App,
+    children: [
+      {
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "products",
+        Component: Products,
+      },
+      {
+        path: "view-details/:id",
+        Component: ViewDetails,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/registration",
+    Component: Registration,
+  },
+  {
+    path: "/admin",
+    Component: Dashboard,
+    children: routerGenerator(AdminPath),
+  },
+  {
+    path: "/user",
+    Component: Dashboard,
+    children: routerGenerator(userRouterPath),
+  },
+]);

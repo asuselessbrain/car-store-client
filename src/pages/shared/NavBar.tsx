@@ -2,7 +2,8 @@ import { Link } from "react-router";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
-import logo from "../../assets/logo.png"
+import logo from "../../assets/logo.png";
+import { Button } from "../../components/ui/button";
 
 const NavBar = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -40,11 +41,7 @@ const NavBar = () => {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src={logo}
-            className="h-16"
-            alt="Flowbite Logo"
-          />
+          <img src={logo} className="h-16" alt="Flowbite Logo" />
           <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
             Flowbite
           </span>
@@ -92,6 +89,11 @@ const NavBar = () => {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link to="/login">
+                <Button>Login</Button>
+              </Link>
+            </li>
             <li>
               <ThemeToggle />
             </li>

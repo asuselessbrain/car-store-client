@@ -1,8 +1,8 @@
 import { useParams } from "react-router";
-import { useGetSingleCarQuery } from "../../redux/api/baseApi";
 import Loader from "../shared/Loader";
 import { cn } from "../../lib/utils";
 import img from "../../assets/bannerImage/650.png";
+import { useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
 
 const ViewDetails = () => {
   const { id } = useParams();
