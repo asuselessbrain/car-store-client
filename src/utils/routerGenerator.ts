@@ -2,10 +2,10 @@ import { TRoutes, TUser } from "../pages/types";
 
 export const routerGenerator = (item: TUser[]) => {
   const routes = item.reduce((acc: TRoutes[], item) => {
-    if (item.path && item.Component) {
+    if (item.path && item.element) {
       acc.push({
         path: item.path,
-        Component: item.Component,
+        element: item.element,
       });
     }
     //   if (item.children) {
@@ -20,3 +20,4 @@ export const routerGenerator = (item: TUser[]) => {
   }, []);
   return routes;
 };
+

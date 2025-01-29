@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 import App from "../App";
-import Home from "../pages/home/Home";
 import Products from "../pages/products/Products";
 import ViewDetails from "../pages/viewDetails/ViewDetails";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -9,42 +8,52 @@ import { AdminPath } from "./admin.router";
 import { userRouterPath } from "./user.router";
 import Login from "../pages/login/Login";
 import Registration from "../registratio/Registration";
+import ProtectedRoute from "../layout/ProtectedRoute";
+import Home from "../pages/home/Home";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: App,
+    element: <App />,
     children: [
       {
         index: true,
-        Component: Home,
+        element: <Home />,
       },
       {
         path: "products",
-        Component: Products,
+        element: <Products />,
       },
       {
         path: "view-details/:id",
-        Component: ViewDetails,
+        element: <ViewDetails />,
       },
     ],
   },
   {
     path: "/login",
-    Component: Login,
+    element: <Login />,
   },
   {
     path: "/registration",
-    Component: Registration,
+    element: <Registration />,
   },
   {
     path: "/admin",
-    Component: Dashboard,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: routerGenerator(AdminPath),
   },
   {
     path: "/user",
-    Component: Dashboard,
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
     children: routerGenerator(userRouterPath),
   },
 ]);

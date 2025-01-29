@@ -1,14 +1,14 @@
-import { ComponentType, ReactNode } from "react";
+import { ReactNode } from "react";
 
 export type TRoutes = {
   path: string;
-  Component: ComponentType;
+  element: ReactNode;
 };
 
 export type TUser = {
   name: string;
   path?: string;
-  Component?: ComponentType;
+  element?: ReactNode;
   children?: TUser[];
 };
 

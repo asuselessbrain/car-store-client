@@ -4,9 +4,25 @@ import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
 import logo from "../../assets/logo.png";
 import { Button } from "../../components/ui/button";
+import { useSelector } from "react-redux";
+import {
+  currentToken,
+  logOut,
+  user,
+} from "../../redux/fetchers/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { toast } from "react-toastify";
 
 const NavBar = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const userToken = useSelector(currentToken);
+  const userInfo = useSelector(user);
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    toast.success("Logout Successfully!");
+  };
 
   const handleToggle = () => {
     setIsVisible(!isVisible);
@@ -27,11 +43,6 @@ const NavBar = () => {
       id: 3,
       label: "Contact",
       path: "/contact",
-    },
-    {
-      id: 4,
-      label: "Dashboard",
-      path: "/user/dashboard",
     },
   ];
   return (
@@ -89,11 +100,28 @@ const NavBar = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link to="/login">
-                <Button>Login</Button>
-              </Link>
-            </li>
+            {userToken && (
+              <li>
+                <Link
+                  to={`/${userInfo?.role}/dashboard`}
+                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]"
+                  aria-current="page"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
+            {!userToken ? (
+              <li>
+                <Link to="/login">
+                  <Button>Login</Button>
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Button onClick={handleLogout}>LogOut</Button>
+              </li>
+            )}
             <li>
               <ThemeToggle />
             </li>

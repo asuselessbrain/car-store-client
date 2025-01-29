@@ -1,39 +1,33 @@
 import AdminDashboard from "../pages/dashboard/admin/AdminDashboard";
 import CreateProduct from "../pages/dashboard/admin/CreateProduct";
-import GetAllProducts from "../pages/dashboard/admin/GetAllProducts";
-import GetAllUser from "../pages/dashboard/admin/GetAllUser";
+import GetAllProducts from "../pages/dashboard/admin/getAllProduct/GetAllProducts";
+import GetAllUser from "../pages/dashboard/admin/getAllUser/GetAllUser";
 import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
-
-
 
 export const AdminPath = [
   {
     name: "Dashboard",
     path: "dashboard",
-    Component: AdminDashboard,
+    element: <AdminDashboard />,
   },
   {
     name: "Users",
     path: "get-all-user",
-    Component: GetAllUser,
+    element: <GetAllUser />,
   },
   {
     name: "Products",
     path: "get-all-products",
-    Component: GetAllProducts,
+    element: <GetAllProducts />,
   },
   {
     name: "Create Product",
     path: "create-product",
-    Component: CreateProduct,
+    element: <CreateProduct />,
   },
   {
     name: "Update Product",
-    path: "update-product",
-    Component: UpdateProduct,
+    path: "update-product/:id", // Dynamic route for product ID
+    element: <UpdateProduct />,
   },
 ];
-
-
-
-

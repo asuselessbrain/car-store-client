@@ -4,10 +4,10 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store.ts";
 import { RouterProvider } from "react-router";
-import { router } from "./routers/router.ts";
 import { ThemeProvider } from "./pages/component/theme-provider.tsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
+import { router } from "./routers/router.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
