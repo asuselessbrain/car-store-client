@@ -12,9 +12,13 @@ export type TUser = {
   children?: TUser[];
 };
 
-
 export type TSidebar = {
-    key: string;
-    label: ReactNode;
-    children?: TSidebar[];
-  }
+  key: string;
+  label: ReactNode;
+  children?: TSidebar[];
+};
+
+export type TBLockUser = {
+  id: string;
+  userStatus: string;
+}

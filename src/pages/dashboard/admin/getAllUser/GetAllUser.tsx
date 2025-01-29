@@ -1,5 +1,5 @@
-import { Loader } from "lucide-react";
 import { useGetAllUserQuery } from "../../../../redux/fetchers/users/userAPi";
+import Loader from "../../../shared/Loader";
 import GetAllUserBody from "./GetAllUserBody";
 
 export type TUser = {
@@ -27,26 +27,27 @@ const GetAllUser = () => {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
-              Model
+              Name
             </th>
             <th scope="col" className="px-6 py-3">
-              Brand
+              Email
             </th>
             <th scope="col" className="px-6 py-3">
-              Category
+              Role
             </th>
             <th scope="col" className="px-6 py-3">
-              Price
+              Status
             </th>
             <th scope="col" className="px-6 py-3">
               Action
             </th>
           </tr>
         </thead>
-
+        <tbody>
         {user.map((user: TUser, index: number) => (
           <GetAllUserBody key={user._id} user={user} index={index} />
         ))}
+        </tbody>
       </table>
     </div>
   );
