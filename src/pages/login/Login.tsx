@@ -1,21 +1,31 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { decodeToken } from "../../utils/jwtDecode";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
+import { toast } from "react-toastify";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const from = location.state?.from?.pathname || "/";
 
   const [login] = useLoginMutation();
 
-  const onSubmit:SubmitHandler<FieldValues> = async (formData) => {
-    const res = await login(formData).unwrap();
-    const user = decodeToken(res.token);
-    console.log(user);
-    dispatch(setUser({user, token: res.token}));
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+    try {
+      const res = await login(formData).unwrap();
+      const user = decodeToken(res.token);
+      dispatch(setUser({ user, token: res.token }));
+      await navigate(from, { replace: true });
+      toast.success("Login successful");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      toast.error("SOmething went wrong try again");
+    }
   };
 
   return (
