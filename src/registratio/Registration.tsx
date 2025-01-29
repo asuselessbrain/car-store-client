@@ -1,10 +1,39 @@
-import { Link } from "react-router";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import { useRegisterMutation } from "../redux/fetchers/auth/authApi";
+import { toast } from 'react-toastify';
 
 const Registration = () => {
+  const { register, handleSubmit } = useForm();
+
+  const [registration ] = useRegisterMutation();
+  const navigate = useNavigate()
+
+
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+    const userInfo = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    }
+
+    const res = await registration(userInfo)
+
+
+   if(res.data.success){
+    toast.success(res.data.message)
+    navigate('/login')
+   }
+   else{
+    toast.error("Something went wrong!")
+   }
+  }
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <Link to="/"
+        <Link
+          to="/"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
@@ -19,8 +48,11 @@ const Registration = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create an account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
-            <div>
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div>
                 <label
                   htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -29,10 +61,10 @@ const Registration = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Your Name"
+                  {...register("name")}
                 />
               </div>
               <div>
@@ -44,10 +76,10 @@ const Registration = () => {
                 </label>
                 <input
                   type="email"
-                  name="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
+                  {...register("email")}
                 />
               </div>
               <div>
@@ -59,10 +91,10 @@ const Registration = () => {
                 </label>
                 <input
                   type="password"
-                  name="password"
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("password")}
                 />
               </div>
               <button
@@ -73,7 +105,8 @@ const Registration = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <Link to="/login"
+                <Link
+                  to="/login"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here

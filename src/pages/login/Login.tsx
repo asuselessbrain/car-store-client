@@ -1,10 +1,28 @@
 import { Link } from "react-router";
-
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { decodeToken } from "../../utils/jwtDecode";
+import { setUser } from "../../redux/fetchers/auth/authSlice";
 const Login = () => {
+  const { register, handleSubmit } = useForm();
+  const dispatch = useAppDispatch();
+
+
+  const [login] = useLoginMutation();
+
+  const onSubmit:SubmitHandler<FieldValues> = async (formData) => {
+    const res = await login(formData).unwrap();
+    const user = decodeToken(res.token);
+    console.log(user);
+    dispatch(setUser({user, token: res.token}));
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <Link to="/"
+        <Link
+          to="/"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <img
@@ -19,7 +37,10 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -29,10 +50,10 @@ const Login = () => {
                 </label>
                 <input
                   type="email"
-                  name="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
+                  {...register("email")}
                 />
               </div>
               <div>
@@ -44,10 +65,10 @@ const Login = () => {
                 </label>
                 <input
                   type="password"
-                  name="password"
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  {...register("password")}
                 />
               </div>
               <button
@@ -58,7 +79,8 @@ const Login = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <Link to="/registration"
+                <Link
+                  to="/registration"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
