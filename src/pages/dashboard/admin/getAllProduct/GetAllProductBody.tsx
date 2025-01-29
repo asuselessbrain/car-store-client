@@ -1,4 +1,6 @@
+import { useDeleteCarMutation } from "../../../../redux/fetchers/cars/carApi";
 import { Cars } from "../../../products/Products";
+import Swal from 'sweetalert2'
 
 interface GetAllProductBodyProps {
   product: Cars;
@@ -6,6 +8,36 @@ interface GetAllProductBodyProps {
 }
 
 const GetAllProductBody = ({ product, index }: GetAllProductBodyProps) => {
+  const [deleteCar] = useDeleteCarMutation();
+
+  const handleDelete = async (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async () => {
+      await deleteCar(id);
+      try {
+        await deleteCar(id).unwrap(); // Delete user only if confirmed
+        Swal.fire({
+          title: "Deleted!",
+          text: "User has been deleted.",
+          icon: "success",
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        Swal.fire({
+          title: "Error!",
+          text: "There was a problem deleting the user.",
+          icon: "error",
+        });
+      }
+    });
+  };
   return (
     //
 
@@ -33,12 +65,12 @@ const GetAllProductBody = ({ product, index }: GetAllProductBodyProps) => {
         >
           Edit
         </a>
-        <a
-          href="#"
+        <button
+        onClick={()=> handleDelete(product?._id)}
           className="font-medium text-red-600 dark:text-red-500 hover:underline"
         >
           Delete
-        </a>
+        </button>
       </td>
     </tr>
   );

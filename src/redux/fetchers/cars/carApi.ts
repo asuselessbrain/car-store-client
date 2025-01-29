@@ -14,10 +14,10 @@ export const carApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/cars/${id}`,
         method: "DELETE",
-        invalidatesTags: ["Cars"],
-      })
+      }),
+      invalidatesTags: ["Cars"],
     })
   }),
 });
 
-export const { useGetAllCarsQuery, useGetSingleCarQuery } = carApi;
+export const { useGetAllCarsQuery, useGetSingleCarQuery, useDeleteCarMutation } = carApi;
