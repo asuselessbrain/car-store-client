@@ -1,4 +1,5 @@
 import AdminDashboard from "../pages/dashboard/admin/AdminDashboard";
+import CreateAdmin from "../pages/dashboard/admin/createAdmin/CreateAdmin";
 import CreateProduct from "../pages/dashboard/admin/createProduct/CreateProduct";
 import GetAllProducts from "../pages/dashboard/admin/getAllProduct/GetAllProducts";
 import GetAllUser from "../pages/dashboard/admin/getAllUser/GetAllUser";
@@ -11,9 +12,9 @@ export const AdminPath = [
     element: <AdminDashboard />,
   },
   {
-    name: "Users",
-    path: "get-all-user",
-    element: <GetAllUser />,
+    name: "Create Product",
+    path: "create-product",
+    element: <CreateProduct />,
   },
   {
     name: "Products",
@@ -21,13 +22,18 @@ export const AdminPath = [
     element: <GetAllProducts />,
   },
   {
-    name: "Create Product",
-    path: "create-product",
-    element: <CreateProduct />,
+    name: "Users",
+    path: "get-all-user",
+    element: <GetAllUser />,
+  },
+  {
+    name: "Create Admin",
+    path: "create-admin",
+    element: <CreateAdmin />,
   },
   {
     name: "Update Product",
-    path: "update-product/:id", // Dynamic route for product ID
+    path: "update-product/:id",
     element: <UpdateProduct />,
   },
 ];
