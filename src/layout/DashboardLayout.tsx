@@ -2,13 +2,13 @@ import { Layout } from "antd";
 import { Outlet } from "react-router";
 import SideBar from "./SideBar";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const MainLayout = () => {
   return (
     <Layout style={{ height: "100vh" }}>
       <SideBar />
-      <Layout>
+      <Layout className="dark:bg-gray-800">
         <Header style={{ padding: 0 }} />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
@@ -20,9 +20,6 @@ const MainLayout = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
