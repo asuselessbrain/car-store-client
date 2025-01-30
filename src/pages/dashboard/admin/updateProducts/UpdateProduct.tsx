@@ -1,11 +1,12 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
-import { useGetSingleCarQuery } from "../../../../redux/fetchers/cars/carApi";
+import { useGetSingleCarQuery, useUpdateCarMutation } from "../../../../redux/fetchers/cars/carApi";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
 
 const UpdateProduct = () => {
   const { register, handleSubmit } = useForm();
+  const [UpdateProduct] = useUpdateCarMutation()
   const {id} = useParams()
 
   const navigate = useNavigate();
@@ -28,9 +29,13 @@ const UpdateProduct = () => {
       description: data.description,
       quantity: parseInt(data.quantity),
     };
+    const updateInfo = {
+        id,
+        carInfo: productData,
+    }
     try {
-      const res = await CreateProduct(productData);
-      if (res.data.statusCode === 201) {
+      const res = await UpdateProduct(updateInfo);
+      if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/get-all-products");
       }

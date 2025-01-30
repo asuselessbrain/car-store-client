@@ -17,7 +17,6 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    // http://localhost:5000/api/user/block-user/679a54441b5c1a7279aaa04b
     blockUser: builder.mutation({
       query: (userInfo: TBLockUser) => ({
         url: `/user/block-user/${userInfo?.id}`,
