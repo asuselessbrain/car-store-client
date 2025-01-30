@@ -1,4 +1,4 @@
-import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
+import UpdateProduct from "../pages/dashboard/admin/updateProducts/UpdateProduct";
 import Orders from "../pages/dashboard/user/Orders";
 import UserDashboard from "../pages/dashboard/user/UserDashboard";
 

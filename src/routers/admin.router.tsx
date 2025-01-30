@@ -2,7 +2,7 @@ import AdminDashboard from "../pages/dashboard/admin/AdminDashboard";
 import CreateProduct from "../pages/dashboard/admin/createProduct/CreateProduct";
 import GetAllProducts from "../pages/dashboard/admin/getAllProduct/GetAllProducts";
 import GetAllUser from "../pages/dashboard/admin/getAllUser/GetAllUser";
-import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
+import UpdateProduct from "../pages/dashboard/admin/updateProducts/UpdateProduct";
 
 export const AdminPath = [
   {

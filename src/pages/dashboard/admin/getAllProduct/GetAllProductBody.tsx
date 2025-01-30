@@ -1,6 +1,7 @@
+import { Link } from "react-router";
 import { useDeleteCarMutation } from "../../../../redux/fetchers/cars/carApi";
 import { Cars } from "../../../products/Products";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 interface GetAllProductBodyProps {
   product: Cars;
@@ -59,14 +60,13 @@ const GetAllProductBody = ({ product, index }: GetAllProductBodyProps) => {
       <td className="px-6 py-4">{product?.category}</td>
       <td className="px-6 py-4">{product?.price} Tk</td>
       <td className="px-6 py-4 flex items-center gap-4">
-        <a
-          href="#"
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-        >
-          Edit
-        </a>
+        <Link to={`/admin/update-product/${product?._id}`}>
+          <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+            Edit
+          </button>
+        </Link>
         <button
-        onClick={()=> handleDelete(product?._id)}
+          onClick={() => handleDelete(product?._id)}
           className="font-medium text-red-600 dark:text-red-500 hover:underline"
         >
           Delete
