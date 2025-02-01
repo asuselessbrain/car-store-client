@@ -1,6 +1,7 @@
 import AdminDashboard from "../pages/dashboard/admin/AdminDashboard";
 import CreateAdmin from "../pages/dashboard/admin/createAdmin/CreateAdmin";
 import CreateProduct from "../pages/dashboard/admin/createProduct/CreateProduct";
+import GetAllOrder from "../pages/dashboard/admin/getAllOrders/getAllOrder";
 import GetAllProducts from "../pages/dashboard/admin/getAllProduct/GetAllProducts";
 import GetAllUser from "../pages/dashboard/admin/getAllUser/GetAllUser";
 import UpdateProduct from "../pages/dashboard/admin/updateProducts/UpdateProduct";
@@ -12,19 +13,24 @@ export const AdminPath = [
     element: <AdminDashboard />,
   },
   {
-    name: "Create Product",
-    path: "create-product",
-    element: <CreateProduct />,
-  },
-  {
     name: "Products",
     path: "get-all-products",
     element: <GetAllProducts />,
   },
   {
+    name: "Orders",
+    path: "all-orders",
+    element: <GetAllOrder />,
+  },
+  {
     name: "Users",
     path: "get-all-user",
     element: <GetAllUser />,
+  },
+  {
+    name: "Create Product",
+    path: "create-product",
+    element: <CreateProduct />,
   },
   {
     name: "Create Admin",
