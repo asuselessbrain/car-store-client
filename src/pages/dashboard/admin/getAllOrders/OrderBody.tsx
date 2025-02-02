@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { cn } from "../../../../lib/utils";
 import { Order } from "./getAllOrder";
 
 interface GetAllProductBodyProps {
@@ -28,10 +28,14 @@ const OrderBody = ({order, index} : GetAllProductBodyProps) => {
       <td className="px-6 py-4">{order?.car?.model}</td>
       <td className="px-6 py-4">{order?.car?.brand}</td>
       <td className="px-6 py-4">{order?.car?.category}</td>
-      <td className="px-6 py-4">{order?.car?.price}</td>
+      <td className="px-6 py-4 text-red-600">{order?.car?.price}</td>
       <td className="px-6 py-4">{order?.quantity}</td>
-      <td className="px-6 py-4">{order?.totalPrice}</td>
-      <td className="px-6 py-4">In progress</td>
+      <td className="px-6 py-4 text-red-600">{order?.totalPrice}</td>
+      <td className={cn("px-6 py-4", {
+        "text-green-600": order?.status === "delivered",
+        "text-yellow-600": order?.status === "in-progress",
+        "text-red-600": order?.status === "cancelled",
+      })}>{order?.status}</td>
       <td className="px-6 py-4 flex items-center gap-4">
         <button
         //   onClick={() => handleDelete(product?._id)}

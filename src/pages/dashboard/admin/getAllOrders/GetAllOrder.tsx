@@ -1,14 +1,15 @@
-import { Loader } from "lucide-react";
 import { useGetAllOrdersQuery } from "../../../../redux/fetchers/orders/orderApi";
 import OrderBody from "./OrderBody";
 import { Cars } from "../../../products/Products";
 import { TUser } from "../getAllUser/GetAllUser";
+import Loader from "../../../shared/Loader";
 
 export type Order = {
   _id: string;
   car: Cars;
   userId: TUser;
   quantity: number;
+  status: string;
   totalPrice: number;
 };
 
