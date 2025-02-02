@@ -1,5 +1,5 @@
-import UpdateProduct from "../pages/dashboard/admin/updateProducts/UpdateProduct";
-import Orders from "../pages/dashboard/user/Orders";
+import GetMyOrder from "../pages/dashboard/user/getMyOrders/GetMyOrder";
+import Profile from "../pages/dashboard/user/Profile";
 import UserDashboard from "../pages/dashboard/user/UserDashboard";
 
 export const userRouterPath = [
@@ -11,11 +11,11 @@ export const userRouterPath = [
   {
     name: "Orders",
     path: "order",
-    element: <Orders />,
+    element: <GetMyOrder />,
   },
   {
     name: "Update Profile",
     path: "update-profile",
-    element: <UpdateProduct />,
+    element: <Profile />,
   },
 ];

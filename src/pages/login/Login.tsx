@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { decodeToken } from "../../utils/jwtDecode";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
 import { toast } from "react-toastify";
+import { TbFidgetSpinner } from "react-icons/tb";
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useAppDispatch();
@@ -13,7 +14,7 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
@@ -22,7 +23,7 @@ const Login = () => {
       dispatch(setUser({ user, token: res.token }));
       await navigate(from, { replace: true });
       toast.success("Login successful");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       toast.error("SOmething went wrong try again");
     }
@@ -81,12 +82,19 @@ const Login = () => {
                   {...register("password")}
                 />
               </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Sign in
-              </button>
+              {isLoading ? (
+                <button className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                  <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                >
+                  Sign in
+                </button>
+              )}
+
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <Link

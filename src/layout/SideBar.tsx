@@ -1,4 +1,6 @@
-
+import { Link } from "react-router";
+import { user } from "../redux/fetchers/auth/authSlice";
+import { useAppSelector } from "../redux/hooks";
 import { AdminPath } from "../routers/admin.router";
 import { userRouterPath } from "../routers/user.router";
 import { sideBarGenerator } from "../utils/sideBarGenerator";
@@ -12,7 +14,10 @@ const userRole = {
 };
 
 const SideBar = () => {
-  const role = "admin";
+  const currentUser = useAppSelector(user);
+
+  const role = currentUser?.role;
+
   let sidebarItems;
 
   switch (role) {
@@ -26,13 +31,12 @@ const SideBar = () => {
       return null; // Return null if invalid role is provided.
   }
   return (
-    <Sider
-      breakpoint="lg" 
-      collapsedWidth="0"
-    >
-      <div className="demo-logo-vertical text-white font-bold text-2xl flex items-center justify-center py-4">
-        Car Store
-      </div>
+    <Sider breakpoint="lg" collapsedWidth="0">
+      <Link to="/">
+        <div className="demo-logo-vertical text-white font-bold text-2xl flex items-center justify-center py-4">
+          Car Store
+        </div>
+      </Link>
       <Menu
         theme="dark"
         mode="inline"
