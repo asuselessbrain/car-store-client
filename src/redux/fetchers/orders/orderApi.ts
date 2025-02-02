@@ -6,7 +6,14 @@ export const ordersApi = baseApi.injectEndpoints({
       query: () => `/orders`,
       providesTags: ["Orders"],
     }),
+    updateOrderStatus: builder.mutation({
+      query: (id) => ({
+        url: `/orders/update-status/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Orders"],
+    }),
   }),
 });
 
-export const { useGetAllOrdersQuery } = ordersApi;
+export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation } = ordersApi;
