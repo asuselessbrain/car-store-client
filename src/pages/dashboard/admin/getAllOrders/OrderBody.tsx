@@ -7,6 +7,7 @@ interface GetAllProductBodyProps {
 }
 
 const OrderBody = ({order, index} : GetAllProductBodyProps) => {
+  console.log(order);
 
     return (
         <tr
@@ -36,7 +37,7 @@ const OrderBody = ({order, index} : GetAllProductBodyProps) => {
         //   onClick={() => handleDelete(product?._id)}
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
         >
-          Delivered
+          Update Status
         </button>
       </td>
     </tr>
