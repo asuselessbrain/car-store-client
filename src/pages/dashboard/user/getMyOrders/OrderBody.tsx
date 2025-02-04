@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { cn } from "../../../../lib/utils";
-import { useUpdateOrderStatusMutation } from "../../../../redux/fetchers/orders/orderApi";
+import { useCancelOrderMutation } from "../../../../redux/fetchers/orders/orderApi";
 import { Order } from "./GetMyOrder";
 
 interface GetAllProductBodyProps {
@@ -9,7 +9,7 @@ interface GetAllProductBodyProps {
 }
 
 const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
-  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [cancelOrder] = useCancelOrderMutation();
 
   const handleUpdateOrderStatus = async (id: string) => {
     try {
@@ -17,13 +17,19 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
         toast.info("This order has already been delivered.");
         return;
       }
-      const res = await updateOrderStatus(id).unwrap();
+
+      if(order?.status === 'cancelled') {
+        toast.info("Order already cancelled!")
+        return;
+      }
+
+      const res = await cancelOrder(id).unwrap();
       if (res.statusCode === 200) {
         toast.success("Order status updated successfully!");
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
+      console.log(err);
       toast.error("Something went wrong while updating order status!");
     }
   };

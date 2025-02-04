@@ -17,7 +17,14 @@ export const ordersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Orders"],
     }),
+    cancelOrder: builder.mutation({
+      query: (id) => ({
+        url: `/orders/cancel-order/${id}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["Orders"],
+    }),
   }),
 });
 
-export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation, useGetIndividualOrderQuery } = ordersApi;
+export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation, useGetIndividualOrderQuery, useCancelOrderMutation } = ordersApi;

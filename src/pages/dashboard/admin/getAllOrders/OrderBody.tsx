@@ -17,6 +17,10 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
         toast.info("This order has already been delivered.");
         return;
       }
+      if (order?.status === "cancelled") {
+        toast.info("This order has cancelled.");
+        return;
+      }
       const res = await updateOrderStatus(id).unwrap();
       if (res.statusCode === 200) {
         toast.success("Order status updated successfully!");
