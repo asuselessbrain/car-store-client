@@ -10,6 +10,13 @@ export const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    getSingleUser: builder.query({
+      query: () => ({
+        url: "/user/get-single-user",
+        method: "GET",
+      }),
+      providesTags: ["User"],
+    }),
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `/user/${id}`,
@@ -29,9 +36,19 @@ export const userApi = baseApi.injectEndpoints({
     }),
     createAdmin: builder.mutation({
       query: (adminInfo) => ({
-        url: '/user/create-admin',
+        url: "/user/create-admin",
         method: "POST",
         body: adminInfo,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    updateName: builder.mutation({
+      query: (userInfo) => ({
+        url: `/user/${userInfo?.id}`,
+        method: "PUT",
+        body: {
+          name: userInfo?.name,
+        },
       }),
       invalidatesTags: ["User"],
     }),
@@ -42,5 +59,7 @@ export const {
   useGetAllUserQuery,
   useDeleteUserMutation,
   useBlockUserMutation,
-  useCreateAdminMutation
+  useCreateAdminMutation,
+  useGetSingleUserQuery,
+  useUpdateNameMutation,
 } = userApi;
