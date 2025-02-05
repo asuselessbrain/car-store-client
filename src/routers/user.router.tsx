@@ -1,5 +1,5 @@
 import GetMyOrder from "../pages/dashboard/user/getMyOrders/GetMyOrder";
-import Profile from "../pages/dashboard/user/Profile";
+import Profile from "../pages/dashboard/user/profile/Profile";
 import UserDashboard from "../pages/dashboard/user/UserDashboard";
 
 export const userRouterPath = [
@@ -14,8 +14,8 @@ export const userRouterPath = [
     element: <GetMyOrder />,
   },
   {
-    name: "Update Profile",
-    path: "update-profile",
+    name: "Profile",
+    path: "profile",
     element: <Profile />,
   },
 ];

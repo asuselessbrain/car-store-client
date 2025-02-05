@@ -2,15 +2,18 @@ import { useState } from "react";
 import {
   useGetSingleUserQuery,
   useUpdateNameMutation,
-} from "../../../redux/fetchers/users/userAPi";
-import Loader from "../../shared/Loader";
+} from "../../../../redux/fetchers/users/userAPi";
+import Loader from "../../../shared/Loader";
 import { CiEdit } from "react-icons/ci";
 import { FieldValues } from "react-hook-form";
+import { toast } from "react-toastify";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const Profile = () => {
   const { data, isLoading } = useGetSingleUserQuery(undefined);
   const [updateName] = useUpdateNameMutation();
   const [isEditing, setIsEditing] = useState(false);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
 
   if (isLoading) return <Loader />;
 
@@ -25,12 +28,20 @@ const Profile = () => {
       id,
     };
 
-    const res = await updateName(userInfo).unwrap();
-    console.log(res);
+    try {
+      const res = await updateName(userInfo).unwrap();
+      if (res?.statusCode === 200) {
+        toast.success(res?.message);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      toast.error("Something went wrong while updating name!");
+    }
     setIsEditing(false);
   };
+
   return (
-    <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white dark:bg-gray-700 shadow-xl rounded-lg text-gray-900 dark:text-gray-200">
+    <div className="max-w-2xl mx-4 sm:max-w-sm relative md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto max-h-[80vh] lg:mx-auto xl:mx-auto mt-16 bg-white dark:bg-gray-700 shadow-xl rounded-lg text-gray-900 dark:text-gray-200">
       <div className="rounded-t-lg h-32 overflow-hidden">
         <img
           className="object-cover object-top w-full"
@@ -68,8 +79,14 @@ const Profile = () => {
 
         <p className="text-gray-500 dark:text-gray-400">{profile?.email}</p>
       </div>
+      {changePasswordModal && (
+        <ChangePasswordModal setIsOpen={setChangePasswordModal} profile={profile} />
+      )}
       <div className="p-4 border-t border-gray-300 dark:border-gray-600 mx-8 mt-2">
-        <button className="block mx-auto rounded-full bg-gray-900 border-2 dark:border-gray-900 dark:bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2">
+        <button
+          onClick={() => setChangePasswordModal(true)}
+          className="block mx-auto rounded-full bg-gray-900 border-2 dark:border-gray-900 dark:bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2"
+        >
           Change Password
         </button>
       </div>

@@ -52,6 +52,17 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    changePassword: builder.mutation({
+      query: (passwordInfo) => ({
+        url: `/user/change-password/${passwordInfo?.id}`,
+        method: "PUT",
+        body: {
+          oldPassword: passwordInfo?.oldPassword,
+          newPassword: passwordInfo?.newPassword,
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -62,4 +73,5 @@ export const {
   useCreateAdminMutation,
   useGetSingleUserQuery,
   useUpdateNameMutation,
+  useChangePasswordMutation,
 } = userApi;
