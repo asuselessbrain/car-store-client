@@ -92,20 +92,7 @@ const ViewDetails = () => {
           </div>
 
           {/* Quantity and Add to Cart */}
-          <div className="flex items-center space-x-4 mb-6">
-            <div className="flex items-center border rounded-lg dark:border-gray-600">
-              <button className="px-3 py-1 text-gray-600 dark:text-gray-300">
-                -
-              </button>
-              <input
-                type="number"
-                defaultValue="1"
-                className="w-12 text-center border-l border-r dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-              />
-              <button className="px-3 py-1 text-gray-600 dark:text-gray-300">
-                +
-              </button>
-            </div>
+          <div className="mb-6">
             <button className="bg-black text-white px-6 py-2 rounded-lg shadow-lg hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-gray-800">
               ADD TO CART
             </button>
