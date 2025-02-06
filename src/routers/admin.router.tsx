@@ -1,4 +1,4 @@
-import AdminDashboard from "../pages/dashboard/admin/AdminDashboard";
+import AdminDashboard from "../pages/dashboard/admin/adminDashboard/AdminDashboard";
 import CreateAdmin from "../pages/dashboard/admin/createAdmin/CreateAdmin";
 import CreateProduct from "../pages/dashboard/admin/createProduct/CreateProduct";
 import GetAllOrder from "../pages/dashboard/admin/getAllOrders/getAllOrder";
