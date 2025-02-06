@@ -2,6 +2,10 @@ import { baseApi } from "../../api/baseApi";
 
 export const revenueApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getTotalRevenue: builder.query({
+        query: () => `/orders/total-revenue`,
+        providesTags: ["Revenue"],
+      }),
     getMonthlyRevenue: builder.query({
       query: () => `/orders/revenue`,
       providesTags: ["Revenue"],
@@ -13,4 +17,4 @@ export const revenueApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMonthlyRevenueQuery, useGetProductSellByBrandQuery } = revenueApi;
+export const { useGetMonthlyRevenueQuery, useGetProductSellByBrandQuery, useGetTotalRevenueQuery } = revenueApi;

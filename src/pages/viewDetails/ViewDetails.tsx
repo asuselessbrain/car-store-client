@@ -18,8 +18,8 @@ const ViewDetails = () => {
   console.log(data);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 min-h-[calc(100vh-280px)] pt-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="max-w-7xl mx-auto px-6 min-h-[calc(100vh-288px)] flex items-center justify-center w-full pt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1">
         {/* Product Image */}
         <div className="flex justify-center">
           <img
