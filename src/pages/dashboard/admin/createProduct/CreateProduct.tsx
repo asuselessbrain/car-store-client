@@ -40,21 +40,6 @@ const CreateProduct = () => {
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            {/* <div className="sm:col-span-2">
-              <label
-                htmlFor="productName"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Product Name
-              </label>
-              <input
-                type="text"
-                id="productName"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type product name"
-                {...register("productName")}
-              />
-            </div> */}
             <div className="w-full">
               <label
                 htmlFor="brand"
@@ -66,7 +51,7 @@ const CreateProduct = () => {
                 type="text"
                 id="brand"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product brand"
+                placeholder="Product brand" required
                 {...register("brand")}
               />
             </div>
@@ -81,7 +66,7 @@ const CreateProduct = () => {
                 type="text"
                 id="model"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product model"
+                placeholder="Product model" required
                 {...register("model")}
               />
             </div>
@@ -96,7 +81,7 @@ const CreateProduct = () => {
                 type="text"
                 id="category"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product category"
+                placeholder="Product category" required
                 {...register("category")}
               />
             </div>
@@ -111,7 +96,7 @@ const CreateProduct = () => {
                 type="number"
                 id="price"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2999 Tk"
+                placeholder="2999 Tk" required
                 {...register("price")}
               />
             </div>
@@ -126,7 +111,7 @@ const CreateProduct = () => {
                 type="number"
                 id="year"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2025"
+                placeholder="2025" required
                 {...register("year")}
               />
             </div>
@@ -141,7 +126,7 @@ const CreateProduct = () => {
                 type="number"
                 id="quantity"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Quantity"
+                placeholder="Quantity" required
                 {...register("quantity")}
               />
             </div>
@@ -156,7 +141,7 @@ const CreateProduct = () => {
                 id="description"
                 rows={8}
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Your description here"
+                placeholder="Your description here" required
                 {...register("description")}
               ></textarea>
             </div>

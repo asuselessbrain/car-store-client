@@ -35,9 +35,6 @@ const ViewDetails = () => {
             Product Name
           </h1>
           <p className="dark:text-gray-300 mb-2">{product.description}</p>
-          <div className="text-sm text-gray-500 mb-2 dark:text-gray-400">
-            RATING :
-          </div>
 
           {/* Price Section */}
           <div className="flex items-center space-x-4 mb-4">

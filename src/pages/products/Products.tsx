@@ -12,8 +12,6 @@ export interface Cars {
     description: string;
     quantity: number;
     inStock: boolean;
-    createdAt: Date;
-    updatedAt: Date;
   }
 
   
@@ -32,7 +30,7 @@ const Products = () => {
         <div className="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
           <div>
             <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
-              Electronics
+              Products
             </h2>
           </div>
           <div className="flex items-center space-x-4">
