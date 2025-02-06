@@ -3,7 +3,21 @@ import { useChangePasswordMutation } from "../../../../redux/fetchers/users/user
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-const ChangePasswordModal = ({ setIsOpen, profile }) => {
+type Profile = {
+  _id: string,
+  name: string,
+  email: string,
+  password: string,
+  role: string,
+  status: string,
+}
+
+type Props = {
+  setIsOpen: (isOpen: boolean) => void,
+  profile: Profile,
+}
+
+const ChangePasswordModal = ({ setIsOpen, profile } : Props) => {
   const [changePassword] = useChangePasswordMutation();
 
   const { register, handleSubmit } = useForm();
