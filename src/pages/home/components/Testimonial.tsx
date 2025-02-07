@@ -10,7 +10,7 @@ function Responsive() {
     slidesToScroll: 1,
     initialSlide: 0,
     autoplay: true,
-    speed: 3000,
+    speed: 2000,
     autoplaySpeed: 3000,
     cssEase: "linear",
     responsive: [
