@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
 import { cn } from "../../../../lib/utils";
 import { useUpdateOrderStatusMutation } from "../../../../redux/fetchers/orders/orderApi";
-import { Order } from "./getAllOrder";
+import { Order } from "./GetAllOrder";
+
 
 interface GetAllProductBodyProps {
   order: Order;
