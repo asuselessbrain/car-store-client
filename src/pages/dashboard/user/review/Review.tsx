@@ -1,22 +1,36 @@
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import ReactStars from "react-rating-stars-component";
+import { useCreateReviewsMutation } from "../../../../redux/fetchers/review/reviewApi";
+import { toast } from "react-toastify";
 
 const Review = () => {
   const [ratting, setRatting] = useState(0);
-
-  
+  const [createRating] = useCreateReviewsMutation();
 
   const ratingChanged = (newRating: number) => {
     setRatting(newRating);
   };
 
-  const handleReview = (e: FieldValues) => {
-    e.preventDefault();
+  const handleReview = async (e: FieldValues) => {
+    try {
+      e.preventDefault();
 
-    const review = e.target.review.value;
+      const review = e.target.review.value;
 
-    console.log(review, ratting);
+      const reviewInfo = {
+        comment: review,
+        ratting: ratting,
+      };
+
+      const res = await createRating(reviewInfo);
+      if(res?.data?.success){
+        toast.success(res?.data?.message)
+      }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      toast.error("Something went wrong!");
+    }
   };
   return (
     <div className="p-4 mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-4xl sm:p-6">
