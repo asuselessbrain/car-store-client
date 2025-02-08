@@ -13,9 +13,8 @@ const Review = () => {
   };
 
   const handleReview = async (e: FieldValues) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
       const review = e.target.review.value;
 
       const reviewInfo = {
@@ -24,10 +23,13 @@ const Review = () => {
       };
 
       const res = await createRating(reviewInfo);
-      if(res?.data?.success){
-        toast.success(res?.data?.message)
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      else {
+        throw new Error("Review submission failed.");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       toast.error("Something went wrong!");
     }
