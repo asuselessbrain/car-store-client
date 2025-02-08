@@ -2,11 +2,8 @@ import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import ReactStars from "react-rating-stars-component";
 
-
-
 const Review = () => {
-
-  const [ratting, setRatting] = useState(0)
+  const [ratting, setRatting] = useState(0);
 
   const ratingChanged = (newRating: number) => {
     setRatting(newRating);
@@ -18,8 +15,7 @@ const Review = () => {
     const review = e.target.review.value;
 
     console.log(review, ratting);
-    
-  } 
+  };
   return (
     <div className="p-4 mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-4xl sm:p-6">
       <div>
@@ -43,10 +39,10 @@ const Review = () => {
           ></textarea>
           <div className="text-right py-4">
             <button
-            type="submit"
+              type="submit"
               className="text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-400 font-semibold rounded-lg text-sm px-5 py-3"
             >
-              Login to Post Review
+              Post Review
             </button>
           </div>
         </form>
