@@ -1,8 +1,18 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useGetAllReviewsQuery } from "../../../redux/fetchers/review/reviewApi";
+import Loader from "../../shared/Loader";
 
 function Responsive() {
+
+  const { data, isLoading } = useGetAllReviewsQuery(undefined);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const reviews = data?.data;
   const settings = {
     dots: true,
     infinite: true,
@@ -40,28 +50,12 @@ function Responsive() {
     ],
   };
 
-  const slides = [
-    {
-      title: "Stayin' Alive",
-      text: "The gentle waves crashed softly on the golden shore as the sun set, painting the sky with hues of orange and pink.",
-    },
-    {
-      title: "Dancing Queen",
-      text: "You can dance, you can jive, having the time of your life!",
-    },
-    {
-      title: "Bohemian Rhapsody",
-      text: "Is this the real life? Is this just fantasy?",
-    },
-    {
-      title: "Billie Jean",
-      text: "She was more like a beauty queen from a movie scene...",
-    },
-    {
-      title: "Imagine",
-      text: "Imagine all the people living life in peace...",
-    },
-  ];
+  type User = {
+    _id: string;
+    email: string;
+    name: string;
+    role: string;
+  }
 
   return (
     <div className="slider-container mx-auto px-4 py-8">
@@ -71,7 +65,7 @@ function Responsive() {
         </h2>
       </div>
       <Slider {...settings}>
-        {slides.map((slide, index) => (
+        {reviews.map((slide: {_id: string, ratting: number, userId: User, comment: string}, index:number) => (
           <div key={index}>
             <div className="dark:bg-gray-900 bg-gray-200 dark:text-white p-4 rounded-lg h-[200px] mx-2">
               {/* Star Ratings */}
@@ -92,12 +86,12 @@ function Responsive() {
               {/* Title */}
               <div className="mt-4">
                 <p className="font-bold text-rose-600 dark:text-rose-400 sm:text-2xl">
-                  {slide.title}
+                  {slide?.userId?.name}
                 </p>
 
                 {/* Description */}
                 <p className="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                  {slide.text}
+                  {slide?.comment}
                 </p>
               </div>
             </div>

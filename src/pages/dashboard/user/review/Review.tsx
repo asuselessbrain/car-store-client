@@ -5,6 +5,8 @@ import ReactStars from "react-rating-stars-component";
 const Review = () => {
   const [ratting, setRatting] = useState(0);
 
+  
+
   const ratingChanged = (newRating: number) => {
     setRatting(newRating);
   };
