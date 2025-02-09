@@ -44,12 +44,12 @@ const ProductCard = ({ product }: Car) => {
           </h2>
         </div>
 
-        <div className="mt-4 flex items-center justify-between gap-4">
+        <div className="mt-4 flex items-center justify-between gap-2">
           <p className="text-xl font-bold leading-tight text-red-600 dark:text-red-600">
             <span className="font-medium text-gray-900 dark:text-white text-base">
               Price:{" "}
             </span>
-            1,699
+            {product?.price}
           </p>
 
           <Link to={`/view-details/${product._id}`}>

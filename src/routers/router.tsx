@@ -10,6 +10,7 @@ import Login from "../pages/login/Login";
 import Registration from "../registratio/Registration";
 import ProtectedRoute from "../layout/ProtectedRoute";
 import Home from "../pages/home/Home";
+import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +30,8 @@ export const router = createBrowserRouter([
         element: <ViewDetails />,
       },
       {
-        path: "view-details",
-        element: < />,
+        path: "verify-order",
+        element: < VerifyOrder/>,
       }
     ],
   },

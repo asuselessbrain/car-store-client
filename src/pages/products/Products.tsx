@@ -21,7 +21,6 @@ const Products = () => {
   if (isLoading) return <Loader />
 
   const products = data;
-  console.log(products);
 
   return (
     <section className="bg-gray-50 antialiased dark:bg-gray-900">

@@ -135,7 +135,7 @@ export default function VerifyOrder() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
-              {orderData?.is_verify === 1 ? (
+              {orderData?.sp_message === "Success" ? (
                 <>
                   <CheckCircle className="text-green-500" />
                   <span>Verified</span>
@@ -149,7 +149,7 @@ export default function VerifyOrder() {
             </div>
           </CardContent>
           <CardFooter>
-            <Link to="/order">
+            <Link to="/user/order">
               <Button className="w-full">View Orders</Button>
             </Link>
           </CardFooter>
