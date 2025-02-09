@@ -32,7 +32,15 @@ export const ordersApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Orders"],
     }),
+    verifyOrder: builder.query({
+      query: (order_id) => ({
+        url: '/orders/verify',
+        params: {order_id},
+        method: "GET",
+      }),
+      providesTags: ["Orders"],
+    })
   }),
 });
 
-export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation, useGetIndividualOrderQuery, useCancelOrderMutation, useCreateOrderMutation } = ordersApi;
+export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation, useGetIndividualOrderQuery, useCancelOrderMutation, useCreateOrderMutation, useVerifyOrderQuery } = ordersApi;

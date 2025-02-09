@@ -1,29 +1,30 @@
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Loader from "../shared/Loader";
 import { cn } from "../../lib/utils";
 import img from "../../assets/bannerImage/650.png";
 import { useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
 import { MinusIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateOrderMutation } from "../../redux/fetchers/orders/orderApi";
 import { FieldValues } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const ViewDetails = () => {
   const { id } = useParams();
   const [quantitySell, setQuantity] = useState(1);
-  const navigate = useNavigate()
 
   const { data, isLoading } = useGetSingleCarQuery(id as string);
-  const [createOrder] = useCreateOrderMutation();
+  const [
+    createOrder,
+    {
+      isLoading: createOrderLoading,
+      isSuccess,
+      data: createOrderData,
+      isError,
+      error,
+    },
+  ] = useCreateOrderMutation();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  const product = data.data;
-
-  // console.log(data);
 
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
@@ -46,22 +47,33 @@ const ViewDetails = () => {
       car,
       quantity,
     };
-    try {
-      const res = await createOrder(orderInfo).unwrap();
-      if (res?.success) {
-        toast.success(res?.message);
-        navigate('/user/order')
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message);
-      } else if (typeof err === "object" && err !== null && "data" in err && typeof err.data === "object" && err.data !== null && "errorMessage" in err.data) {
-        toast.error((err.data as { errorMessage: string }).errorMessage);
-      } else {
-        toast.error("Something went wrong!");
+    await createOrder(orderInfo);
+  };
+
+  const toastId = "cart";
+
+  useEffect(() => {
+    if (createOrderLoading) {
+      toast.loading("Processing ........", { id: toastId });
+    }
+    if(isSuccess) {
+      toast.success(createOrderData?.message, {id: toastId});
+      if (createOrderData?.data) {
+        setTimeout(() => {
+          window.location.href = createOrderData.data;
+        }, 1000);
       }
     }
-  };
+    if(isError) {
+      toast.error(JSON.stringify(error), {id: toastId});
+    }
+  }, [createOrderData?.data, createOrderData?.message, error, isError, createOrderLoading, isSuccess]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const product = data?.data;
 
   return (
     <div className="max-w-7xl mx-auto px-6 min-h-[calc(100vh-288px)] flex items-center justify-center w-full pt-10">

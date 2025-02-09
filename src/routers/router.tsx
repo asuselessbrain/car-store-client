@@ -28,6 +28,10 @@ export const router = createBrowserRouter([
         path: "view-details/:id",
         element: <ViewDetails />,
       },
+      {
+        path: "view-details",
+        element: < />,
+      }
     ],
   },
   {
