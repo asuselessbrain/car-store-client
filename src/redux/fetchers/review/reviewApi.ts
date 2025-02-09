@@ -7,6 +7,7 @@ const reviewApi = baseApi.injectEndpoints({
         url: "/review/get-review",
         method: "GET",
       }),
+      providesTags: ["Reviews"],
     }),
     createReviews: builder.mutation({
       query: (payload) => ({
@@ -14,6 +15,7 @@ const reviewApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Reviews"],
     }),
   }),
 });
