@@ -1,7 +1,8 @@
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { cn } from "../../../../lib/utils";
 import { useUpdateOrderStatusMutation } from "../../../../redux/fetchers/orders/orderApi";
 import { Order } from "./GetAllOrder";
+import { useEffect } from "react";
 
 
 interface GetAllProductBodyProps {
@@ -10,28 +11,34 @@ interface GetAllProductBodyProps {
 }
 
 const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
-  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [updateOrderStatus, {data, isLoading, isError, isSuccess, error}] = useUpdateOrderStatusMutation();
+
 
   const handleUpdateOrderStatus = async (id: string) => {
-    try {
-      if (order?.status === "delivered") {
-        toast.info("This order has already been delivered.");
-        return;
-      }
-      if (order?.status === "cancelled") {
-        toast.info("This order has cancelled.");
-        return;
-      }
-      const res = await updateOrderStatus(id).unwrap();
-      if (res.statusCode === 200) {
-        toast.success("Order status updated successfully!");
-      }
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      toast.error("Something went wrong while updating order status!");
+    const orderId = 'status'
+    if (order?.status === "delivered") {
+      toast.info("This order has already been delivered.", {id: orderId});
+      return;
     }
+    if (order?.status === "cancelled") {
+      toast.info("This order has cancelled.", {id: orderId});
+      return;
+    }
+    await updateOrderStatus(id).unwrap();
   };
+
+  useEffect(()=>{
+    const orderId = 'order'
+    if(isError){
+      toast.error(JSON.stringify(error), {id: orderId});
+    }
+    if(isLoading){
+      toast.loading("Processing..", {id: orderId})
+    }
+    if(isSuccess){
+      toast.success(data?.message, {id: orderId})
+    }
+  },[data?.message, isSuccess, isError, error, isLoading])
 
   return (
     <tr
@@ -57,6 +64,15 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
       <td className="px-6 py-4 text-red-600">{order?.totalPrice}</td>
       <td
         className={cn("px-6 py-4", {
+          "text-green-600": order?.paymentStatus === "paid",
+          "text-yellow-600": order?.paymentStatus === "pending",
+          "text-red-600": order?.paymentStatus === "cancelled",
+        })}
+      >
+        {order?.paymentStatus}
+      </td>
+      <td
+        className={cn("px-6 py-4", {
           "text-green-600": order?.status === "delivered",
           "text-yellow-600": order?.status === "in-progress",
           "text-red-600": order?.status === "cancelled",
@@ -69,7 +85,7 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
           onClick={() => handleUpdateOrderStatus(order?._id)}
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
         >
-          Update Status
+          Delevered
         </button>
       </td>
     </tr>

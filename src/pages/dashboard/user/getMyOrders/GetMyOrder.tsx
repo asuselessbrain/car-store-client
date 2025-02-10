@@ -9,6 +9,7 @@ export type Order = {
   car: Cars;
   userId: TUser;
   quantity: number;
+  paymentStatus: string;
   status: string;
   totalPrice: number;
 };
@@ -40,6 +41,9 @@ const GetMyOrder = () => {
             </th>
             <th scope="col" className="px-6 py-3">
               Total Price
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Payment Status
             </th>
             <th scope="col" className="px-6 py-3">
               Status

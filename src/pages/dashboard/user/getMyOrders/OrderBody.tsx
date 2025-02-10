@@ -9,7 +9,9 @@ interface GetAllProductBodyProps {
 }
 
 const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
-  const [cancelOrder] = useCancelOrderMutation();
+  const [cancelOrder, {data, isLoading, isSuccess, error}] = useCancelOrderMutation();
+
+  
 
   const handleUpdateOrderStatus = async (id: string) => {
     try {
@@ -49,6 +51,15 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
       <td className="px-6 py-4 text-red-600">{order?.car?.price}</td>
       <td className="px-6 py-4">{order?.quantity}</td>
       <td className="px-6 py-4 text-red-600">{order?.totalPrice}</td>
+      <td
+        className={cn("px-6 py-4", {
+          "text-green-600": order?.paymentStatus === "paid",
+          "text-yellow-600": order?.paymentStatus === "pending",
+          "text-red-600": order?.paymentStatus === "cancelled",
+        })}
+      >
+        {order?.paymentStatus}
+      </td>
       <td
         className={cn("px-6 py-4", {
           "text-green-600": order?.status === "delivered",
