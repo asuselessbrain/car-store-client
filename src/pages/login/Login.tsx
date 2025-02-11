@@ -6,6 +6,7 @@ import { decodeToken } from "../../utils/jwtDecode";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
 import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb";
+import logo from '../../assets/logo.png'
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useAppDispatch();
@@ -38,10 +39,10 @@ const Login = () => {
         >
           <img
             className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            src={logo}
             alt="logo"
           />
-          Flowbite
+          Car Store
         </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

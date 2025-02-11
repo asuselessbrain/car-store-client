@@ -9,7 +9,7 @@ interface GetAllProductBodyProps {
 }
 
 const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
-  const [cancelOrder, {data, isLoading, isSuccess, error}] = useCancelOrderMutation();
+  const [cancelOrder] = useCancelOrderMutation();
 
   
 

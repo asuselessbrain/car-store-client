@@ -23,7 +23,7 @@ function Responsive() {
     initialSlide: 0,
     autoplay: true,
     speed: 2000,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 1000,
     cssEase: "linear",
     responsive: [
       {

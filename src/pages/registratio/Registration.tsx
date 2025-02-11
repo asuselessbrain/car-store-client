@@ -1,33 +1,31 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { useRegisterMutation } from "../redux/fetchers/auth/authApi";
-import { toast } from 'react-toastify';
+import { useRegisterMutation } from "../../redux/fetchers/auth/authApi";
+import { toast } from "react-toastify";
+import logo from "../../assets/logo.png";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
 
-  const [registration ] = useRegisterMutation();
-  const navigate = useNavigate()
-
+  const [registration] = useRegisterMutation();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     const userInfo = {
       name: formData.name,
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+    };
+
+    const res = await registration(userInfo);
+
+    if (res.data.success) {
+      toast.success(res.data.message);
+      navigate("/login");
+    } else {
+      toast.error("Something went wrong!");
     }
-
-    const res = await registration(userInfo)
-
-
-   if(res.data.success){
-    toast.success(res.data.message)
-    navigate('/login')
-   }
-   else{
-    toast.error("Something went wrong!")
-   }
-  }
+  };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -36,12 +34,8 @@ const Registration = () => {
           to="/"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
         >
-          <img
-            className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-            alt="logo"
-          />
-          Flowbite
+          <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
+          Car Store
         </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

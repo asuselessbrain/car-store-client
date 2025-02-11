@@ -7,10 +7,11 @@ import { routerGenerator } from "../utils/routerGenerator";
 import { AdminPath } from "./admin.router";
 import { userRouterPath } from "./user.router";
 import Login from "../pages/login/Login";
-import Registration from "../registratio/Registration";
+import Registration from "../pages/registratio/Registration";
 import ProtectedRoute from "../layout/ProtectedRoute";
 import Home from "../pages/home/Home";
 import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
+import Contact from "../pages/contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -31,8 +32,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "verify-order",
-        element: < VerifyOrder/>,
-      }
+        element: <VerifyOrder />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
     ],
   },
   {

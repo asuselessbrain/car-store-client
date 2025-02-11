@@ -4,6 +4,16 @@ import { Cars } from "../../../products/Products";
 import Loader from "../../../shared/Loader";
 import { TUser } from "../../admin/getAllUser/GetAllUser";
 
+type Transaction = {
+  id: string;
+  transactionStatus: string;
+  bank_status: string;
+  date_time: string;
+  method: string;
+  sp_code: string;
+  sp_message: string;
+};
+
 export type Order = {
   _id: string;
   car: Cars;
@@ -12,10 +22,12 @@ export type Order = {
   paymentStatus: string;
   status: string;
   totalPrice: number;
+  transaction: Transaction;
 };
 
 const GetMyOrder = () => {
   const { data, isLoading } = useGetIndividualOrderQuery(undefined);
+
 
   if (isLoading) return <Loader />;
   const orders = data.data;

@@ -54,7 +54,7 @@ const NavBar = () => {
         >
           <img src={logo} className="h-16" alt="Flowbite Logo" />
           <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
-            Flowbite
+            Car Store
           </span>
         </Link>
         <button
