@@ -3,11 +3,11 @@ import { baseApi } from "../../api/baseApi";
 export const carApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCars: builder.query({
-      query: () => `/cars`,
+      query: () => ({ url: `/cars` }),
       providesTags: ["Cars"],
     }),
     getSingleCar: builder.query({
-      query: (id: string) => `/cars/${id}`,
+      query: (id: string) => ({ url: `/cars/${id}` }),
       providesTags: ["Cars"],
     }),
     createCar: builder.mutation({
@@ -42,5 +42,5 @@ export const {
   useGetSingleCarQuery,
   useDeleteCarMutation,
   useCreateCarMutation,
-  useUpdateCarMutation
+  useUpdateCarMutation,
 } = carApi;

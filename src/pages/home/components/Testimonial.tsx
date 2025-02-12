@@ -78,7 +78,7 @@ function Responsive() {
             index: number
           ) => (
             <div key={index}>
-              <div className="dark:bg-gray-900 bg-gray-200 dark:text-white p-4 rounded-lg h-[200px] mx-2">
+              <div className="dark:bg-gray-900 bg-gray-200 dark:text-white p-4 rounded-lg h-[250px] mx-2">
                 {/* Star Ratings */}
                 <Rating style={{ maxWidth: 100 }} value={slide?.ratting} readOnly />
                 {/* Title */}

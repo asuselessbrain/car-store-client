@@ -3,11 +3,11 @@ import { baseApi } from "../../api/baseApi";
 export const ordersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query({
-      query: () => `/orders`,
+      query: () => ({ url: `/orders` }),
       providesTags: ["Orders"],
     }),
     getIndividualOrder: builder.query({
-      query: () => `/orders/my-orders/`,
+      query: () => ({ url: `/orders/my-orders/` }),
       providesTags: ["Orders"],
     }),
     updateOrderStatus: builder.mutation({
@@ -34,13 +34,20 @@ export const ordersApi = baseApi.injectEndpoints({
     }),
     verifyOrder: builder.query({
       query: (order_id) => ({
-        url: '/orders/verify',
-        params: {order_id},
+        url: "/orders/verify",
+        params: { order_id },
         method: "GET",
       }),
       providesTags: ["Orders"],
-    })
+    }),
   }),
 });
 
-export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation, useGetIndividualOrderQuery, useCancelOrderMutation, useCreateOrderMutation, useVerifyOrderQuery } = ordersApi;
+export const {
+  useGetAllOrdersQuery,
+  useUpdateOrderStatusMutation,
+  useGetIndividualOrderQuery,
+  useCancelOrderMutation,
+  useCreateOrderMutation,
+  useVerifyOrderQuery,
+} = ordersApi;

@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import ReactStars from "react-rating-stars-component";
 import { useCreateReviewsMutation } from "../../../../redux/fetchers/review/reviewApi";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
+
+class CustomError extends Error {
+  data?: { errorMessage?: string };
+  constructor(message: string, data?: { errorMessage?: string }) {
+    super(message);
+    this.data = data;
+  }
+}
 
 const Review = () => {
   const [ratting, setRatting] = useState(0);
-  const [createRating] = useCreateReviewsMutation();
+  const [createRating, { isError, error, data, isSuccess, isLoading }] =
+    useCreateReviewsMutation();
+
+  const navigate = useNavigate();
+
+  const errorMsg = (error as CustomError)?.data?.errorMessage;
+  const maxCharacterError = errorMsg?.split("comment: ")[1];
 
   const ratingChanged = (newRating: number) => {
     setRatting(newRating);
@@ -14,26 +29,37 @@ const Review = () => {
 
   const handleReview = async (e: FieldValues) => {
     e.preventDefault();
-    try {
-      const review = e.target.review.value;
+    const review = e.target.review.value;
 
-      const reviewInfo = {
-        comment: review,
-        ratting: ratting,
-      };
+    const reviewInfo = {
+      comment: review,
+      ratting: ratting,
+    };
 
-      const res = await createRating(reviewInfo);
-      if (res?.data?.success) {
-        toast.success(res?.data?.message);
-      }
-      else {
-        throw new Error("Review submission failed.");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      toast.error("Something went wrong!");
-    }
+    await createRating(reviewInfo);
   };
+
+  const toastId = "rating";
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("processing.....", { id: toastId });
+    }
+    if (isError) {
+      toast.error(maxCharacterError, { id: toastId });
+    }
+    if (isSuccess) {
+      toast.success(data?.message, { id: toastId });
+      navigate("/");
+    }
+  }, [
+    data?.message,
+    isError,
+    isLoading,
+    isSuccess,
+    maxCharacterError,
+    navigate,
+  ]);
   return (
     <div className="p-4 mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-4xl sm:p-6">
       <div>

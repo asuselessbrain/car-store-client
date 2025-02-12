@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
@@ -91,20 +91,21 @@ const NavBar = () => {
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 space-y-2 md:space-y-0 border bg-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
             {menuItems.map((menuItem) => (
               <li key={menuItem.id}>
-                <Link
+                <NavLink
                   to={menuItem.path}
-                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]"
+                  className={({ isActive }) => isActive ? "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]" : "block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white"
+                  }
                   aria-current="page"
                 >
                   {menuItem.label}
-                </Link>
+                </NavLink>
               </li>
             ))}
             {userToken && (
               <li>
                 <Link
                   to={`/${userInfo?.role}/dashboard`}
-                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-[#EEFF25] md:p-0 dark:text-white md:dark:text-[#EEFF25]"
+                  className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-white md:p-0 dark:text-white md:dark:text-white"
                   aria-current="page"
                 >
                   Dashboard
