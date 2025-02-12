@@ -4,6 +4,7 @@ import ProductCard from "./components/ProductCard";
 import { CiFilter } from "react-icons/ci";
 import { FieldValues } from "react-hook-form";
 import { useState } from "react";
+import PaginationDesign from "./components/PaginationDesign";
 
 export interface Cars {
   _id: string;
@@ -103,6 +104,7 @@ const Products = () => {
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
+        <PaginationDesign />
       </div>
     </section>
   );
