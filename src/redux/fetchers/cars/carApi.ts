@@ -3,7 +3,9 @@ import { baseApi } from "../../api/baseApi";
 export const carApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCars: builder.query({
-      query: () => ({ url: `/cars` }),
+      query: (sortOrder) => ({
+        url: `/cars?sortBy=price&sortOrder=${sortOrder}`,
+      }),
       providesTags: ["Cars"],
     }),
     getSingleCar: builder.query({
