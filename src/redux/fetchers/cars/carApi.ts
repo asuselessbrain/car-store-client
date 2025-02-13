@@ -3,9 +3,18 @@ import { baseApi } from "../../api/baseApi";
 export const carApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCars: builder.query({
-      query: (sortOrder) => ({
-        url: `/cars?sortBy=price&sortOrder=${sortOrder}`,
-      }),
+      query: (searchTerm) => {
+        const brandQuery = searchTerm?.filter?.length
+          ? searchTerm.filter
+              .map((brand: string) => `brand=${encodeURIComponent(brand)}`)
+              .join("&")
+          : "";
+        const searchQuery = searchTerm?.searchItem ? `searchTerm=${searchTerm?.searchItem}` : "";
+        const sortQuery = searchTerm?.sort? `sortBy=price&sortOrder=${searchTerm?.sort}` : "";
+        return {
+          url: `/cars?${searchQuery}&${brandQuery}&${sortQuery}`,
+        };
+      },
       providesTags: ["Cars"],
     }),
     getSingleCar: builder.query({

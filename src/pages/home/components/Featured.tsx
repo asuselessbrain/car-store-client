@@ -11,7 +11,8 @@ const FeaturedProducts = () => {
 
   if (isLoading) return <Loader />;
 
-  const products = data?.data || []; // Ensure it's always an array
+  const products = data?.data?.result || [];
+
   const featuredProducts = products?.slice(0, 6) || [];
 
   return (
