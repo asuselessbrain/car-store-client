@@ -45,7 +45,17 @@ const Products = () => {
     setToggle(!toggle);
   };
 
-  
+  const handelBrandChanged = (e: FieldValues) => {
+    const selectedBrand = e.target.value.trim(); // Trim any whitespace
+    const isChecked = e.target.checked; // Check if checkbox is checked
+
+    setFilter(
+      (prevFilter) =>
+        isChecked
+          ? [...prevFilter, selectedBrand] // Add selected brand
+          : prevFilter.filter((brand) => brand !== selectedBrand) // Remove deselected brand
+    );
+  };
 
   const handleSearch = (e: FieldValues) => {
     setSearchTerm(e.target.value);
