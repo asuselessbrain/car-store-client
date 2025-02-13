@@ -24,11 +24,16 @@ const Products = () => {
   const [toggle, setToggle] = useState(false);
   const [filter, setFilter] = useState<string[]>([]);
   const [searchItem, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1)
+
+  const limit = 1;
 
   const searchFields = {
     sort,
     filter,
-    searchItem
+    searchItem,
+    page,
+    limit
   };
   // const
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
@@ -36,6 +41,8 @@ const Products = () => {
   if (isLoading) return <Loader />;
 
   const products = data?.data?.result;
+  const metaData = data?.data?.meta;
+  console.log(metaData);
 
   const handleSort = (e: FieldValues) => {
     setSort(e.target.value);
@@ -72,7 +79,7 @@ const Products = () => {
   }
 
   return (
-    <section className="bg-gray-50 antialiased dark:bg-gray-900 flex items-center justify-center min-h-[calc(100vh-282px)]">
+    <section className="bg-gray-50 antialiased dark:bg-gray-900 flex items-center justify-center min-h-[calc(100vh-282px)] pb-6">
       <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
         <div className="mb-4 items-center justify-between space-y-4 mt-4 sm:flex sm:space-y-0 md:mb-8">
           <div>
@@ -228,7 +235,7 @@ const Products = () => {
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
-        <Pagination align="center" defaultCurrent={1} total={50} />
+        <Pagination align="center" pageSize={metaData?.limit} current={page} onChange={(value)=> setPage(value)} total={metaData?.total} />
       </div>
     </section>
   );

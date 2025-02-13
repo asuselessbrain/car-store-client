@@ -11,8 +11,10 @@ export const carApi = baseApi.injectEndpoints({
           : "";
         const searchQuery = searchTerm?.searchItem ? `searchTerm=${searchTerm?.searchItem}` : "";
         const sortQuery = searchTerm?.sort? `sortBy=price&sortOrder=${searchTerm?.sort}` : "";
+        const pageQuery = `page=${searchTerm?.page}`;
+        const limitQuery = `limit=${searchTerm?.limit}`;
         return {
-          url: `/cars?${searchQuery}&${brandQuery}&${sortQuery}`,
+          url: `/cars?${searchQuery}&${brandQuery}&${sortQuery}&${pageQuery}&${limitQuery}`,
         };
       },
       providesTags: ["Cars"],
