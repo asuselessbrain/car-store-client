@@ -5,7 +5,7 @@ import { useCreateReviewsMutation } from "../../../../redux/fetchers/review/revi
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 
-class CustomError extends Error {
+export class CustomError extends Error {
   data?: { errorMessage?: string };
   constructor(message: string, data?: { errorMessage?: string }) {
     super(message);

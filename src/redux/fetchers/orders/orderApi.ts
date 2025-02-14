@@ -40,6 +40,13 @@ export const ordersApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Orders"],
     }),
+    createContact: builder.mutation({
+      query: (contactInfo) => ({
+        url: "/contact",
+        method: "POST",
+        body: contactInfo,
+      }),
+    }),
   }),
 });
 
@@ -50,4 +57,5 @@ export const {
   useCancelOrderMutation,
   useCreateOrderMutation,
   useVerifyOrderQuery,
+  useCreateContactMutation,
 } = ordersApi;

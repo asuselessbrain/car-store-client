@@ -1,50 +1,122 @@
-# React + TypeScript + Vite
+Car Store - Online Vehicle Marketplace
+======================================
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to **Car Store**, a modern and user-friendly online platform for browsing, purchasing, and managing vehicle orders. This project provides an intuitive experience for both customers and administrators, offering advanced analytics, secure payment integration, and seamless user interactions.
 
-Currently, two official plugins are available:
+🚀 Live Demo
+------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔗 [**Car Store Live URL**](https://car-store-frontend-delta.vercel.app/)
 
-## Expanding the ESLint configuration
+📌 Features
+-----------
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 🛒 **User Features**
 
-- Configure the top-level `parserOptions` property like this:
+*   Browse a wide range of cars with filters (brand, price, and model)
+    
+*   View detailed specifications of each car
+    
+*   Securely purchase vehicles using **ShurjoPay**
+    
+*   Manage order history and payments
+    
+*   Submit and view customer reviews
+    
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 🛠 **Admin Dashboard**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+*   View **monthly profit analytics** via a graph 📊
+    
+*   Track **cars sold by brand** in another graph 🚗
+    
+*   Manage total **users, orders, deliveries, and pending shipments**
+    
+*   Ensure smooth inventory and logistics management
+    
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 💡 **Additional Features**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+*   Fully **responsive** design for mobile, tablet, and desktop
+    
+*   **Fast and optimized performance** with Vite
+    
+*   **Secure authentication system** for users and admins
+    
+
+🏗️ Tech Stack
+--------------
+
+*   **Frontend:** React, TypeScript, Vite, Tailwind CSS
+    
+*   **Backend:** Node.js, Express.js, MongoDB, nodemailer
+    
+*   **Authentication:** JSON Web Tokens (JWT)
+    
+*   **Payment Integration:** ShurjoPay
+    
+*   **Deployment:** Vercel (Frontend), Vercel (Backend)
+    
+
+📂 Installation and Setup
+-------------------------
+
+### **1️⃣ Prerequisites**
+
+Ensure you have the following installed:
+
+*   Node.js (v18+ recommended)
+    
+*   MongoDB (local or cloud instance)
+
+
+### Frontend:  
+
+#### **2️⃣ Clone the Repository**
+
+`git clone https://github.com/asuselessbrain/car-store-client.git`
+
+#### **3️⃣ Install Dependencies**
+
+`cd car-store-client`
+`npm install`
+
+#### Run Frontend:
+`npm run dev`
+
+### Backend:
+
+#### **2️⃣ Clone the Repository**
+
+`git clone https://github.com/asuselessbrain/Car-Store-server.git`
+
+#### **3️⃣ Install Dependencies**
+
+`cd Car-Store-server`
+`npm install`
+
+### **4️⃣ Environment Variables**
+
+Create a .env file in the backend directory and configure:
+
+`NODE_ENV=development  PORT=5000  DB_URL=your_mongodb_connection_string   BCYPT_SALT_ROUNDS=12  JWT_SECRET=your_jwt_secret  JWT_REFRESH_SECRET=your_jwt_refresh_secret   SP_ENDPOINT=https://sandbox.shurjopayment.com  SP_USERNAME=your_shurjopay_username SP_PASSWORD=your_shurjopay_password   SP_PREFIX=SP  SP_RETURN_URL=https://car-store-frontend-delta.vercel.app/verify-order  `
+
+#### Run Backend Server:
+
+`npm run start:dev`
+
+
+The project will be available at [**http://localhost:5173/**](http://localhost:5173/)
+    
+
+🎯 Future Enhancements
+----------------------
+
+*   Additional **payment gateways** for flexibility
+    
+*   More **sorting and filtering** options for better user experience
+    
+*   Improved **admin analytics** for data-driven decisions
+    
+
+💡 _Enjoy seamless car shopping with Car Store!_ 🚗💨
