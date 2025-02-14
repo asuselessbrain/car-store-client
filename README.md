@@ -74,36 +74,60 @@ Ensure you have the following installed:
 
 #### **2️⃣ Clone the Repository**
 
-`git clone https://github.com/asuselessbrain/car-store-client.git`
+```bash
+    git clone https://github.com/asuselessbrain/car-store-client.git
+  ```
 
 #### **3️⃣ Install Dependencies**
 
-`cd car-store-client`
-`npm install`
+```bash
+    cd car-store-client
+    npm install
+  ```
 
 #### Run Frontend:
-`npm run dev`
+```bash
+    npm run dev
+  ```
 
 ### Backend:
 
 #### **2️⃣ Clone the Repository**
 
-`git clone https://github.com/asuselessbrain/Car-Store-server.git`
+```bash
+    git clone https://github.com/asuselessbrain/Car-Store-server.git
+  ```
 
 #### **3️⃣ Install Dependencies**
 
-`cd Car-Store-server`
-`npm install`
+```bash
+    cd Car-Store-server
+    npm install
+  ```
 
 ### **4️⃣ Environment Variables**
 
 Create a .env file in the backend directory and configure:
 
-`NODE_ENV=development  PORT=5000  DB_URL=your_mongodb_connection_string   BCYPT_SALT_ROUNDS=12  JWT_SECRET=your_jwt_secret  JWT_REFRESH_SECRET=your_jwt_refresh_secret   SP_ENDPOINT=https://sandbox.shurjopayment.com  SP_USERNAME=your_shurjopay_username SP_PASSWORD=your_shurjopay_password   SP_PREFIX=SP  SP_RETURN_URL=https://car-store-frontend-delta.vercel.app/verify-order  `
+```bash
+    NODE_ENV=development
+    PORT=5000  
+    DB_URL=your_mongodb_connection_string   
+    BCYPT_SALT_ROUNDS=12  
+    JWT_SECRET=your_jwt_secret  
+    JWT_REFRESH_SECRET=your_jwt_refresh_secret   
+    SP_ENDPOINT=https://sandbox.shurjopayment.com  
+    SP_USERNAME=your_shurjopay_username 
+    SP_PASSWORD=your_shurjopay_password   
+    SP_PREFIX=SP  
+    SP_RETURN_URL=https://car-store-frontend-delta.vercel.app/verify-order
+  ```
 
 #### Run Backend Server:
 
-`npm run start:dev`
+```bash
+    npm run start:dev
+  ```
 
 
 The project will be available at [**http://localhost:5173/**](http://localhost:5173/)
