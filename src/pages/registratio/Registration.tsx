@@ -21,7 +21,7 @@ const Registration = () => {
 
     if (res.data.success) {
       toast.success(res.data.message);
-      navigate("/login");
+      navigate("/verify-otp", { state: { email: formData.email } });
     } else {
       toast.error("Something went wrong!");
     }

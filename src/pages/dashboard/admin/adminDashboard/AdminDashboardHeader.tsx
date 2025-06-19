@@ -9,44 +9,46 @@ import {
 import { ShoppingCart, Truck, PackageCheck, Box, Users } from "lucide-react";
 
 const AdminDashboardHeader = () => {
-    const { data, isLoading } = useGetSingleUserQuery(undefined);
-    const { data: totalRevenue, isLoading: Loading } =
-      useGetTotalRevenueQuery(undefined);
-    const { data: orderData, isLoading: orderLoading } =
-      useGetAllOrdersQuery(undefined);
-  
-    const { data: users, isLoading: userLoading } = useGetAllUserQuery(undefined);
-    const { data: productS, isLoading: productLoading } =
-      useGetAllCarsQuery(undefined);
+  const { data, isLoading } = useGetSingleUserQuery(undefined);
+  const { data: totalRevenue, isLoading: Loading } =
+    useGetTotalRevenueQuery(undefined);
+  const { data: orderData, isLoading: orderLoading } =
+    useGetAllOrdersQuery(undefined);
 
-    if (productLoading) {
-        return <Loader />;
-      }
-    
-      if (userLoading) {
-        return <Loader />;
-      }
-    
-      if (orderLoading) {
-        return <Loader />;
-      }
-    
-      if (Loading) {
-        return <Loader />;
-      }
-    
-      if (isLoading) {
-        return <Loader />;
-      }
-    
-      const orders = orderData?.data;
-    
-      const needToDelivery = orders.filter(
-        (order: { status: string }) => order?.status === "in-progress"
-      );
-      const delivered = orders.filter((order: { status: string }) => order?.status === "delivered");
-    
-      const revenue = totalRevenue?.data?.totalRevenue?.totalRevenue;
+  const { data: users, isLoading: userLoading } = useGetAllUserQuery(undefined);
+  const { data: productS, isLoading: productLoading } =
+    useGetAllCarsQuery(undefined);
+
+  console.log(productS?.data?.result)
+
+  if (productLoading) {
+    return <Loader />;
+  }
+
+  if (userLoading) {
+    return <Loader />;
+  }
+
+  if (orderLoading) {
+    return <Loader />;
+  }
+
+  if (Loading) {
+    return <Loader />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  const orders = orderData?.data;
+
+  const needToDelivery = orders.filter(
+    (order: { status: string }) => order?.status === "in-progress"
+  );
+  const delivered = orders.filter((order: { status: string }) => order?.status === "delivered");
+
+  const revenue = totalRevenue?.data?.totalRevenue?.totalRevenue;
   return (
     <div>
       <h1 className="text-3xl font-semibold dark:text-white font-cinzel mb-3">
@@ -89,7 +91,7 @@ const AdminDashboardHeader = () => {
             <Box size={28} />
             <p className="font-bold text-lg">Products</p>
           </div>
-          <h3 className="font-semibold text-6xl">{productS?.data?.length}</h3>
+          <h3 className="font-semibold text-6xl">{productS?.data?.result?.length}</h3>
         </div>
         <div className="text-white bg-gradient-to-r from-[#d3b57d] to-[#D3A256] px-[26px] py-[28px] rounded-xl flex items-start justify-between flex-1">
           <div className="flex items-start gap-2">
