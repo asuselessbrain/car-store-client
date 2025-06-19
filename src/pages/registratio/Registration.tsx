@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png";
 const Registration = () => {
   const { register, handleSubmit } = useForm();
 
-  const [registration] = useRegisterMutation();
+  const [registration, {isLoading}] = useRegisterMutation();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
@@ -97,6 +97,18 @@ const Registration = () => {
               >
                 Create an account
               </button>
+              {isLoading ? (
+                              <button className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+                              </button>
+                            ) : (
+                              <button
+                                type="submit"
+                                className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                              >
+                                Sign in
+                              </button>
+                            )}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <Link
