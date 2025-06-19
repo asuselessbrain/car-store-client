@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useVerifyOTPMutation } from "../../redux/fetchers/auth/authApi";
+import { useResendOTPMutation, useVerifyOTPMutation } from "../../redux/fetchers/auth/authApi";
 
 const VerifyOTP = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location?.state?.email;
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-  const [verifyOTP, { isLoading }] = useVerifyOTPMutation()
+  const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
+  const [resendOTP, {isLoading: resetLoading}] = useResendOTPMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value.replace(/\D/, '');
@@ -43,18 +44,35 @@ const VerifyOTP = () => {
 
     try {
       const response = await verifyOTP(otpInfo);
-      console.log(response)
 
-      if (response.data.success) {
+      if (response?.data?.success) {
         toast.success("OTP verified successfully!");
         navigate("/login");
       } else {
-        toast.error(response.data.message || "Invalid OTP!");
+        toast.error(response?.data?.message || "Invalid OTP!");
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Verification failed.");
     }
   };
+
+  const handleResendOTP = async () => {
+  try {
+    const res = await resendOTP({email});
+
+    const error = res?.error as { data?: { errorMessage?: string } };
+    
+    if (res?.data?.success) {
+      toast.success('OTP has been resent successfully.');
+    } else {
+      toast.error(error?.data?.errorMessage || 'Failed to resend OTP.');
+    }
+
+  } catch (err: any) {
+    // err.response instead of err.res
+    toast.error(err?.response?.data?.message || 'Something went wrong while resending OTP.');
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -98,7 +116,7 @@ const VerifyOTP = () => {
           Didn’t receive code?{" "}
           <button
             className="font-medium text-indigo-500 hover:text-indigo-600"
-            onClick={() => toast.info("Resend feature not implemented yet")}
+            onClick={handleResendOTP}
           >
             Resend
           </button>

@@ -27,7 +27,6 @@ const Login = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
-      console.log(error?.data?.errorMessage ?? 'Something went wrong')
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
     }
   };
