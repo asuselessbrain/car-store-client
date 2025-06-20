@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useResendOTPMutation, useVerifyOTPMutation } from "../../redux/fetchers/auth/authApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/fetchers/auth/authSlice";
+import { decodeToken } from "../../utils/jwtDecode";
 
 const VerifyOTP = () => {
   const location = useLocation();
@@ -11,6 +14,9 @@ const VerifyOTP = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
   const [resendOTP, { isLoading: resetLoading }] = useResendOTPMutation();
+  const from = location.state?.from?.pathname || "/";
+  const dispatch = useAppDispatch();
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value.replace(/\D/, '');
@@ -47,11 +53,15 @@ const VerifyOTP = () => {
     try {
       const response = await verifyOTP(otpInfo);
 
-      if (response?.data?.success) {
+      if (context === 'login' && response?.data?.success && response?.data?.data?.token) {
+        const user = decodeToken(response?.data?.data?.token);
+        dispatch(setUser({ user, token: response?.data?.data?.token }));
+        await navigate(from, { replace: true });
+        toast.success("Login successful");
+      }
+      if (context === "signup" && response?.data?.success) {
         toast.success("OTP verified successfully!");
         navigate("/login");
-      } else {
-        toast.error(response?.data?.message || "Invalid OTP!");
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Verification failed.");

@@ -1,33 +1,30 @@
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
-import { useAppDispatch } from "../../redux/hooks";
-import { decodeToken } from "../../utils/jwtDecode";
-import { setUser } from "../../redux/fetchers/auth/authSlice";
 import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb";
 import logo from '../../assets/logo.png'
 const Login = () => {
   const { register, handleSubmit } = useForm();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const from = location.state?.from?.pathname || "/";
+  
 
   const [login, { isLoading }] = useLoginMutation();
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
       const res = await login(formData).unwrap();
-      const user = decodeToken(res.token);
-      dispatch(setUser({ user, token: res.token }));
-      await navigate(from, { replace: true });
-      toast.success("Login successful");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+      if (res?.success) {
+        toast.success(res?.message);
+        navigate("/verify-otp", { state: { email: formData.email, context: "login" } });
+      }
+      
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
+      console.log(err)
     }
   };
 
