@@ -7,9 +7,10 @@ const VerifyOTP = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location?.state?.email;
+  const context = location?.state?.context;
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [verifyOTP, { isLoading }] = useVerifyOTPMutation();
-  const [resendOTP, {isLoading: resetLoading}] = useResendOTPMutation();
+  const [resendOTP, { isLoading: resetLoading }] = useResendOTPMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const value = e.target.value.replace(/\D/, '');
@@ -39,7 +40,8 @@ const VerifyOTP = () => {
 
     const otpInfo = {
       email,
-      otp: fullOtp
+      otp: fullOtp,
+      context
     }
 
     try {
@@ -57,22 +59,22 @@ const VerifyOTP = () => {
   };
 
   const handleResendOTP = async () => {
-  try {
-    const res = await resendOTP({email});
+    try {
+      const res = await resendOTP({ email });
 
-    const error = res?.error as { data?: { errorMessage?: string } };
-    
-    if (res?.data?.success) {
-      toast.success('OTP has been resent successfully.');
-    } else {
-      toast.error(error?.data?.errorMessage || 'Failed to resend OTP.');
+      const error = res?.error as { data?: { errorMessage?: string } };
+
+      if (res?.data?.success) {
+        toast.success('OTP has been resent successfully.');
+      } else {
+        toast.error(error?.data?.errorMessage || 'Failed to resend OTP.');
+      }
+
+    } catch (err: any) {
+      // err.response instead of err.res
+      toast.error(err?.response?.data?.message || 'Something went wrong while resending OTP.');
     }
-
-  } catch (err: any) {
-    // err.response instead of err.res
-    toast.error(err?.response?.data?.message || 'Something went wrong while resending OTP.');
-  }
-};
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -115,6 +117,7 @@ const VerifyOTP = () => {
         <div className="text-sm text-slate-500 mt-4">
           Didn’t receive code?{" "}
           <button
+            disabled={resetLoading}
             className="font-medium text-indigo-500 hover:text-indigo-600"
             onClick={handleResendOTP}
           >
