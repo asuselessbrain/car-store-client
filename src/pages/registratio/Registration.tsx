@@ -4,6 +4,7 @@ import { useRegisterMutation } from "../../redux/fetchers/auth/authApi";
 import { toast } from "react-toastify";
 import logo from "../../assets/logo.png";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { ReUsableImageUploder } from "../../utils";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
@@ -183,14 +184,13 @@ const Registration = () => {
                   >
                     Address
                   </label>
-                  <input
-                    type="text"
-                    id="address"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("address")}
-                  />
+                  <textarea id="address" rows={6} cols={50} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    {...register("address")}>
+                  </textarea>
                 </div>
-                <p>Logo</p>
+                <div className="mt-8">
+                  <ReUsableImageUploder />
+                </div>
               </div>
               {isLoading ? (
                 <button disabled={isLoading} className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
