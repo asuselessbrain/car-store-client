@@ -32,7 +32,7 @@ export const ReUsableImageUploder = ({ image, setImage, setPreview }: IProps) =>
             <input onChange={handleImageUpload} type="file" multiple accept="image/*" id="image-upload" className="hidden" />
             <label
                 htmlFor="image-upload"
-                className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition"
+                className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md cursor-pointer text-center text-sm text-gray-500 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
             >
                 Upload Image
             </label>
