@@ -16,27 +16,29 @@ const Registration = () => {
   const [registration, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      if (data?.password !== data?.confirmPassword) {
+        toast.error("Password and Confirm Password must match.")
+      }
 
-    if (formData?.password !== formData?.confirmPassword) {
-      toast.error("Password and Confirm Password must match.")
+      const formData = new FormData()
+
+      formData.append("data", JSON.stringify(data))
+      formData.append("profileImg", image[0])
+    const res = await registration(formData);
+
+
+    if (res?.data?.success) {
+      toast.success(res?.data?.message);
+      navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
     }
 
-    console.log(formData)
-    // const userInfo = {
-    //   name: formData.name,
-    //   email: formData.email,
-    //   password: formData.password,
-    // };
+    }catch(err){
+      const error = err as { data?: { errorMessage?: string } };
+      toast.error(error?.data?.errorMessage ?? 'Something went wrong');
+    }
 
-    // const res = await registration(userInfo);
-
-    // if (res.data.success) {
-    //   toast.success(res.data.message);
-    //   navigate("/verify-otp", { state: { email: formData.email, context: "signup" } });
-    // } else {
-    //   toast.error("Something went wrong!");
-    // }
   };
 
   return (
@@ -180,7 +182,7 @@ const Registration = () => {
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between gap-6">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex-1">
                   <label
                     htmlFor="address"
@@ -196,7 +198,7 @@ const Registration = () => {
                   {
                     preview?.length > 0 ?
                       <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
-                      <ReUsableImageUploder image={image} setImage={setImage} setPreview={setPreview} />
+                      <ReUsableImageUploder image={image} setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
                   }
 
                 </div>

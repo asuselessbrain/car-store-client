@@ -24,7 +24,6 @@ const Login = () => {
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
-      console.log(err)
     }
   };
 
