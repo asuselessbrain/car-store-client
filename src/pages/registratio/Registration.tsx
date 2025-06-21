@@ -42,16 +42,16 @@ const Registration = () => {
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:min-h-screen lg:py-0">
-        <Link
-          to="/"
-          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
-        >
-          <img className="w-8 h-8 mr-2" src={logo} alt="logo" />
-          Car Store
-        </Link>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 max-w-4xl max-sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white text-center">
+            <Link
+              to="/"
+              className="flex items-center justify-center mb-6 text-2xl md:text-5xl font-semibold text-gray-900 dark:text-white"
+            >
+              <img className="w-8 md:w-16 h-8 md:h-16 mr-2" src={logo} alt="logo" />
+              Car Store
+            </Link>
+            <h1 className="text-xl font-medium leading-tight tracking-tight text-gray-700 md:text-3xl dark:text-white text-center">
               Create an account
             </h1>
             <form
