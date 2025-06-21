@@ -52,7 +52,7 @@ const GetAllUserBody = ({ user, index }: GetAllUserBodyProps) => {
       <td className="px-6 py-4">{user?.address}</td>
       <td className="px-6 py-4 capitalize">{user?.role}</td>
       <td className={cn("px-6 py-4 capitalize", {
-        "text-red-500": user?.userStatus === 'inactive',
+        "text-red-500": user?.userStatus === 'blocked',
         "text-green-500": user?.userStatus === 'active',
       })}>{user?.userStatus}</td>
       <td className={cn("px-6 py-4 capitalize", {

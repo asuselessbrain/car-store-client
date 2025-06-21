@@ -198,7 +198,7 @@ const Registration = () => {
                   {
                     preview?.length > 0 ?
                       <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
-                      <ReUsableImageUploder image={image} setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
+                      <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
                   }
 
                 </div>

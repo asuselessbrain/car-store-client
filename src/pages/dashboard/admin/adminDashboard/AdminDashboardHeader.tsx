@@ -19,7 +19,6 @@ const AdminDashboardHeader = () => {
   const { data: productS, isLoading: productLoading } =
     useGetAllCarsQuery(undefined);
 
-  console.log(productS?.data?.result)
 
   if (productLoading) {
     return <Loader />;
