@@ -3,12 +3,19 @@ import Loader from "../../../shared/Loader";
 import GetAllUserBody from "./GetAllUserBody";
 
 export type TUser = {
-  _id: string;
-  name: string;
+  _id?: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  photo?: string;
-  role: "admin" | "user";
-  userStatus: "inactive" | "active";
+  phoneNumber: string;
+  password: string;
+  gender: 'male' | 'female' | 'others';
+  dob: Date;
+  address: string;
+  profileImg: string | null;
+  role: 'user' | 'admin';
+  userStatus: 'active' | 'inactive';
+  verified: boolean;
 };
 
 const GetAllUser = () => {
@@ -18,7 +25,7 @@ const GetAllUser = () => {
     return <Loader />;
   }
 
-  const user = data.data;
+  const user = data?.data;
 
 
   return (
@@ -27,16 +34,34 @@ const GetAllUser = () => {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
+              Image
+            </th>
+            <th scope="col" className="px-6 py-3">
               Name
             </th>
             <th scope="col" className="px-6 py-3">
               Email
             </th>
             <th scope="col" className="px-6 py-3">
+              Phone Number
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Gender
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Date of Birth
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Address
+            </th>
+            <th scope="col" className="px-6 py-3">
               Role
             </th>
             <th scope="col" className="px-6 py-3">
               Status
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Verified
             </th>
             <th scope="col" className="px-6 py-3">
               Action
