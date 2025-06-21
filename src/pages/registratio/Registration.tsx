@@ -5,9 +5,13 @@ import { toast } from "react-toastify";
 import logo from "../../assets/logo.png";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { ReUsableImageUploder } from "../../utils";
+import { useState } from "react";
+import { ImagePreview } from "../../utils/previewImage";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
+  const [image, setImage] = useState<File[] | []>([])
+  const [preview, setPreview] = useState<string[] | []>([])
 
   const [registration, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
@@ -189,7 +193,12 @@ const Registration = () => {
                   </textarea>
                 </div>
                 <div className="mt-8">
-                  <ReUsableImageUploder />
+                  {
+                    preview?.length > 0 ?
+                      <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
+                      <ReUsableImageUploder image={image} setImage={setImage} setPreview={setPreview} />
+                  }
+
                 </div>
               </div>
               {isLoading ? (

@@ -1,19 +1,34 @@
-import { useState } from "react"
 
+interface IProps {
+    image: File[] | [];
+    setImage: React.Dispatch<React.SetStateAction<File[] | []>>;
+    setPreview: React.Dispatch<React.SetStateAction<[] | string[]>>
+}
 
-export const ReUsableImageUploder = () => {
-    const [image, setImage] = useState<File[] | []>([])
+export const ReUsableImageUploder = ({ image, setImage, setPreview }: IProps) => {
+
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event?.target?.files![0];
 
         setImage((pre) => [...pre, file])
 
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                setPreview((pre) => [...pre, reader.result as string])
+            }
+            reader.readAsDataURL(file);
+        }
+        event.target.value = ""
+
     }
 
     console.log(image)
     return (
         <div>
+
             <input onChange={handleImageUpload} type="file" multiple accept="image/*" id="image-upload" className="hidden" />
             <label
                 htmlFor="image-upload"
@@ -21,6 +36,9 @@ export const ReUsableImageUploder = () => {
             >
                 Upload Image
             </label>
+
+
+
         </div>
     )
 }
