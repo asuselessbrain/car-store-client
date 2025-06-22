@@ -121,6 +121,9 @@ Create a .env file in the backend directory and configure:
     SP_PASSWORD=your_shurjopay_password   
     SP_PREFIX=SP  
     SP_RETURN_URL=https://car-store-frontend-delta.vercel.app/verify-order
+    cloud_name = yout_cloudinary_cloud_name
+    api_key = yout_cloudinary_api_key
+    api_secret = yout_cloudinary_api_secret
   ```
 
 #### Run Backend Server:
