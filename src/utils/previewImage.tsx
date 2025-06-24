@@ -14,13 +14,13 @@ export const ImagePreview = ({ setImage, preview, setPreview }: IProps) => {
         setPreview((prev) => prev?.filter((_, indx) => indx !== index))
     }
     return (
-        <div className="relative">
+        <>
             {
 
-                preview?.map((prev, index) => (<div key={index}><img  src={prev} alt="profile Image" className="rounded-sm" height={145} width={145} />
+                preview?.map((prev, index) => (<div key={index} className="relative"><img  src={prev} alt="profile Image" className="rounded-sm h-36 w-36" />
                     <RxCross2 size={28} onClick={() => handleDelete(index)} className="bg-red-500 text-white font-bold rounded-full absolute -top-2 -right-2 hover:bg-red-400 hover:cursor-pointer p-1" />
                 </div>))
             }
-        </div>
+        </>
     )
 }

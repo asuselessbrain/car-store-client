@@ -8,6 +8,7 @@ import { RxCross2 } from "react-icons/rx";
 import { Description } from "@radix-ui/react-toast";
 import { ReUsableImageUploder } from "../../../../utils";
 import { useState } from "react";
+import { ImagePreview } from "../../../../utils/previewImage";
 
 const CreateProduct = () => {
   const { register, handleSubmit, control } = useForm({
@@ -36,6 +37,7 @@ const CreateProduct = () => {
   const [CreateProduct] = useCreateCarMutation()
 
   const [image, setImage] = useState<File[] | []>([])
+  const [preview, setPreview] = useState<string[] | []>([])
 
   const { fields: featuresFields, append: featuresAppend, remove: featuresRemove } = useFieldArray({
     control,
@@ -54,8 +56,11 @@ const CreateProduct = () => {
 
     const features = data?.features.map((features: { value: string }) => features?.value)
     const tags = data?.tags.map((tag: { value: string }) => tag?.value)
+    const files = image
 
-    console.log(features, tags)
+    console.log(data, files)
+
+    // console.log(features, tags)
     // try{
     //     const res = await CreateProduct(productData)
     //     if(res.data.statusCode === 201){
@@ -357,13 +362,14 @@ const CreateProduct = () => {
                 {...register("description")}
               ></textarea>
             </div>
-            <div className="col-span-2">
-              <ReUsableImageUploder />
+            <div className="col-span-2 flex items-center justify-start gap-6 flex-wrap">
+              <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Product Images" />
+              <ImagePreview setImage={setImage} setPreview={setPreview} preview={preview} />
           </div>
           </div>
           <button
             type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
+            className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
           >
             Add product
           </button>
