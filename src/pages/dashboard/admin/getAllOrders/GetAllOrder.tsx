@@ -18,7 +18,17 @@ const GetAllOrder = () => {
   const { data, isLoading } = useGetAllOrdersQuery(undefined);
 
   if (isLoading) return <Loader />;
-  const orders = data.data;
+  const orders = data?.data;
+
+  if (orders?.length === 0) {
+    return (
+      <div className="flex items-center min-h-[calc(80vh)] justify-center">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-5xl">
+          No products found
+        </h2>
+      </div>
+    );
+  }
   return (
     <div className="relative overflow-x-auto max-h-[80vh] shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

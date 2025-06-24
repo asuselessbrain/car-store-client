@@ -9,6 +9,7 @@ import { CiFilter } from "react-icons/ci";
 
 export interface Cars {
   _id: string;
+  name:string;
   brand: string;
   model: string;
   year: number;
@@ -35,7 +36,7 @@ const Products = () => {
     page,
     limit
   };
-  // const
+
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
 
   if (isLoading) return <Loader />;
@@ -189,7 +190,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 3xl:grid-cols-4">
           {products.map((product: Cars) => (
             <ProductCard key={product._id} product={product} />
           ))}
