@@ -1,40 +1,61 @@
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { useCreateCarMutation } from "../../../../redux/fetchers/cars/carApi";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import { FaPlus } from "react-icons/fa6";
+import { CrossIcon } from "lucide-react";
+import { RxCross2 } from "react-icons/rx";
+import { Description } from "@radix-ui/react-toast";
 
 const CreateProduct = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control } = useForm({
+    defaultValues: {
+      name: "",
+      brand: "",
+      model: "",
+      releaseYear: "",
+      bodyType: "",
+      transmission: "",
+      fuelType: "",
+      engineSize: "",
+      color: "",
+      price: "",
+      quantity: "",
+      mileage: "",
+      warranty: "",
+      category: "",
+      description: "",
+      features: [{ value: "" }]
+    }
+  });
   const navigate = useNavigate()
 
   const [CreateProduct] = useCreateCarMutation()
 
+  const { fields: featuresFields, append: featuresAppend, remove: featuresRemove } = useFieldArray({
+    control,
+    name: "features"
+  })
 
-  const onSubmit = async(data: FieldValues) => {
-    const productData = {
-        brand: data.brand,
-        model: data.model,
-        year: parseInt(data.year),
-        price: parseFloat(data.price),
-        category: data.category,
-        description: data.description,
-        quantity: parseInt(data.quantity)
-    }
-    try{
-        const res = await CreateProduct(productData)
-        if(res.data.statusCode === 201){
-            toast.success(res.data.message)
-            navigate('/admin/get-all-products');
-        }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    }catch(err){
-       toast.error("Something went wrong!")
-    }
+
+  const onSubmit = async (data: FieldValues) => {
+
+    console.log(data)
+    // try{
+    //     const res = await CreateProduct(productData)
+    //     if(res.data.statusCode === 201){
+    //         toast.success(res.data.message)
+    //         navigate('/admin/get-all-products');
+    //     }
+    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // }catch(err){
+    //    toast.error("Something went wrong!")
+    // }
   }
 
   return (
     <section className="bg-white dark:bg-gray-800 rounded-lg max-h-[80vh] overflow-x-auto">
-      <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+      <div className="py-8 px-4 mx-auto max-w-6xl lg:py-16">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Add a new product
         </h2>
@@ -42,113 +63,261 @@ const CreateProduct = () => {
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="w-full">
               <label
+                htmlFor="name"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter product name" required
+                {...register("name")}
+              />
+            </div>
+            <div className="w-full">
+              <label
                 htmlFor="brand"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Brand
               </label>
               <input
                 type="text"
                 id="brand"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product brand" required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter car brand (e.g., Toyota)" required
                 {...register("brand")}
               />
             </div>
             <div className="w-full">
               <label
                 htmlFor="model"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Model
               </label>
               <input
                 type="text"
                 id="model"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product model" required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter model (e.g., Corolla)" required
                 {...register("model")}
               />
             </div>
-            <div className="w-full">
+            <div>
               <label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                htmlFor="releaseYear"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
-                Category
+                Release Year
               </label>
               <input
-                type="text"
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product category" required
-                {...register("category")}
+                type="date"
+                id="releaseYear"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="2025" required
+                {...register("releaseYear")}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="bodyType"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Body Type
+              </label>
+              <input
+                type="string"
+                id="bodyType"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter body type (e.g., Sedan, SUV)" required
+                {...register("bodyType")}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="transmission"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Transmission
+              </label>
+              <input
+                type="string"
+                id="transmission"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter transmission type (e.g., Automatic)" required
+                {...register("transmission")}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="fuelType"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Fuel Type
+              </label>
+              <input
+                type="string"
+                id="fuelType"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter fuel type (e.g., Petrol, Diesel)" required
+                {...register("fuelType")}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="engineSize"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Engine Size
+              </label>
+              <input
+                type="string"
+                id="engineSize"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter engine size (e.g., 2000cc or 2.0L)" required
+                {...register("engineSize")}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="color"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Color
+              </label>
+              <input
+                type="string"
+                id="color"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter car color (e.g., Black)" required
+                {...register("color")}
               />
             </div>
             <div className="w-full">
               <label
                 htmlFor="price"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Price
               </label>
               <input
                 type="number"
                 id="price"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2999 Tk" required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter price (e.g., 1500000)" required
                 {...register("price")}
               />
             </div>
-            <div>
-              <label
-                htmlFor="year"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Release Year
-              </label>
-              <input
-                type="number"
-                id="year"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2025" required
-                {...register("year")}
-              />
-            </div>
-            <div>
+            <div className="w-full">
               <label
                 htmlFor="quantity"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Quantity
               </label>
               <input
                 type="number"
                 id="quantity"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Quantity" required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter available quantity" required
                 {...register("quantity")}
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="mileage"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Mileage
+              </label>
+              <input
+                type="string"
+                id="mileage"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter mileage in kilometers (e.g., 15000)" required
+                {...register("mileage")}
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="warranty"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Warranty
+              </label>
+              <input
+                type="text"
+                id="warranty"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter warranty info (e.g., 2 years or 50,000km)" required
+                {...register("warranty")}
+              />
+            </div>
+            <div className="w-full">
+              <label
+                htmlFor="category"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Category
+              </label>
+              <input
+                type="number"
+                id="category"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter category: car, bus, truck, etc." required
+                {...register("category")}
               />
             </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Description
               </label>
               <textarea
                 id="description"
                 rows={8}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Your description here" required
+                className="block p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                placeholder="Enter full product description" required
                 {...register("description")}
               ></textarea>
             </div>
           </div>
+          <div className="">
+            <div className="flex items-center justify-between mt-6 mb-4 gap-6">
+              <p
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Features
+              </p>
+              <button onClick={() => featuresAppend({ value: "" })} className="border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
+                <FaPlus size={16} className="text-black dark:text-white" />
+              </button>
+            </div>
+            {
+              featuresFields?.map((field, index) => (
+                <div key={field?.id} className="relative mb-4">
+                  <input
+                    type="text"
+                    id="features"
+                    className="bg-gray-50 flex-1 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder={`Enter product features ${index + 1}`} required
+                    {...register(`features.${index}.value`)}
+                  />
+                  <button type="button" onClick={() => featuresRemove(index)} className="absolute top-1/2 -translate-y-1/2 right-2 text-white border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
+                    <RxCross2 size={16} />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
           <button
             type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
+            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
           >
             Add product
           </button>

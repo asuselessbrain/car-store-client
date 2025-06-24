@@ -27,9 +27,9 @@ const GetAllUser = () => {
 
   const user = data?.data;
 
-
   return (
     <div className="relative overflow-x-auto max-h-[80vh] shadow-md sm:rounded-lg">
+      <h1 className="text-2xl md:text-4xl font-semibold text-center text-gray-900 dark:text-gray-200 mb-16">Users</h1>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
