@@ -9,6 +9,7 @@ import { Description } from "@radix-ui/react-toast";
 import { ReUsableImageUploder } from "../../../../utils";
 import { useState } from "react";
 import { ImagePreview } from "../../../../utils/previewImage";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const CreateProduct = () => {
   const { register, handleSubmit, control } = useForm({
@@ -34,7 +35,7 @@ const CreateProduct = () => {
   });
   const navigate = useNavigate()
 
-  const [CreateProduct] = useCreateCarMutation()
+  const [CreateProduct, { isLoading }] = useCreateCarMutation()
 
   const [image, setImage] = useState<File[] | []>([])
   const [preview, setPreview] = useState<string[] | []>([])
@@ -56,27 +57,43 @@ const CreateProduct = () => {
 
     const features = data?.features.map((features: { value: string }) => features?.value)
     const tags = data?.tags.map((tag: { value: string }) => tag?.value)
-    const files = image
 
-    console.log(data, files)
+    const carData = {
+      ...data,
+      price: parseFloat(data?.price),
+      quantity: parseInt(data?.quantity),
+      features: features,
+      tags: tags
+    }
+
+
+
 
     // console.log(features, tags)
-    // try{
-    //     const res = await CreateProduct(productData)
-    //     if(res.data.statusCode === 201){
-    //         toast.success(res.data.message)
-    //         navigate('/admin/get-all-products');
-    //     }
-    // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // }catch(err){
-    //    toast.error("Something went wrong!")
-    // }
+    try {
+      const formData = new FormData()
+
+      formData.append("data", JSON.stringify(carData))
+      for (const file of image) {
+        formData.append("images", file)
+      }
+
+      const res = await CreateProduct(formData).unwrap()
+      if (res?.statusCode === 201) {
+        toast.success(res?.message)
+        navigate('/admin/get-all-products');
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: any) {
+      const errorMessage = err?.data?.errorMessage || "Something went wrong";
+      toast.error(errorMessage);
+    }
   }
 
   return (
     <section className="bg-white dark:bg-gray-800 rounded-lg max-h-[80vh] overflow-x-auto">
       <div className="py-8 px-4 mx-auto max-w-6xl lg:py-16">
-        <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+        <h2 className="mb-10 text-xl md:text-5xl font-bold text-gray-900 text-center dark:text-white">
           Add a new product
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -356,23 +373,32 @@ const CreateProduct = () => {
               </label>
               <textarea
                 id="description"
-                rows={8}
+                rows={4}
                 className="block p-2.5 w-full text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter full product description" required
                 {...register("description")}
               ></textarea>
             </div>
-            <div className="col-span-2 flex items-center justify-start gap-6 flex-wrap">
+            <div className="col-span-2 flex items-center justify-start gap-6 flex-wrap my-6">
               <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Product Images" />
               <ImagePreview setImage={setImage} setPreview={setPreview} preview={preview} />
+            </div>
           </div>
-          </div>
-          <button
+          {isLoading ? (
+            <button
+              type="submit"
+              className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
+            >
+              <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+            </button>
+          ) : <button
             type="submit"
             className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
           >
             Add product
           </button>
+          }
+
         </form>
       </div>
     </section>
