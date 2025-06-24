@@ -13,19 +13,20 @@ const CreateProduct = () => {
       name: "",
       brand: "",
       model: "",
-      releaseYear: "",
+      releaseYear: null,
       bodyType: "",
       transmission: "",
       fuelType: "",
       engineSize: "",
       color: "",
-      price: "",
-      quantity: "",
+      price: null,
+      quantity: null,
       mileage: "",
       warranty: "",
       category: "",
       description: "",
-      features: [{ value: "" }]
+      features: [{ value: "" }],
+      tags: [{ value: "" }]
     }
   });
   const navigate = useNavigate()
@@ -36,6 +37,13 @@ const CreateProduct = () => {
     control,
     name: "features"
   })
+
+  const { fields: tagFields, append: tagAppend, remove: tagRemove } = useFieldArray({
+    control,
+    name: "tags"
+  })
+
+
 
 
   const onSubmit = async (data: FieldValues) => {
@@ -264,7 +272,7 @@ const CreateProduct = () => {
                 Category
               </label>
               <input
-                type="number"
+                type="text"
                 id="category"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 placeholder="Enter category: car, bus, truck, etc." required
@@ -287,14 +295,14 @@ const CreateProduct = () => {
               ></textarea>
             </div>
           </div>
-          <div className="">
+          <div>
             <div className="flex items-center justify-between mt-6 mb-4 gap-6">
               <p
                 className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
               >
                 Features
               </p>
-              <button onClick={() => featuresAppend({ value: "" })} className="border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
+              <button onClick={() => featuresAppend({ value: "" })} className="mr-2 border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
                 <FaPlus size={16} className="text-black dark:text-white" />
               </button>
             </div>
@@ -309,6 +317,34 @@ const CreateProduct = () => {
                     {...register(`features.${index}.value`)}
                   />
                   <button type="button" onClick={() => featuresRemove(index)} className="absolute top-1/2 -translate-y-1/2 right-2 text-white border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
+                    <RxCross2 size={16} />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+          <div>
+            <div className="flex items-center justify-between mt-6 mb-4 gap-6">
+              <p
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Tags
+              </p>
+              <button onClick={() => tagAppend({ value: "" })} className="border-dotted mr-2 border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
+                <FaPlus size={16} className="text-black dark:text-white" />
+              </button>
+            </div>
+            {
+              tagFields?.map((field, index) => (
+                <div key={field?.id} className="relative mb-4">
+                  <input
+                    type="text"
+                    id="tag"
+                    className="bg-gray-50 flex-1 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    placeholder={`Enter product tag ${index + 1}`} required
+                    {...register(`tags.${index}.value`)}
+                  />
+                  <button type="button" onClick={() => tagRemove(index)} className="absolute top-1/2 -translate-y-1/2 right-2 text-white border-dotted border-2 border-gray-800 dark:border-gray-200 p-2 rounded-md">
                     <RxCross2 size={16} />
                   </button>
                 </div>
