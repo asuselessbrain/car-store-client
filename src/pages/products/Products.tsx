@@ -53,7 +53,6 @@ const Products = () => {
 
   const products = data?.data?.result;
   const metaData = data?.data?.meta;
-  console.log(metaData);
 
   const handleSort = (e: FieldValues) => {
     setSort(e.target.value);

@@ -25,6 +25,8 @@ const ViewDetails = () => {
     },
   ] = useCreateOrderMutation();
 
+  console.log(data?.data)
+
 
   const handleIncrement = () => {
     setQuantity((prev) => prev + 1);
@@ -85,19 +87,22 @@ const ViewDetails = () => {
             alt="Product"
             className="rounded-lg shadow-lg w-full max-w-md dark:shadow-gray-800"
           />
+          {
+
+          }
         </div>
 
         {/* Product Details */}
         <div>
           <h1 className="text-3xl font-bold mb-4 dark:text-white">
-            Product Name
+            {product?.name}
           </h1>
-          <p className="dark:text-gray-300 mb-2">{product.description}</p>
+          <p className="dark:text-gray-300 mb-2">{product?.description}</p>
 
           {/* Price Section */}
           <div className="flex items-center space-x-4 mb-4">
             <span className="text-2xl font-semibold text-red-600">
-              {product.price}{" "}
+              {product?.price}{" "}
               <span className="text-gray-900 dark:text-gray-300">Tk</span>
             </span>
           </div>

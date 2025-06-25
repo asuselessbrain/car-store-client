@@ -5,6 +5,7 @@ import { useResendOTPMutation, useVerifyOTPMutation } from "../../redux/fetchers
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/fetchers/auth/authSlice";
 import { decodeToken } from "../../utils/jwtDecode";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const VerifyOTP = () => {
   const location = useLocation();
@@ -114,13 +115,19 @@ const VerifyOTP = () => {
           </div>
 
           <div className="w-full mt-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-indigo-600 text-white py-2.5 rounded hover:bg-indigo-700 transition duration-200"
-            >
-              Verify Account
-            </button>
+            {isLoading ? (
+              <button disabled={isLoading} className="w-full bg-indigo-600 text-white py-2.5 rounded hover:bg-indigo-700 transition duration-200">
+                <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-indigo-600 text-white py-2.5 rounded hover:bg-indigo-700 transition duration-200"
+              >
+                Verify Account
+              </button>
+            )}
           </div>
         </form>
 
