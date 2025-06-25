@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
 import Loader from "../shared/Loader";
 import { cn } from "../../lib/utils";
-import img from "../../assets/bannerImage/650.png";
 import { useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -12,6 +11,7 @@ import { toast } from "sonner";
 const ViewDetails = () => {
   const { id } = useParams();
   const [quantitySell, setQuantity] = useState(1);
+  const [imageIndex, setImageIndex] = useState(0);
 
   const { data, isLoading } = useGetSingleCarQuery(id as string);
   const [
@@ -25,7 +25,6 @@ const ViewDetails = () => {
     },
   ] = useCreateOrderMutation();
 
-  console.log(data?.data)
 
 
   const handleIncrement = () => {
@@ -58,16 +57,16 @@ const ViewDetails = () => {
     if (createOrderLoading) {
       toast.loading("Processing ........", { id: toastId });
     }
-    if(isSuccess) {
-      toast.success(createOrderData?.message, {id: toastId});
+    if (isSuccess) {
+      toast.success(createOrderData?.message, { id: toastId });
       if (createOrderData?.data) {
         setTimeout(() => {
           window.location.href = createOrderData.data;
         }, 1000);
       }
     }
-    if(isError) {
-      toast.error(JSON.stringify(error), {id: toastId});
+    if (isError) {
+      toast.error(JSON.stringify(error), { id: toastId });
     }
   }, [createOrderData?.data, createOrderData?.message, error, isError, createOrderLoading, isSuccess]);
 
@@ -81,15 +80,20 @@ const ViewDetails = () => {
     <div className="max-w-7xl mx-auto px-6 min-h-[calc(100vh-288px)] flex items-center justify-center w-full pt-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1">
         {/* Product Image */}
-        <div className="flex justify-center">
+        <div className="flex flex-col space-y-4">
           <img
-            src={img}
+            src={product?.images[imageIndex]}
             alt="Product"
-            className="rounded-lg shadow-lg w-full max-w-md dark:shadow-gray-800"
+            className="rounded-lg shadow-lg w-full h-96 object-cover dark:shadow-gray-800"
           />
-          {
-
-          }
+          <div className="flex items-center gap-6">
+            {
+              product?.images?.map((image: string, index: number) =>
+                <img key={index} src={image} alt="Product" onClick={() => setImageIndex(index)}
+                  className={index === imageIndex ? "rounded-lg border-2 border-blue-500 w-full max-w-36 h-20 shadow-lg shadow-gray-800" : "rounded-lg shadow-lg w-full max-w-36 h-20 dark:shadow-gray-800"} />
+              )
+            }
+          </div>
         </div>
 
         {/* Product Details */}
