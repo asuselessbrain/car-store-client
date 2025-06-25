@@ -9,6 +9,13 @@ const reviewApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Reviews"],
     }),
+    getSingleCarReview: builder.query({
+      query: (id) => ({
+        url: `/review/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Reviews"],
+    }),
     getSingleUserReviews: builder.query({
       query: () => ({
         url: "/review/get-single-user-review",
@@ -27,4 +34,4 @@ const reviewApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllReviewsQuery, useCreateReviewsMutation, useGetSingleUserReviewsQuery } = reviewApi;
+export const { useGetAllReviewsQuery, useCreateReviewsMutation, useGetSingleUserReviewsQuery, useGetSingleCarReviewQuery } = reviewApi;

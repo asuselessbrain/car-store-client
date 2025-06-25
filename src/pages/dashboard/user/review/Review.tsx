@@ -12,16 +12,12 @@ export class CustomError extends Error {
     this.data = data;
   }
 }
-
-const Review = () => {
+const Review = ({id}: {id: string}) => {
   const [ratting, setRatting] = useState(0);
-  const [createRating, { isError, error, data, isSuccess, isLoading }] =
+  const [createRating, { isError, data, isSuccess, isLoading }] =
     useCreateReviewsMutation();
 
   const navigate = useNavigate();
-
-  const errorMsg = (error as CustomError)?.data?.errorMessage;
-  const maxCharacterError = errorMsg?.split("comment: ")[1];
 
   const ratingChanged = (newRating: number) => {
     setRatting(newRating);
@@ -32,6 +28,7 @@ const Review = () => {
     const review = e.target.review.value;
 
     const reviewInfo = {
+      carId: id,
       comment: review,
       ratting: ratting,
     };
@@ -45,9 +42,6 @@ const Review = () => {
     if (isLoading) {
       toast.loading("processing.....", { id: toastId });
     }
-    if (isError) {
-      toast.error(maxCharacterError, { id: toastId });
-    }
     if (isSuccess) {
       toast.success(data?.message, { id: toastId });
       navigate("/");
@@ -57,11 +51,10 @@ const Review = () => {
     isError,
     isLoading,
     isSuccess,
-    maxCharacterError,
     navigate,
   ]);
   return (
-    <div className="p-4 mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-4xl sm:p-6">
+    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-6 shadow-md w-full sm:p-6">
       <div>
         <form className="space-y-4" onSubmit={handleReview}>
           <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">

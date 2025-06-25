@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { useCreateOrderMutation } from "../../redux/fetchers/orders/orderApi";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import Review from "../dashboard/user/review/Review";
+
 
 const ViewDetails = () => {
   const { id } = useParams();
@@ -190,7 +192,7 @@ const ViewDetails = () => {
         </div>
       </div>
       <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-        <p className="dark:text-white text-xl font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-lg">Specification</p>
+        <p className="dark:text-black text-xl bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Specification</p>
       </div>
       <div className="max-w-full bg-gray-100 dark:bg-gray-900 shadow rounded-md mt-6">
         <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
@@ -248,6 +250,10 @@ const ViewDetails = () => {
           <div className="flex-1">{product?.warranty}</div>
         </div>
       </div>
+      <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
+        <p className="dark:text-black text-xl bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Reviews</p>
+      </div>
+      <Review id={product?._id} />
     </div>
   );
 };
