@@ -4,6 +4,7 @@ import ReactStars from "react-rating-stars-component";
 import { useCreateReviewsMutation } from "../../../../redux/fetchers/review/reviewApi";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { Button } from "../../../../components/ui/button";
 
 export class CustomError extends Error {
   data?: { errorMessage?: string };
@@ -44,7 +45,6 @@ const Review = ({id}: {id: string}) => {
     }
     if (isSuccess) {
       toast.success(data?.message, { id: toastId });
-      navigate("/");
     }
   }, [
     data?.message,
@@ -54,7 +54,7 @@ const Review = ({id}: {id: string}) => {
     navigate,
   ]);
   return (
-    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-6 shadow-md w-full sm:p-6">
+    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-4 shadow-md w-full sm:p-6">
       <div>
         <form className="space-y-4" onSubmit={handleReview}>
           <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
@@ -75,12 +75,12 @@ const Review = ({id}: {id: string}) => {
             placeholder="Write your review"
           ></textarea>
           <div className="text-right py-4">
-            <button
+            <Button
               type="submit"
-              className="text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-400 font-semibold rounded-lg text-sm px-5 py-3"
+              className="focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-400 font-semibold rounded-md text-sm px-5 py-3"
             >
-              Post Review
-            </button>
+              Submit Review
+            </Button>
           </div>
         </form>
       </div>

@@ -8,6 +8,8 @@ import { useCreateOrderMutation } from "../../redux/fetchers/orders/orderApi";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import Review from "../dashboard/user/review/Review";
+import { useGetSingleCarReviewQuery } from "../../redux/fetchers/review/reviewApi";
+import ReactStars from "react-rating-stars-component";
 
 
 const ViewDetails = () => {
@@ -16,6 +18,8 @@ const ViewDetails = () => {
   const [imageIndex, setImageIndex] = useState(0);
 
   const { data, isLoading } = useGetSingleCarQuery(id as string);
+  const { data: review, isLoading: reviewLoading } = useGetSingleCarReviewQuery(id as string);
+
   const [
     createOrder,
     {
@@ -75,8 +79,13 @@ const ViewDetails = () => {
   if (isLoading) {
     return <Loader />;
   }
+  if (reviewLoading) {
+    return <Loader />
+  }
 
   const product = data?.data;
+
+  const reviews = (review?.data)
 
   return (
     <div className="flex justify-center flex-col max-w-full mx-auto px-6 min-h-[calc(100vh-288px)] w-full pt-10">
@@ -124,9 +133,9 @@ const ViewDetails = () => {
                   className={cn(
                     "ml-2 font-semibold",
                     {
-                      "text-green-500": product.inStock === true,
+                      "text-green-500": product?.inStock === true,
                     },
-                    { "text-red-500": !product.inStock }
+                    { "text-red-500": !product?.inStock }
                   )}
                 >
                   {product.inStock ? (
@@ -150,11 +159,11 @@ const ViewDetails = () => {
             {/* Product Info */}
             <div className="mb-4 space-y-1">
               <p className="dark:text-gray-300">
-                <span className="font-semibold">Brand:</span> {product.brand}
+                <span className="font-semibold">Brand:</span> {product?.brand}
               </p>
               <p className="dark:text-gray-300">
-                <span className="font-semibold">Category:</span>{" "}
-                {product.category}
+                <span className="font-semibold">Model:</span>{" "}
+                {product?.model}
               </p>
             </div>
 
@@ -253,6 +262,27 @@ const ViewDetails = () => {
       <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
         <p className="dark:text-black text-xl bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Reviews</p>
       </div>
+      <div className="my-4">
+        <p className="font-semibold dark:tect-gray-800">Customer Reviews</p>
+        {reviews?.map((review: { _id: string, carId: string, userId: { _id: string, firstName: string, lastName: string }, ratting: number, comment: string, createdAt: string }, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
+          <ReactStars
+            count={5}
+            value={review?.ratting}
+            size={24}
+            isHalf={true}
+            edit={false}
+            activeColor="#ffd700"
+          />
+          <p className="dark:text-gray-100">{review?.comment}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">by {review?.userId?.firstName} {review?.userId?.lastName}, {new Date(review?.createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+          })}</p>
+        </div>)
+
+        }
+      </div>
+      <p className="font-semibold dark:tect-gray-800 mt-2">Your Review</p>
       <Review id={product?._id} />
     </div>
   );
