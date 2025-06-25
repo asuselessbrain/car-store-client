@@ -1,45 +1,102 @@
-import { FieldValues, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import { useGetSingleCarQuery, useUpdateCarMutation } from "../../../../redux/fetchers/cars/carApi";
 import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
+import { ReUsableImageUploder } from "../../../../utils";
+import { ImagePreview } from "../../../../utils/previewImage";
+import { TbFidgetSpinner } from "react-icons/tb";
+import { RxCross2 } from "react-icons/rx";
+import { FaPlus } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+
+interface CarForm {
+  name: string;
+  brand: string;
+  model: string;
+  releaseYear: string;
+  bodyType: string;
+  transmission: string;
+  fuelType: string;
+  engineSize: string;
+  color: string;
+  price: number;
+  quantity: number;
+  mileage: string;
+  warranty: string;
+  category: string;
+  description: string;
+  features: { value: string }[];
+  tags: { value: string }[];
+}
 
 const UpdateProduct = () => {
-  const { register, handleSubmit } = useForm();
-  const [UpdateProduct] = useUpdateCarMutation()
-  const {id} = useParams()
-
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { data, isLoading } = useGetSingleCarQuery(id as string);
+  const [updateProduct] = useUpdateCarMutation();
 
-  if(isLoading) {
-    return <Loader />;
-  }
+  const [image, setImage] = useState<File[]>([]);
+  const [preview, setPreview] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+
+  const { register, handleSubmit, control, reset } = useForm<CarForm>();
+
+  const {
+    fields: featuresFields,
+    append: featuresAppend,
+    remove: featuresRemove,
+  } = useFieldArray({ control, name: "features" });
+
+  const {
+    fields: tagFields,
+    append: tagAppend,
+    remove: tagRemove,
+  } = useFieldArray({ control, name: "tags" });
 
   const car = data?.data;
 
-  const onSubmit = async (data: FieldValues) => {
-    const productData = {
-      brand: data.brand,
-      model: data.model,
-      year: parseInt(data.year),
-      price: parseFloat(data.price),
-      category: data.category,
-      description: data.description,
-      quantity: parseInt(data.quantity),
-    };
-    const updateInfo = {
-        id,
-        carInfo: productData,
+  useEffect(() => {
+    if (car) {
+      reset({
+        ...car,
+        features: car?.features?.map((f: string) => ({ value: f })) || [],
+        tags: car?.tags?.map((t: string) => ({ value: t })) || [],
+      });
+      setExistingImages(car.images || []);
     }
+  }, [car, reset]);
+
+  if (isLoading) return <Loader />;
+
+  const handleRemoveExistingImage = (index: number) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const onSubmit = async (data: CarForm) => {
+    const features = data.features.map((f) => f.value);
+    const tags = data.tags.map((t) => t.value);
+
+    // Here you should upload new `image` files to Cloudinary or similar and get URLs
+    // For now, let's assume no new images added — only using existing ones
+    // You can merge new image URLs after upload
+
+    const carData = {
+      ...data,
+      features,
+      tags,
+      price: parseFloat(String(data.price)),
+      quantity: parseInt(String(data.quantity)),
+      images: existingImages, // add new uploaded URLs here if needed
+    };
+
     try {
-      const res = await UpdateProduct(updateInfo);
-      if (res.data.success) {
+      const res = await updateProduct({ id, ...carData });
+      if (res?.data?.success) {
         toast.success(res.data.message);
         navigate("/admin/get-all-products");
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       toast.error("Something went wrong!");
     }
@@ -47,138 +104,194 @@ const UpdateProduct = () => {
 
   return (
     <section className="bg-white dark:bg-gray-800 rounded-lg max-h-[80vh] overflow-x-auto">
-      <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+      <div className="py-8 px-4 mx-auto max-w-5xl lg:py-16">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Update Product
         </h2>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            {/* <div className="sm:col-span-2">
-              <label
-                htmlFor="productName"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Product Name
+            {/* Text Inputs */}
+            {[
+              "name",
+              "brand",
+              "model",
+              "bodyType",
+              "transmission",
+              "fuelType",
+              "engineSize",
+              "color",
+              "mileage",
+              "warranty",
+              "category",
+            ].map((field) => (
+              <div key={field}>
+                <label htmlFor={field} className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
+                </label>
+                <input
+                  type="text"
+                  id={field}
+                  {...register(field as keyof CarForm)}
+                  required
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
+                  placeholder={`Enter ${field}`}
+                />
+              </div>
+            ))}
+
+            <div>
+              <label htmlFor="releaseYear" className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                Release Year
               </label>
               <input
-                type="text"
-                id="productName"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Type product name"
-                {...register("productName")}
-              />
-            </div> */}
-            <div className="w-full">
-              <label
-                htmlFor="brand"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Brand
-              </label>
-              <input
-                type="text"
-                id="brand"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product brand"
-                {...register("brand")} defaultValue={car?.brand}
-              />
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="model"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Model
-              </label>
-              <input
-                type="text"
-                id="model"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product model"
-                {...register("model")} defaultValue={car?.model}
+                type="date"
+                id="releaseYear"
+                {...register("releaseYear")}
+                required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            <div className="w-full">
-              <label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Category
-              </label>
-              <input
-                type="text"
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Product category"
-                {...register("category")} defaultValue={car?.category}
-              />
-            </div>
-            <div className="w-full">
-              <label
-                htmlFor="price"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+
+            <div>
+              <label htmlFor="price" className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
                 Price
               </label>
               <input
                 type="number"
                 id="price"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2999 Tk"
-                {...register("price")} defaultValue={car?.price}
+                {...register("price")}
+                required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
               />
             </div>
+
             <div>
-              <label
-                htmlFor="year"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Release Year
-              </label>
-              <input
-                type="number"
-                id="year"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="2025"
-                {...register("year")} defaultValue={car?.year}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="quantity"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+              <label htmlFor="quantity" className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
                 Quantity
               </label>
               <input
                 type="number"
                 id="quantity"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Quantity"
-                {...register("quantity")} defaultValue={car?.quantity}
+                {...register("quantity")}
+                required
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
               />
             </div>
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
+
+            {/* Features */}
+            <div className="col-span-2">
+              <div className="flex justify-between mb-2">
+                <p className="text-lg font-medium text-gray-900 dark:text-white">Features</p>
+                <button
+                  type="button"
+                  onClick={() => featuresAppend({ value: "" })}
+                  className="border border-dotted border-gray-800 dark:border-white px-3 py-1 rounded"
+                >
+                  <FaPlus />
+                </button>
+              </div>
+              {featuresFields.map((field, index) => (
+                <div key={field.id} className="relative mb-3">
+                  <input
+                    type="text"
+                    {...register(`features.${index}.value`)}
+                    className="bg-gray-50 w-full border p-2.5 rounded dark:bg-gray-700 dark:text-white"
+                    placeholder={`Feature ${index + 1}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => featuresRemove(index)}
+                    className="absolute top-1/2 -translate-y-1/2 right-2 text-red-500"
+                  >
+                    <RxCross2 />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Tags */}
+            <div className="col-span-2">
+              <div className="flex justify-between mb-2">
+                <p className="text-lg font-medium text-gray-900 dark:text-white">Tags</p>
+                <button
+                  type="button"
+                  onClick={() => tagAppend({ value: "" })}
+                  className="border border-dotted border-gray-800 dark:border-white px-3 py-1 rounded"
+                >
+                  <FaPlus />
+                </button>
+              </div>
+              {tagFields.map((field, index) => (
+                <div key={field.id} className="relative mb-3">
+                  <input
+                    type="text"
+                    {...register(`tags.${index}.value`)}
+                    className="bg-gray-50 w-full border p-2.5 rounded dark:bg-gray-700 dark:text-white"
+                    placeholder={`Tag ${index + 1}`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => tagRemove(index)}
+                    className="absolute top-1/2 -translate-y-1/2 right-2 text-red-500"
+                  >
+                    <RxCross2 />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Description */}
+            <div className="col-span-2">
+              <label htmlFor="description" className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
                 Description
               </label>
               <textarea
                 id="description"
-                rows={8}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                placeholder="Your description here"
-                {...register("description")} defaultValue={car?.description}
+                rows={4}
+                {...register("description")}
+                className="w-full p-2.5 bg-gray-50 border rounded-lg dark:bg-gray-700 dark:text-white"
               ></textarea>
             </div>
+
+            {/* Show Existing Images from DB */}
+            {existingImages.length > 0 && (
+              <div className="col-span-2">
+                <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Existing Images</label>
+                <div className="flex flex-wrap gap-4">
+                  {existingImages.map((img, index) => (
+                    <div key={index} className="relative group w-[120px] h-[120px] border rounded overflow-hidden">
+                      <img
+                        src={img}
+                        alt={`Product image ${index + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExistingImage(index)}
+                        className="absolute top-1 right-1 text-white bg-red-600 p-1 rounded-full text-xs hidden group-hover:block"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Image Upload Preview */}
+            <div className="col-span-2 flex gap-6 flex-wrap items-center my-6">
+              <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Product Images" />
+              <ImagePreview setImage={setImage} setPreview={setPreview} preview={preview} />
+            </div>
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
+            className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-white bg-[#1d4ed8] rounded-lg hover:bg-[#1e40af]"
           >
-            Update
+            {isLoading ? <TbFidgetSpinner className="animate-spin" size={24} /> : "Update Product"}
           </button>
         </form>
       </div>

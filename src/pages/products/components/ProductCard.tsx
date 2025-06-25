@@ -8,26 +8,27 @@ export interface Car {
   product: Cars;
 }
 
+
 const ProductCard = ({ product }: Car) => {
+
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div className="h-56 w-full">
-        <a href="#">
+        <Link to={`/view-details/${product._id}`}>
           <img
-            className="mx-auto h-full"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
+            className="mx-auto w-full rounded-sm h-full shadow-md"
+            src={product?.images[0]}
             alt=""
           />
-        </a>
+        </Link>
       </div>
       <div className="pt-6">
-        <a
-          href="#"
+        <Link to={`/view-details/${product._id}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
-          {/* TO DO */}
-          Product Name
-        </a>
+          {product?.name}
+        </Link>
 
         <div className="mt-4 flex items-center gap-2 justify-between">
           <h2 className="text-sm">
@@ -49,7 +50,7 @@ const ProductCard = ({ product }: Car) => {
             <span className="font-medium text-gray-900 dark:text-white text-base">
               Price:{" "}
             </span>
-            {product?.price}
+            {product?.price.toLocaleString()} Tk
           </p>
 
           <Link to={`/view-details/${product._id}`}>

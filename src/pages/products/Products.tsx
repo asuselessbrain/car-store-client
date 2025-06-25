@@ -12,12 +12,22 @@ export interface Cars {
   name:string;
   brand: string;
   model: string;
-  year: number;
+  releaseYear: Date;
   price: number;
   category: string;
   description: string;
   quantity: number;
   inStock: boolean;
+  color: string;
+  bodyType:string;
+  transmission: string;
+  fuelType: string;
+  engineSize: string;
+  images: [string];
+  mileage: string;
+  features: [string];
+  tags: [string];
+  warranty: string;
 }
 
 const Products = () => {

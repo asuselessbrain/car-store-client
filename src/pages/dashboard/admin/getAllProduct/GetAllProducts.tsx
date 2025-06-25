@@ -15,7 +15,7 @@ const GetAllProducts = () => {
   const [searchItem, setSearchTerm] = useState("");
   const [page, setPage] = useState(1)
 
-  const limit = 10;
+  const limit = 12;
 
   const searchFields = {
     sort,
@@ -85,8 +85,8 @@ const GetAllProducts = () => {
             <form className="relative mx-auto w-max">
               <input
                 type="search"
-                onChange={handleSearch}
-                className="peer cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-16 focus:pr-4"
+                onChange={handleSearch} placeholder="Search by brand and mode"
+                className="peer cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:border-lime-300 focus:pl-16 focus:pr-4 dark:text-white"
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -185,6 +185,9 @@ const GetAllProducts = () => {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" className="px-6 py-3">
               Model
             </th>
             <th scope="col" className="px-6 py-3">
@@ -194,7 +197,22 @@ const GetAllProducts = () => {
               Category
             </th>
             <th scope="col" className="px-6 py-3">
+              Body Type
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Fuel Type
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Engine Size
+            </th>
+            <th scope="col" className="px-6 py-3">
+              warranty
+            </th>
+            <th scope="col" className="px-6 py-3">
               Price
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Quantity
             </th>
             <th scope="col" className="px-6 py-3">
               Action

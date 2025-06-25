@@ -50,16 +50,28 @@ const GetAllProductBody = ({ product, index }: GetAllProductBodyProps) => {
           : "bg-white dark:bg-gray-900"
       } border-b dark:border-gray-700 border-gray-200`}
     >
+
+      <th
+        scope="row"
+        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      >
+        {product?.name}
+      </th>
       <th
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
         {product?.model}
       </th>
-      <td className="px-6 py-4">{product?.brand}</td>
-      <td className="px-6 py-4">{product?.category}</td>
-      <td className="px-6 py-4">{product?.price} Tk</td>
-      <td className="px-6 py-4 flex items-center gap-4">
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.brand}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.category}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.bodyType}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.fuelType}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.engineSize}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.warranty}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{product?.price.toLocaleString()} Tk</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white pl-12">{product?.quantity}</td>
+      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex items-center gap-4">
         <Link to={`/admin/update-product/${product?._id}`}>
           <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
             Edit
