@@ -3,7 +3,6 @@ import { Link } from "react-router";
 import Loader from "../../../shared/Loader";
 import { useGetSingleUserQuery } from "../../../../redux/fetchers/users/userAPi";
 import { useGetIndividualOrderQuery } from "../../../../redux/fetchers/orders/orderApi";
-import img from "../../../../assets/profile.jpg";
 import { useGetSingleUserReviewsQuery } from "../../../../redux/fetchers/review/reviewApi";
 import { Order } from "../getMyOrders/GetMyOrder";
 
@@ -33,7 +32,6 @@ const UserDashboard = () => {
   const totalReview = userReview?.data?.length;
 
   const user = data?.data;
-  console.log(user)
 
   return (
     <div className="relative overflow-x-auto max-h-[80vh] flex items-center justify-center p-10">

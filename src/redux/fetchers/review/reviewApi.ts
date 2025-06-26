@@ -11,14 +11,14 @@ const reviewApi = baseApi.injectEndpoints({
     }),
     getSingleCarReview: builder.query({
       query: (id) => ({
-        url: `/review/${id}`,
+        url: `/review/single-car/${id}`,
         method: "GET",
       }),
       providesTags: ["Reviews"],
     }),
     getSingleUserReviews: builder.query({
       query: () => ({
-        url: "/review/get-single-user-review",
+        url: "/review/user-review",
         method: "GET",
       }),
       providesTags: ["Reviews"],
