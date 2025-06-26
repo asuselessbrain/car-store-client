@@ -11,6 +11,15 @@ import Review from "../dashboard/user/review/Review";
 import { useGetSingleCarReviewQuery } from "../../redux/fetchers/review/reviewApi";
 import ReactStars from "react-rating-stars-component";
 
+interface IReview {
+  _id: string,
+  carId: string,
+  userId: { _id: string, firstName: string, lastName: string },
+  ratting: number,
+  comment: string,
+  createdAt: string
+}
+
 
 const ViewDetails = () => {
   const { id } = useParams();
@@ -72,7 +81,8 @@ const ViewDetails = () => {
       }
     }
     if (isError) {
-      toast.error(JSON.stringify(error), { id: toastId });
+      const err = error as { data?: { errorMessage?: string } };
+      toast.error(err?.data?.errorMessage ?? 'Something went wrong', { id: toastId });
     }
   }, [createOrderData?.data, createOrderData?.message, error, isError, createOrderLoading, isSuccess]);
 
@@ -86,6 +96,11 @@ const ViewDetails = () => {
   const product = data?.data;
 
   const reviews = (review?.data)
+
+  const averageRatting = reviews.length > 0
+  ? reviews.reduce((sum:number, review:IReview) => sum + review.ratting, 0) / reviews.length
+  : 0;
+
 
   return (
     <div className="flex justify-center flex-col max-w-full mx-auto px-6 min-h-[calc(100vh-288px)] w-full pt-10">
@@ -118,9 +133,20 @@ const ViewDetails = () => {
             {/* Price Section */}
             <div className="flex items-center space-x-4 mb-4">
               <span className="text-2xl font-semibold text-red-600">
-                {product?.price}{" "}
+                {product?.price.toLocaleString()}{" "}
                 <span className="text-gray-900 dark:text-gray-300">Tk</span>
               </span>
+            </div>
+
+            <div className="my-2">
+              <p className="flex items-center gap-2 font-semibold text-gray-700 dark:text-gray-300">Average Review: <ReactStars
+            count={5}
+            value={averageRatting}
+            size={24}
+            isHalf={true}
+            edit={false}
+            activeColor="#ffd700"
+          /><span className="text-sm">({reviews?.length})</span></p>
             </div>
 
             <div className="flex items-center justify-start mb-4 gap-6">
@@ -150,21 +176,28 @@ const ViewDetails = () => {
                 </span>
               </div>
               <div>
-                <p className="dark:text-gray-300">
+                <p className="dark:text-gray-300 text-gray-700">
                   <span className="font-semibold">Release:</span> {new Date(product?.releaseYear).getFullYear()}
                 </p>
               </div>
             </div>
 
             {/* Product Info */}
-            <div className="mb-4 space-y-1">
-              <p className="dark:text-gray-300">
+            <div className="mb-4 space-y-3">
+              <p className="dark:text-gray-300 text-gray-700">
                 <span className="font-semibold">Brand:</span> {product?.brand}
               </p>
               <p className="dark:text-gray-300">
-                <span className="font-semibold">Model:</span>{" "}
+                <span className="font-semibold text-gray-700">Model:</span>{" "}
                 {product?.model}
               </p>
+            </div>
+
+            <div>
+              <p className="dark:text-gray-300 font-semibold text-gray-700 flex items-center gap-2">Tags: 
+              {
+                product?.tags?.map((tag:string, index:number)=><span key={index} className="mr-3 font-medium">#{tag} </span>)
+              }</p>
             </div>
 
             {/* Quantity and Add to Cart */}
@@ -264,7 +297,7 @@ const ViewDetails = () => {
       </div>
       <div className="my-4">
         <p className="font-semibold dark:tect-gray-800">Customer Reviews</p>
-        {reviews?.map((review: { _id: string, carId: string, userId: { _id: string, firstName: string, lastName: string }, ratting: number, comment: string, createdAt: string }, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
+        {reviews?.slice(0,10)?.map((review: IReview, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
           <ReactStars
             count={5}
             value={review?.ratting}

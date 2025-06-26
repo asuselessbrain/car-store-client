@@ -54,7 +54,7 @@ const Review = ({id}: {id: string}) => {
     navigate,
   ]);
   return (
-    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-4 shadow-md w-full sm:p-6">
+    <div className="p-4 mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg mt-4 mb-10 shadow-md w-full sm:p-6">
       <div>
         <form className="space-y-4" onSubmit={handleReview}>
           <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
