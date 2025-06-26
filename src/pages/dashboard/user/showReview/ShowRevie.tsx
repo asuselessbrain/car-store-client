@@ -1,5 +1,6 @@
 import { useGetSingleUserReviewsQuery } from "../../../../redux/fetchers/review/reviewApi";
 import Loader from "../../../shared/Loader";
+import ReactStars from "react-rating-stars-component";
 
 interface Review {
     _id: string;
@@ -23,14 +24,12 @@ const ShowReview = () => {
         }
 
     const reviews = userReview?.data;
-    console.log(reviews)
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-sm">
                 <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200">
                     <tr>
                         <th className="px-4 py-2 border">#</th>
-                        <th className="px-4 py-2 border">User</th>
                         <th className="px-4 py-2 border">Rating</th>
                         <th className="px-4 py-2 border">Comment</th>
                         <th className="px-4 py-2 border">Date</th>
@@ -46,14 +45,23 @@ const ShowReview = () => {
                         </tr>
                     ) : (
                         reviews.map((review: Review, index: number) => (
-                            <tr key={review._id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <tr key={review._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 text-center">
                                 <td className="px-4 py-2 border">{index + 1}</td>
-                                <td className="px-4 py-2 border">{review.ratting} ⭐</td>
+                                <td className="px-4 py-2 border"><div className="flex items-center justify-center">
+                                    <ReactStars
+                                            count={5}
+                                            value={review?.ratting}
+                                            size={24}
+                                            isHalf={true}
+                                            edit={false}
+                                            activeColor="#ffd700"
+                                          />
+                                    </div></td>
 
-                                <td className="px-4 py-2 border">
-                                    {review?.comment?.length > 40
-                                        ? `${review.comment.substring(0, 40)}...`
-                                        : review.comment}
+                                <td className="px-4 py-2 border cursor-pointer text-left" title={review?.comment}>
+                                    {review?.comment?.length > 60
+                                        ? `${review?.comment?.substring(0, 80)}...`
+                                        : review?.comment}
                                 </td>
                                 <td className="px-4 py-2 border">
                                     {new Date(review.createdAt).toLocaleDateString()}
