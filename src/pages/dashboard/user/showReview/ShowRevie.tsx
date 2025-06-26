@@ -1,4 +1,5 @@
-import { useGetSingleUserReviewsQuery } from "../../../../redux/fetchers/review/reviewApi";
+import Swal from "sweetalert2";
+import { useDeleteReviewMutation, useGetSingleUserReviewsQuery } from "../../../../redux/fetchers/review/reviewApi";
 import Loader from "../../../shared/Loader";
 import ReactStars from "react-rating-stars-component";
 
@@ -16,14 +17,43 @@ interface Review {
 
 const ShowReview = () => {
 
-    const { data: userReview, isLoading: reviewLoading } =
-        useGetSingleUserReviewsQuery(undefined);
+    const { data: userReview, isLoading: reviewLoading } = useGetSingleUserReviewsQuery(undefined);
+    const [deleteReview, {isLoading: deleteLoading}] = useDeleteReviewMutation()
 
-        if(reviewLoading){
-            return <Loader />
-        }
+    if (reviewLoading) {
+        return <Loader />
+    }
 
     const reviews = userReview?.data;
+
+    const handleDelete = async (id: string) => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then(async () => {
+          await deleteReview(id);
+          try {
+            await deleteReview(id).unwrap(); // Delete user only if confirmed
+            Swal.fire({
+              title: "Deleted!",
+              text: "Review has been deleted.",
+              icon: "success",
+            });
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          } catch (error) {
+            Swal.fire({
+              title: "Error!",
+              text: "There was a problem deleting the user.",
+              icon: "error",
+            });
+          }
+        });
+      };
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-sm">
@@ -49,14 +79,14 @@ const ShowReview = () => {
                                 <td className="px-4 py-2 border">{index + 1}</td>
                                 <td className="px-4 py-2 border"><div className="flex items-center justify-center">
                                     <ReactStars
-                                            count={5}
-                                            value={review?.ratting}
-                                            size={24}
-                                            isHalf={true}
-                                            edit={false}
-                                            activeColor="#ffd700"
-                                          />
-                                    </div></td>
+                                        count={5}
+                                        value={review?.ratting}
+                                        size={24}
+                                        isHalf={true}
+                                        edit={false}
+                                        activeColor="#ffd700"
+                                    />
+                                </div></td>
 
                                 <td className="px-4 py-2 border cursor-pointer text-left" title={review?.comment}>
                                     {review?.comment?.length > 60
@@ -74,7 +104,8 @@ const ShowReview = () => {
                                         Edit
                                     </button>
                                     <button
-                                        // onClick={() => onDelete(review._id)}
+                                        onClick={() => handleDelete(review?._id)}
+                                        disabled={deleteLoading}
                                         className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                     >
                                         Delete
