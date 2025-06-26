@@ -32,6 +32,9 @@ const UserDashboard = () => {
   const orders = orderData?.data?.length;
   const totalReview = userReview?.data?.length;
 
+  const user = data?.data;
+  console.log(user)
+
   return (
     <div className="relative overflow-x-auto max-h-[80vh] flex items-center justify-center p-10">
       <div>
@@ -43,12 +46,12 @@ const UserDashboard = () => {
             {/* <!-- Left Section --> */}
             <div className="bg-[#FFEDD5] px-[170px] py-[90px] flex flex-col items-center justify-center">
               <img
-                src={img}
+                src={user?.profileImg}
                 className="w-40 h-40 bg-white dark:bg-gray-800 rounded-full border-2 border-orange-500"
                 alt="profile image"
               />
               <h2 className="mt-4 text-3xl font-semibold text-black font-cinzel drop-shadow-lg">
-                {data?.data?.name}
+                {user?.firstName} {user?.lastName}
               </h2>
             </div>
 
