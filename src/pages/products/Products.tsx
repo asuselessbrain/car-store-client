@@ -3,13 +3,13 @@ import Loader from "../shared/Loader";
 import ProductCard from "./components/ProductCard";
 import { FaSortAmountDown } from "react-icons/fa";
 import { FieldValues } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import { CiFilter } from "react-icons/ci";
 
 export interface Cars {
   _id: string;
-  name:string;
+  name: string;
   brand: string;
   model: string;
   releaseYear: Date;
@@ -19,7 +19,7 @@ export interface Cars {
   quantity: number;
   inStock: boolean;
   color: string;
-  bodyType:string;
+  bodyType: string;
   transmission: string;
   fuelType: string;
   engineSize: string;
@@ -31,54 +31,57 @@ export interface Cars {
 }
 
 const Products = () => {
+  // All hooks at the very top
   const [sort, setSort] = useState("");
   const [toggle, setToggle] = useState(false);
-  const [filter, setFilter] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [searchItem, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
+  const [allBrands, setAllBrands] = useState<string[]>([]);
 
-  const limit = 12;
+  const limit = 9;
 
   const searchFields = {
     sort,
-    filter,
+    filter: selectedBrands,
     searchItem,
     page,
-    limit
+    limit,
   };
 
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
 
-  if (isLoading) return <Loader />;
-
-  const products = data?.data?.result;
+  const products: Cars[] = data?.data?.result ?? [];
   const metaData = data?.data?.meta;
 
-  const handleSort = (e: FieldValues) => {
-    setSort(e.target.value);
+  // Populate allBrands only once when products arrive
+  useEffect(() => {
+    if (products.length && allBrands.length === 0) {
+      const brands = [...new Set(products.map(p => p.brand))];
+      setAllBrands(brands);
+    }
+  }, [products, allBrands.length]);
+
+  // Handlers
+  const handleSort = (e: FieldValues) => setSort(e.target.value);
+
+  const handleToggle = () => setToggle(!toggle);
+
+  const handelBrandChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const brand = e.target.value;
+    if (e.target.checked) {
+      setSelectedBrands(prev => [...prev, brand]);
+    } else {
+      setSelectedBrands(prev => prev.filter(b => b !== brand));
+    }
   };
 
-  const handleToggle = () => {
-    setToggle(!toggle);
-  };
+  const handleSearch = (e: FieldValues) => setSearchTerm(e.target.value);
 
-  const handelBrandChanged = (e: FieldValues) => {
-    const selectedBrand = e.target.value.trim(); // Trim any whitespace
-    const isChecked = e.target.checked; // Check if checkbox is checked
+  // Early returns after hooks
+  if (isLoading) return <Loader />;
 
-    setFilter(
-      (prevFilter) =>
-        isChecked
-          ? [...prevFilter, selectedBrand] // Add selected brand
-          : prevFilter.filter((brand) => brand !== selectedBrand) // Remove deselected brand
-    );
-  };
-
-  const handleSearch = (e: FieldValues) => {
-    setSearchTerm(e.target.value);
-  };
-
-  if(products.length === 0){
+  if (products.length === 0) {
     return (
       <div className="flex items-center justify-center">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -90,7 +93,7 @@ const Products = () => {
 
   return (
     <section className="bg-gray-50 antialiased dark:bg-gray-900 flex items-center justify-center min-h-[calc(100vh-282px)] pb-6">
-      <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div className="w-full mx-16 px-4 2xl:px-0">
         <div className="mb-4 items-center justify-between space-y-4 mt-4 sm:flex sm:space-y-0 md:mb-8">
           <div>
             <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -150,7 +153,6 @@ const Products = () => {
                 </svg>
               </button>
 
-              {/* <!-- Dropdown menu --> */}
               {toggle && (
                 <div
                   id="dropdown"
@@ -160,13 +162,13 @@ const Products = () => {
                     Brand
                   </h6>
                   <ul className="space-y-2 text-sm">
-                    {["BMW", "Toyota", "Honda"].map((brand) => (
-                      <li key={brand} className="flex items-center">
+                    {allBrands.map((brand, index) => (
+                      <li key={index} className="flex items-center">
                         <input
                           id={brand}
                           type="checkbox"
                           value={brand}
-                          // checked={selectedBrands.includes(brand)}
+                          checked={selectedBrands.includes(brand)}
                           onChange={handelBrandChanged}
                           className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
                         />
@@ -182,6 +184,7 @@ const Products = () => {
                 </div>
               )}
             </div>
+
             <div className="flex items-center space-x-4 rounded-lg border border-gray-200 px-2 py-2 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 group focus:ring-gray-100">
               <FaSortAmountDown size={16} />
               <select
@@ -199,14 +202,23 @@ const Products = () => {
             </div>
           </div>
         </div>
+
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 3xl:grid-cols-4">
           {products.map((product: Cars) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
-        <Pagination align="center" pageSize={metaData?.limit} current={page} onChange={(value)=> setPage(value)} total={metaData?.total} />
+
+        <Pagination
+          align="center"
+          pageSize={metaData?.limit}
+          current={page}
+          onChange={(value) => setPage(value)}
+          total={metaData?.total}
+        />
       </div>
     </section>
   );
 };
+
 export default Products;
