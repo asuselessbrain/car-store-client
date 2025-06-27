@@ -40,7 +40,8 @@ const Products = () => {
     color: string[];
     transmission: string[];
     fuelType: string[];
-  }>({ brand: [], color: [], transmission: [], fuelType: [] });
+    engineSize: string[];
+  }>({ brand: [], color: [], transmission: [], fuelType: [], engineSize: [] });
 
   const limit = 9;
 
@@ -69,7 +70,8 @@ const Products = () => {
         brand: getUniqueValues("brand"),
         color: getUniqueValues("color"),
         transmission: getUniqueValues("transmission"),
-        fuelType: getUniqueValues("fuelType")
+        fuelType: getUniqueValues("fuelType"),
+        engineSize: getUniqueValues("engineSize")
       });
     }
   }, [products]);
@@ -131,22 +133,23 @@ const Products = () => {
   return (
     <section className="bg-gray-50 antialiased dark:bg-gray-900 min-h-[calc(100vh-282px)] pb-6">
       <div>
-        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl p-6">
           Products
         </h2>
       </div>
       <div className="flex items-start justify-between pl-4">
-        <div className="w-96 border border-gray-200 rounded-lg bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 mt-24">
+        <div className="w-96 border border-gray-200 rounded-lg bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 mt-20">
           <div className="space-y-4">
             {renderFilterSection("Brand", "brand", allFilterValues.brand)}
             {renderFilterSection("Color", "color", allFilterValues.color)}
             {renderFilterSection("Transmission", "transmission", allFilterValues.transmission)}
             {renderFilterSection("Fuel Type", "fuelType", allFilterValues.fuelType)}
+            {renderFilterSection("Engine Size", "engineSize", allFilterValues.engineSize)}
           </div>
         </div>
         <div className="w-full mx-4 px-4 2xl:px-0">
 
-          <div className="mb-4 items-center justify-end space-y-4 mt-4 sm:flex sm:space-y-0 md:mb-8">
+          <div className="mb-4 items-center justify-end space-y-4 sm:flex sm:space-y-0 md:mb-8">
             <div className="flex items-center space-x-4">
               <div className="mx-auto max-w-md">
                 <form className="relative mx-auto w-max">
