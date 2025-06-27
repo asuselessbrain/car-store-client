@@ -4,21 +4,31 @@ export const carApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllCars: builder.query({
       query: (searchTerm) => {
-        const brandQuery = searchTerm?.filter?.length
-          ? searchTerm.filter
-              .map((brand: string) => `brand=${encodeURIComponent(brand)}`)
-              .join("&")
-          : "";
-        const searchQuery = searchTerm?.searchItem ? `searchTerm=${searchTerm?.searchItem}` : "";
-        const sortQuery = searchTerm?.sort? `sortBy=price&sortOrder=${searchTerm?.sort}` : "";
-        const pageQuery = `page=${searchTerm?.page}`;
-        const limitQuery = `limit=${searchTerm?.limit}`;
+        const { filter = {}, searchItem, sort, page, limit } = searchTerm || {};
+
+        // Handle dynamic multi-field filters (brand, color, transmission, etc.)
+        const filterQuery = Object.entries(filter)
+          .flatMap(([key, values]) =>
+            (values as string[]).map((val) => `${key}=${encodeURIComponent(val)}`)
+          )
+          .join("&");
+
+        const searchQuery = searchItem ? `searchTerm=${encodeURIComponent(searchItem)}` : "";
+        const sortQuery = sort ? `sortBy=price&sortOrder=${sort}` : "";
+        const pageQuery = `page=${page}`;
+        const limitQuery = `limit=${limit}`;
+
+        const finalQuery = [searchQuery, filterQuery, sortQuery, pageQuery, limitQuery]
+          .filter(Boolean)
+          .join("&");
+
         return {
-          url: `/cars?${searchQuery}&${brandQuery}&${sortQuery}&${pageQuery}&${limitQuery}`,
+          url: `/cars?${finalQuery}`,
         };
       },
       providesTags: ["Cars"],
     }),
+
     getSingleCar: builder.query({
       query: (id: string) => ({ url: `/cars/${id}` }),
       providesTags: ["Cars"],

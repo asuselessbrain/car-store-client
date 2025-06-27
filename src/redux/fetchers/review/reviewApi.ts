@@ -31,6 +31,16 @@ const reviewApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Reviews"],
     }),
+    updateReview: builder.mutation({
+      query: (reviewData) => {
+        return {
+          url: `/review/${reviewData?.reviewInfo?.reviewId}`,
+          method: "PUT",
+          body: reviewData?.reviewInfo,
+        };
+      },
+      invalidatesTags: ["Reviews"],
+    }),
     deleteReview: builder.mutation({
       query: (id) => ({
         url: `/review/${id}`,
@@ -41,4 +51,4 @@ const reviewApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllReviewsQuery, useCreateReviewsMutation, useGetSingleUserReviewsQuery, useGetSingleCarReviewQuery, useDeleteReviewMutation } = reviewApi;
+export const { useGetAllReviewsQuery, useCreateReviewsMutation, useGetSingleUserReviewsQuery, useGetSingleCarReviewQuery, useDeleteReviewMutation, useUpdateReviewMutation } = reviewApi;

@@ -8,7 +8,6 @@ import { CiEdit } from "react-icons/ci";
 import { FieldValues } from "react-hook-form";
 import { toast } from "react-toastify";
 import ChangePasswordModal from "./ChangePasswordModal";
-import img from "../../../../assets/profile.jpg"
 
 const Profile = () => {
   const { data, isLoading } = useGetSingleUserQuery(undefined);
@@ -53,7 +52,7 @@ const Profile = () => {
       <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white dark:border-gray-700 rounded-full overflow-hidden">
         <img
           className="object-cover object-center h-32"
-          src={img}
+          src={profile?.profileImg}
           alt="profile image"
         />
       </div>
@@ -66,12 +65,12 @@ const Profile = () => {
               id="name"
               className="bg-gray-700 text-white p-2 border border-gray-900 rounded-full text-center"
               onBlur={handleChangeName}
-              defaultValue={profile?.name}
+              defaultValue={profile?.firstName+" "+profile?.lastName}
             />
           </div>
         ) : (
           <div className="flex items-center justify-center gap-4">
-            <h2 className="font-semibold text-xl">{profile?.name}</h2>
+            <h2 className="font-semibold text-xl">{profile?.firstName+" "+profile?.lastName}</h2>
             <button title="Edit Name" onClick={() => setIsEditing(true)}>
               <CiEdit size={20} />
             </button>
