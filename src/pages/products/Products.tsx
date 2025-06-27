@@ -41,7 +41,8 @@ const Products = () => {
     transmission: string[];
     fuelType: string[];
     engineSize: string[];
-  }>({ brand: [], color: [], transmission: [], fuelType: [], engineSize: [] });
+    warranty: string[];
+  }>({ brand: [], color: [], transmission: [], fuelType: [], engineSize: [], warranty: [] });
 
   const limit = 9;
 
@@ -71,7 +72,8 @@ const Products = () => {
         color: getUniqueValues("color"),
         transmission: getUniqueValues("transmission"),
         fuelType: getUniqueValues("fuelType"),
-        engineSize: getUniqueValues("engineSize")
+        engineSize: getUniqueValues("engineSize"),
+        warranty: getUniqueValues("warranty")
       });
     }
   }, [products]);
@@ -145,6 +147,7 @@ const Products = () => {
             {renderFilterSection("Transmission", "transmission", allFilterValues.transmission)}
             {renderFilterSection("Fuel Type", "fuelType", allFilterValues.fuelType)}
             {renderFilterSection("Engine Size", "engineSize", allFilterValues.engineSize)}
+            {renderFilterSection("Warranty", "warranty", allFilterValues.warranty)}
           </div>
         </div>
         <div className="w-full mx-4 px-4 2xl:px-0">
