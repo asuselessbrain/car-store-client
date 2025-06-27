@@ -22,11 +22,11 @@ const ProductCard = ({ product }: Car) => {
   }
 
   return (
-    <Link to={`/view-details/${product?._id}`} className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
-      <div className="h-40 w-full">
+    <Link to={`/view-details/${product?._id}`} className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800 group">
+      <div className="h-40 w-full overflow-hidden rounded">
         <Link to={`/view-details/${product?._id}`}>
           <img
-            className="mx-auto w-full rounded-sm h-full shadow-md"
+            className="mx-auto w-full rounded-sm h-full shadow-md group-hover:scale-105 transition-transform duration-700"
             src={product?.images[0]}
             alt=""
           />
@@ -52,7 +52,7 @@ const ProductCard = ({ product }: Car) => {
         </Link>
 
         <div className="mt-4 flex items-center justify-between gap-2">
-          <p className="text-xl font-bold leading-tight text-red-600 dark:text-red-600">
+          <p className="text-lg font-medium leading-tight text-red-600 dark:text-red-600">
             {product?.price.toLocaleString()} Tk
           </p>
         </div>
