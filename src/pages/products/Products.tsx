@@ -57,6 +57,7 @@ const Products = () => {
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
 
   const products: Cars[] = data?.data?.result ?? [];
+  console.log(products)
   const metaData = data?.data?.meta;
 
   // Populate allBrands only once when products arrive

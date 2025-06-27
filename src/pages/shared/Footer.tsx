@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import logo from '../../assets/logo.png'
+import logo2 from "/logo2.png";
+import logo from "/logo.png";
 
 const Footer = () => {
   return (
@@ -9,11 +10,8 @@ const Footer = () => {
           <Link to="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <img
-              src={logo}
-              className="h-8"
-              alt="Flowbite Logo"
-            />
+            <img src={logo} className="h-16 dark:hidden" alt="AutoSphere Logo" />
+          <img src={logo2} className="h-16 hidden dark:block" alt="Flowbite Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               AutoSphere
             </span>

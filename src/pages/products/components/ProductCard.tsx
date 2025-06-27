@@ -26,7 +26,7 @@ const ProductCard = ({ product }: Car) => {
       <div className="h-40 w-full overflow-hidden rounded">
         <Link to={`/view-details/${product?._id}`}>
           <img
-            className="mx-auto w-full rounded-sm h-full shadow-md group-hover:scale-105 transition-transform duration-700"
+            className="mx-auto w-full rounded-sm h-full shadow-md group-hover:scale-110 transition-transform duration-1000"
             src={product?.images[0]}
             alt=""
           />

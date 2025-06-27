@@ -2,11 +2,12 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { useRegisterMutation } from "../../redux/fetchers/auth/authApi";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.png";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { ReUsableImageUploder } from "../../utils";
 import { useState } from "react";
 import { ImagePreview } from "../../utils/previewImage";
+import logo2 from "/logo2.png";
+import logo from "/logo.png";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
@@ -26,15 +27,15 @@ const Registration = () => {
 
       formData.append("data", JSON.stringify(data))
       formData.append("profileImg", image[0])
-    const res = await registration(formData);
+      const res = await registration(formData);
 
 
-    if (res?.data?.success) {
-      toast.success(res?.data?.message);
-      navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
-    }
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
+      }
 
-    }catch(err){
+    } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
     }
@@ -48,12 +49,13 @@ const Registration = () => {
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <Link
               to="/"
-              className="flex items-center justify-center mb-6 text-2xl md:text-5xl font-semibold text-gray-900 dark:text-white"
+              className="flex items-center justify-center gap-2 mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
             >
-              <img className="w-8 md:w-16 h-8 md:h-16 mr-2" src={logo} alt="logo" />
+              <img src={logo} className="h-20 dark:hidden" alt="Flowbite Logo" />
+              <img src={logo2} className="h-20 hidden dark:block" alt="Flowbite Logo" />
               AutoSphere
             </Link>
-            <h1 className="text-xl font-medium leading-tight tracking-tight text-gray-700 md:text-3xl dark:text-white text-center">
+            <h1 className="text-xl font-medium leading-tight tracking-tight text-gray-700 py-4 dark:text-white text-center">
               Create an account
             </h1>
             <form

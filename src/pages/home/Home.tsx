@@ -1,11 +1,11 @@
 import { Banner } from "./components/Banner";
-import FeaturedProducts from "./components/Featured";
+import NewArrivals from "./components/NewArrivals";
 
 const Home = () => {
   return (
     <div>
       <Banner />
-      <FeaturedProducts />
+      <NewArrivals />
     </div>
   );
 };
