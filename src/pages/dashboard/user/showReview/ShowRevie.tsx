@@ -100,7 +100,7 @@ const ShowReview = () => {
                         </tr>
                     ) : (
                         reviews.map((review: Review, index: number) => (
-                            <tr key={review._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 text-center">
+                            <tr key={review._id} className="hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-gray-700 text-center">
                                 <td className="px-4 py-2 border">{index + 1}</td>
                                 <td className="px-4 py-2 border">
                                     <div className="flex items-center justify-center">

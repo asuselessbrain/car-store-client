@@ -1,5 +1,5 @@
 import GetMyOrder from "../pages/dashboard/user/getMyOrders/GetMyOrder";
-import Profile from "../pages/dashboard/user/profile/Profile";
+import UserProfile from "../pages/dashboard/user/profile/UseProfile";
 import ShowReview from "../pages/dashboard/user/showReview/ShowRevie";
 import UserDashboard from "../pages/dashboard/user/userDashboard/UserDashboard";
 
@@ -17,7 +17,7 @@ export const userRouterPath = [
   {
     name: "Profile",
     path: "profile",
-    element: <Profile />,
+    element: <UserProfile />,
   },
   {
     name: "Review",
