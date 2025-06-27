@@ -11,7 +11,7 @@ import Review from "../dashboard/user/review/Review";
 import { useGetSingleCarReviewQuery } from "../../redux/fetchers/review/reviewApi";
 import ReactStars from "react-rating-stars-component";
 
-interface IReview {
+export interface IReview {
   _id: string,
   carId: string,
   userId: { _id: string, firstName: string, lastName: string },

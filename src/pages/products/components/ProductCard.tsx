@@ -1,8 +1,9 @@
-// import { Cars } from "../Products";
-
-import { FaCircleArrowRight } from "react-icons/fa6";
+import { useGetSingleCarReviewQuery } from "../../../redux/fetchers/review/reviewApi";
+import { IReview } from "../../viewDetails/ViewDetails";
 import { Cars } from "../Products";
 import { Link } from "react-router";
+import ReactStars from "react-rating-stars-component";
+import Loader from "../../shared/Loader";
 
 export interface Car {
   product: Cars;
@@ -10,12 +11,20 @@ export interface Car {
 
 
 const ProductCard = ({ product }: Car) => {
+  const { data: review, isLoading: reviewLoading } = useGetSingleCarReviewQuery(product?._id as string);
 
+  const reviews = (review?.data)
+
+  const averageRatting = reviews?.length > 0 ? reviews.reduce((sum: number, review: IReview) => sum+review?.ratting, 0) / reviews?.length : 0;
+
+  if(reviewLoading){
+    return <Loader />
+  }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
-      <div className="h-56 w-full">
-        <Link to={`/view-details/${product._id}`}>
+    <Link to={`/view-details/${product?._id}`} className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
+      <div className="h-40 w-full">
+        <Link to={`/view-details/${product?._id}`}>
           <img
             className="mx-auto w-full rounded-sm h-full shadow-md"
             src={product?.images[0]}
@@ -23,48 +32,32 @@ const ProductCard = ({ product }: Car) => {
           />
         </Link>
       </div>
+
       <div className="pt-6">
-        <Link to={`/view-details/${product._id}`}
+        <div className="flex items-center gap-1">
+          <ReactStars
+                    count={5}
+                    value={averageRatting}
+                    size={24}
+                    isHalf={true}
+                    edit={false}
+                    activeColor="#ffd700"
+                  />
+                  <p className="text-xs">({averageRatting.toFixed(1)})</p>
+        </div>
+        <Link to={`/view-details/${product?._id}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
           {product?.name}
         </Link>
 
-        <div className="mt-4 flex items-center gap-2 justify-between">
-          <h2 className="text-sm">
-            Brand: <span className="font-semibold">{product.brand}</span>
-          </h2>
-          <h2 className="text-sm">
-            Model: <span className="font-semibold">{product.model}</span>
-          </h2>
-        </div>
-
-        <div className="mt-2 flex items-center gap-2 justify-between">
-          <h2 className="text-sm">
-            Category: <span className="font-semibold">{product.category}</span>
-          </h2>
-        </div>
-
         <div className="mt-4 flex items-center justify-between gap-2">
           <p className="text-xl font-bold leading-tight text-red-600 dark:text-red-600">
-            <span className="font-medium text-gray-900 dark:text-white text-base">
-              Price:{" "}
-            </span>
             {product?.price.toLocaleString()} Tk
           </p>
-
-          <Link to={`/view-details/${product._id}`}>
-            <button
-              type="button"
-              className="inline-flex gap-2 items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-black dark:text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              View Details
-              <FaCircleArrowRight size={16} />
-            </button>
-          </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
