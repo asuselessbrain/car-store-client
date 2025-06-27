@@ -1,12 +1,12 @@
-Car Store - Online Vehicle Marketplace
+AutoSphere - Online Vehicle Marketplace
 ======================================
 
-Welcome to **Car Store**, a modern and user-friendly online platform for browsing, purchasing, and managing vehicle orders. This project provides an intuitive experience for both customers and administrators, offering advanced analytics, secure payment integration, and seamless user interactions.
+Welcome to **AutoSphere**, a modern and user-friendly online platform for browsing, purchasing, and managing vehicle orders. This project provides an intuitive experience for both customers and administrators, offering advanced analytics, secure payment integration, and seamless user interactions.
 
 🚀 Live Demo
 ------------
 
-🔗 [**Car Store Live URL**](https://car-store-frontend-delta.vercel.app/)
+🔗 [**AutoSphere Live URL**](https://car-store-frontend-delta.vercel.app/)
 
 📌 Features
 -----------
@@ -146,4 +146,4 @@ The project will be available at [**http://localhost:5173/**](http://localhost:5
 *   Improved **admin analytics** for data-driven decisions
     
 
-💡 _Enjoy seamless car shopping with Car Store!_ 🚗💨
+💡 _Enjoy seamless car shopping with AutoSphere!_ 🚗💨

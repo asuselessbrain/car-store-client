@@ -2,7 +2,8 @@ import { Link, NavLink } from "react-router";
 import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
-import logo from "../../assets/logo.png";
+import logo2 from "/logo2.png";
+import logo from "/logo.png";
 import { Button } from "../../components/ui/button";
 import { useSelector } from "react-redux";
 import {
@@ -52,9 +53,10 @@ const NavBar = () => {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img src={logo} className="h-16" alt="Flowbite Logo" />
+          <img src={logo} className="h-16 dark:hidden" alt="Flowbite Logo" />
+          <img src={logo2} className="h-16 hidden dark:block" alt="Flowbite Logo" />
           <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
-            Car Store
+            AutoSphere
           </span>
         </Link>
         <button

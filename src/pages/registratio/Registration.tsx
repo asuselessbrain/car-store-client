@@ -51,7 +51,7 @@ const Registration = () => {
               className="flex items-center justify-center mb-6 text-2xl md:text-5xl font-semibold text-gray-900 dark:text-white"
             >
               <img className="w-8 md:w-16 h-8 md:h-16 mr-2" src={logo} alt="logo" />
-              Car Store
+              AutoSphere
             </Link>
             <h1 className="text-xl font-medium leading-tight tracking-tight text-gray-700 md:text-3xl dark:text-white text-center">
               Create an account

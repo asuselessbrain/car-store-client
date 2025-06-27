@@ -34,7 +34,7 @@ const SideBar = () => {
     <Sider breakpoint="lg" collapsedWidth="0">
       <Link to="/">
         <div className="demo-logo-vertical text-white font-bold text-2xl flex items-center justify-center py-4">
-          Car Store
+          AutoSphere
         </div>
       </Link>
       <Menu

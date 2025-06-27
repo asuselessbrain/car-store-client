@@ -71,7 +71,7 @@ const Contact = () => {
           <div className="absolute w-80 h-80 -mt-16 bg-indigo-300 dark:bg-indigo-600 rounded-lg transform rotate-45"></div>
           <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg z-10">
             <div className="flex items-center mb-4">
-              <span className="text-xl font-bold">Car Store</span>
+              <span className="text-xl font-bold">AutoSphere</span>
             </div>
             <p className="flex items-center mb-2">
               <span className="mr-2">📞</span> 017XX-XXXXXX
