@@ -31,7 +31,7 @@ export const carApi = baseApi.injectEndpoints({
 
     getPopularCar: builder.query({
       query: () => ({ 
-        url: '/cars/orders/popular-car', 
+        url: '/orders/popular-cars', 
         method: "GET" 
       }),
       providesTags: ["Cars"],
@@ -74,4 +74,5 @@ export const {
   useDeleteCarMutation,
   useCreateCarMutation,
   useUpdateCarMutation,
+  useGetPopularCarQuery
 } = carApi;
