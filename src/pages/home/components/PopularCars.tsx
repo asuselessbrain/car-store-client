@@ -8,18 +8,18 @@ import { Button } from "../../../components/ui/button";
 const PopularCars = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useGetPopularCarQuery(undefined);
-  console.log(data)
 
   if (isLoading) return <Loader />;
 
-  const products = data?.data?.result || [];
+  const products = data?.data || [];
 
-  const popularCars = products?.slice(0, 8) || [];
+
+  const popularCars = products?.map((p)=>p?.carDetails)
 
   return (
     <div className="p-6">
       <h2 className="font-display text-xl md:text3xl lg:text-4xl tracking-tight text-slate-900 dark:text-white font-semibold font-cinzel my-8 text-center">
-        Popular Products
+        Popular Cars
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {popularCars.map((product: Cars) => (
