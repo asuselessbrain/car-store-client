@@ -29,8 +29,6 @@ const Registration = () => {
       formData.append("profileImg", image[0])
       const res = await registration(formData);
 
-      console.log(res)
-
 
       if (res?.data?.success) {
         toast.success(res?.data?.message);
@@ -39,7 +37,6 @@ const Registration = () => {
 
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
-      console.log(error)
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
     }
 
