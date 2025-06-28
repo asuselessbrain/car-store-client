@@ -4,9 +4,11 @@ import Loader from "../../../shared/Loader";
 import { Button } from "../../../../components/ui/button";
 import { useState } from "react";
 import ChangePasswordModal from "./ChangePasswordModal";
+import EditProfile from "./EditProfileModal";
 const UserProfile = () => {
   const { data, isLoading } = useGetSingleUserQuery(undefined);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   if (isLoading) return <Loader />;
 
@@ -17,9 +19,16 @@ const UserProfile = () => {
       <h3 className="text-3xl font-semibold px-10">User Profile</h3>
       <div className="absolute max-w-full w-1/3 rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         {changePasswordModal && (
-        <ChangePasswordModal setIsOpen={setChangePasswordModal} profile={profile} />
-      )}
+          <ChangePasswordModal setIsOpen={setChangePasswordModal} profile={profile} />
+        )}
       </div>
+      {editModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 overflow-y-auto max-h-[90vh]">
+            <EditProfile />
+          </div>
+        </div>
+      )}
       <div className="rounded-lg p-6 mt-6">
         <div className="flex items-center gap-10 px-10 bg-white dark:bg-gray-700 rounded-lg py-6">
           <img src={profile?.profileImg} alt={profile?.firstName} className="rounded-full w-44" />
@@ -32,7 +41,7 @@ const UserProfile = () => {
         <div className="my-8 bg-white dark:bg-gray-700 rounded-lg py-6">
           <div className="text-2xl font-semibold flex items-center justify-between border-b-2 dark:border-b-white py-4 mx-10">
             <p>Personal Information</p>
-            <Button className="flex items-center gap-4">Edit <FaEdit /></Button>
+            <Button onClick={() => setEditModal(true)} className="flex items-center gap-4">Edit <FaEdit /></Button>
           </div>
           <div className="grid grid-cols-3 gap-8 px-10 pt-8">
 

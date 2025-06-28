@@ -1,97 +1,240 @@
-import { useState } from "react";
-import {
-  useGetSingleUserQuery,
-  useUpdateNameMutation,
-} from "../../../../redux/fetchers/users/userAPi";
-import Loader from "../../../shared/Loader";
-import { CiEdit } from "react-icons/ci";
-import { FieldValues } from "react-hook-form";
-import { toast } from "react-toastify";
-import ChangePasswordModal from "./ChangePasswordModal";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router";
 
-const Profile = () => {
-  const { data, isLoading } = useGetSingleUserQuery(undefined);
-  const [updateName] = useUpdateNameMutation();
-  const [isEditing, setIsEditing] = useState(false);
-  const [changePasswordModal, setChangePasswordModal] = useState(false);
+const EditProfile = () => {
 
-  if (isLoading) return <Loader />;
+  const { register, handleSubmit } = useForm();
 
-  const profile = data?.data;
-
-  const handleChangeName = async (e: FieldValues) => {
-    const name = e.target.value;
-    const id = profile?._id;
-
-    const userInfo = {
-      name,
-      id,
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data)
+      // try {
+      //   if (data?.password !== data?.confirmPassword) {
+      //     toast.error("Password and Confirm Password must match.")
+      //   }
+  
+      //   const formData = new FormData()
+  
+      //   formData.append("data", JSON.stringify(data))
+      //   formData.append("profileImg", image[0])
+      //   const res = await registration(formData);
+  
+  
+      //   if (res?.data?.success) {
+      //     toast.success(res?.data?.message);
+      //     navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
+      //   }
+  
+      // } catch (err) {
+      //   const error = err as { data?: { errorMessage?: string } };
+      //   toast.error(error?.data?.errorMessage ?? 'Something went wrong');
+      // }
+  
     };
-
-    try {
-      const res = await updateName(userInfo).unwrap();
-      if (res?.statusCode === 200) {
-        toast.success(res?.message);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      toast.error("Something went wrong while updating name!");
-    }
-    setIsEditing(false);
-  };
+  
 
   return (
-    <div className="max-w-2xl mx-4 sm:max-w-sm relative md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto max-h-[80vh] lg:mx-auto xl:mx-auto mt-16 bg-white dark:bg-gray-700 shadow-xl rounded-lg text-gray-900 dark:text-gray-200">
-      <div className="rounded-t-lg h-32 overflow-hidden">
-        <img
-          className="object-cover object-top w-full"
-          src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-          alt="Mountain"
-        />
-      </div>
-      <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white dark:border-gray-700 rounded-full overflow-hidden">
-        <img
-          className="object-cover object-center h-32"
-          src={profile?.profileImg}
-          alt="profile image"
-        />
-      </div>
+    <div>
+      <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="grid grid-cols-1 gap-6">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="First Name"
+                    {...register("firstName")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Last Name"
+                    {...register("lastName")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Your email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="name@company.com"
+                    {...register("email")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="phoneNumber"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="017xx-xxxxxx"
+                    {...register("phoneNumber")}
+                  />
+                </div>
+                <div>
 
-      <div className="text-center mt-2">
-        {isEditing ? (
-          <div className="flex items-center justify-center gap-4">
-            <input
-              type="text"
-              id="name"
-              className="bg-gray-700 text-white p-2 border border-gray-900 rounded-full text-center"
-              onBlur={handleChangeName}
-              defaultValue={profile?.firstName+" "+profile?.lastName}
-            />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center gap-4">
-            <h2 className="font-semibold text-xl">{profile?.firstName+" "+profile?.lastName}</h2>
-            <button title="Edit Name" onClick={() => setIsEditing(true)}>
-              <CiEdit size={20} />
-            </button>
-          </div>
-        )}
+                  <label
+                    htmlFor="gender"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Gender
+                  </label>
+                  <select defaultValue="" id="gender" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    {...register("gender")}>
+                    <option value="" disabled>Select your gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="dob"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Date of Birth
+                  </label>
+                  <input
+                    type="date"
+                    id="dob"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    {...register("dob")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    District
+                  </label>
+                  <input
+                    type="text"
+                    id="district"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="District"
+                    {...register("district")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="upazila"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Upazila
+                  </label>
+                  <input
+                    type="text"
+                    id="upazila"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Upazila"
+                    {...register("upazila")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="postOffice"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Post Office
+                  </label>
+                  <input
+                    type="text"
+                    id="postOffice"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Post Office"
+                    {...register("postOffice")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="postalCode"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Postal Code
+                  </label>
+                  <input
+                    type="text"
+                    id="postalCode"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Postal Code"
+                    {...register("postalCode")}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex-1">
+                  <label
+                    htmlFor="about"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    About you
+                  </label>
+                  <textarea id="about" rows={6} cols={50} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Describe yourself"
+                    {...register("about")}>
+                  </textarea>
+                </div>
+                {/* <div className="mt-8">
+                  {
+                    preview?.length > 0 ?
+                      <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
+                      <ReUsableImageUploder setImage={setImage} setPreview={setPreview} label="Upload Profile Picture" />
+                  }
 
-        <p className="text-gray-500 dark:text-gray-400">{profile?.email}</p>
-      </div>
-      {changePasswordModal && (
-        <ChangePasswordModal setIsOpen={setChangePasswordModal} profile={profile} />
-      )}
-      <div className="p-4 border-t border-gray-300 dark:border-gray-600 mx-8 mt-2">
-        <button
-          onClick={() => setChangePasswordModal(true)}
-          className="block mx-auto rounded-full bg-gray-900 border-2 dark:border-gray-900 dark:bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2"
-        >
-          Change Password
-        </button>
-      </div>
+                </div> */}
+              </div>
+              {/* {isLoading ? (
+                <button disabled={isLoading} className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                  <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+                </button>
+              ) : ( */}
+                <button
+                  type="submit"
+                  className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                >
+                  Create an account
+                </button>
+              {/* )} */}
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Login here
+                </Link>
+              </p>
+            </form>
     </div>
   );
 };
 
-export default Profile;
+export default EditProfile;
