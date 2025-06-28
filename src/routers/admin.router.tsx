@@ -42,7 +42,7 @@ export const AdminPath = [
     name: "Profile",
     path: "profile",
     element: <UserProfile />,
-  },,
+  },
   {
     name: "Update Product",
     path: "update-product/:id",
