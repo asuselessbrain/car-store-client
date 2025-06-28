@@ -10,7 +10,7 @@ import { RootState } from "../store";
 import { logOut, setUser } from "../fetchers/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: "http://103.133.254.4:20040/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -28,7 +28,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<FetchArgs, BaseQueryApi, Definition
 
   if (result.error?.status === 401) {
     const res = await fetch(
-      `http://localhost:5000/api/auth/generate-new-token`,
+      `http://103.133.254.4:20040/api/auth/generate-new-token`,
       {
         method: "POST",
         credentials: "include",
