@@ -29,6 +29,14 @@ export const carApi = baseApi.injectEndpoints({
       providesTags: ["Cars"],
     }),
 
+    getPopularCar: builder.query({
+      query: () => ({ 
+        url: '/cars/orders/popular-car', 
+        method: "GET" 
+      }),
+      providesTags: ["Cars"],
+    }),
+
     getSingleCar: builder.query({
       query: (id: string) => ({ url: `/cars/${id}` }),
       providesTags: ["Cars"],
