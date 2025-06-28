@@ -71,7 +71,7 @@ const UserDashboard = () => {
                 <li className="flex gap-2 items-center text-[#00C4A1]">
                   <Star size={24} />
                   <Link
-                    to=""
+                    to="/user/review"
                     className="hover:underline text-[24px] font-semibold"
                   >
                     Reviews: {totalReview}

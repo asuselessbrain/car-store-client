@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAllCarsQuery } from "../../../../redux/fetchers/cars/carApi";
 import { Cars } from "../../../products/Products";
 import Loader from "../../../shared/Loader";
@@ -10,69 +10,115 @@ import { Pagination } from "antd";
 
 const GetAllProducts = () => {
   const [sort, setSort] = useState("");
-  const [toggle, setToggle] = useState(false);
-  const [filter, setFilter] = useState<string[]>([]);
   const [searchItem, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1)
+  const [toggle, setToggle] = useState(false);
+  const [page, setPage] = useState(1);
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+  const [allFilterValues, setAllFilterValues] = useState<{
+    brand: string[];
+    color: string[];
+    transmission: string[];
+    fuelType: string[];
+    engineSize: string[];
+    warranty: string[];
+  }>({ brand: [], color: [], transmission: [], fuelType: [], engineSize: [], warranty: [] });
 
   const limit = 12;
 
   const searchFields = {
     sort,
-    filter,
+    filter: selectedFilters,
     searchItem,
     page,
-    limit
+    limit,
   };
 
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
 
-  if (isLoading) return <Loader />;
+  const products: Cars[] = data?.data?.result ?? [];
 
-  const products = data?.data?.result;
   const metaData = data?.data?.meta;
-  console.log(metaData);
-
-  const handleSort = (e: FieldValues) => {
-    setSort(e.target.value);
-  };
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
 
-  const handelBrandChanged = (e: FieldValues) => {
-    const selectedBrand = e.target.value.trim(); // Trim any whitespace
-    const isChecked = e.target.checked; // Check if checkbox is checked
 
-    setFilter(
-      (prevFilter) =>
-        isChecked
-          ? [...prevFilter, selectedBrand] // Add selected brand
-          : prevFilter.filter((brand) => brand !== selectedBrand) // Remove deselected brand
-    );
+  // Populate allBrands only once when products arrive
+  const getUniqueValues = (field: keyof Cars): string[] => {
+    return [...new Set(products.map((product) => String(product[field])))];
   };
 
-  const handleSearch = (e: FieldValues) => {
-    setSearchTerm(e.target.value);
+  // ✅ New: Load all options from products initially
+  useEffect(() => {
+    if (products.length > 0 && allFilterValues.brand.length === 0) {
+      setAllFilterValues({
+        brand: getUniqueValues("brand"),
+        color: getUniqueValues("color"),
+        transmission: getUniqueValues("transmission"),
+        fuelType: getUniqueValues("fuelType"),
+        engineSize: getUniqueValues("engineSize"),
+        warranty: getUniqueValues("warranty")
+      });
+    }
+  }, [products]);
+
+  // Handlers
+  const handleSort = (e: FieldValues) => setSort(e.target.value);
+
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    const value = e.target.value;
+    const isChecked = e.target.checked;
+
+    setSelectedFilters((prev) => {
+      const currentValues = prev[field] || [];
+      const updatedValues = isChecked
+        ? [...currentValues, value]
+        : currentValues.filter((v) => v !== value);
+
+      return {
+        ...prev,
+        [field]: updatedValues,
+      };
+    });
   };
 
-  if (products.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(80vh)]">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-5xl">
-          No products found
-        </h2>
+  const handleSearch = (e: FieldValues) => setSearchTerm(e.target.value);
+
+  // Early returns after hooks
+  if (isLoading) return <Loader />;
+
+
+  const renderFilterSection = (title: string, field: keyof Cars, values: string[]) => (
+    <div className="collapse collapse-plus bg-base-200 dark:bg-gray-900">
+      <input type="radio" name="accordion" defaultChecked />
+      <div className="collapse-title text-lg font-medium">{title}</div>
+      <div className="collapse-content ml-4">
+        <ul className="space-y-2 text-sm">
+          {values.map((val, index) => (
+            <li key={index} className="flex items-center">
+              <input
+                id={`${field}-${val}`}
+                type="checkbox"
+                value={val}
+                checked={selectedFilters[field]?.includes(val) || false}
+                onChange={(e) => handleFilterChange(e, field)}
+                className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
+              />
+              <label htmlFor={`${field}-${val}`} className="ml-2">
+                {val}
+              </label>
+            </li>
+          ))}
+        </ul>
       </div>
-    );
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
+    </div>)
 
   return (
-    <div className="relative overflow-x-auto max-h-[80vh] shadow-md sm:rounded-lg">
+    <div className="relative overflow-x-auto max-h-[80vh] min-h-[80vh] shadow-md sm:rounded-lg">
       <div className="mb-4 items-center justify-between space-y-4 mt-4 sm:flex sm:space-y-0 md:mb-8">
         <div>
           <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -134,33 +180,11 @@ const GetAllProducts = () => {
 
             {/* <!-- Dropdown menu --> */}
             {toggle && (
-              <div
-                id="dropdown"
-                className="z-10 w-56 p-3 absolute bg-white rounded-lg shadow dark:bg-gray-700"
-              >
-                <h6 className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-                  Brand
-                </h6>
-                <ul className="space-y-2 text-sm">
-                  {["BMW", "Toyota", "Honda"].map((brand) => (
-                    <li key={brand} className="flex items-center">
-                      <input
-                        id={brand}
-                        type="checkbox"
-                        value={brand}
-                        // checked={selectedBrands.includes(brand)}
-                        onChange={handelBrandChanged}
-                        className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                      />
-                      <label
-                        htmlFor={brand}
-                        className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100"
-                      >
-                        {brand}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
+              <div className="absolute z-10 w-[300px] max-h-[60vh] overflow-y-auto p-4 rounded bg-white dark:bg-gray-800 border dark:border-gray-600 shadow">
+                {renderFilterSection("Brand", "brand", allFilterValues.brand)}
+                {renderFilterSection("Transmission", "transmission", allFilterValues.transmission)}
+                {renderFilterSection("Fuel Type", "fuelType", allFilterValues.fuelType)}
+                {renderFilterSection("Engine Size", "engineSize", allFilterValues.engineSize)}
               </div>
             )}
           </div>
@@ -226,7 +250,7 @@ const GetAllProducts = () => {
         </tbody>
       </table>
       <div className="my-6">
-        <Pagination align="center" pageSize={metaData?.limit} current={page} onChange={(value)=> setPage(value)} total={metaData?.total} />
+        <Pagination align="center" pageSize={metaData?.limit} current={page} onChange={(value) => setPage(value)} total={metaData?.total} />
       </div>
     </div>
   );

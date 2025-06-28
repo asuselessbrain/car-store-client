@@ -30,7 +30,6 @@ export interface Cars {
 }
 
 const Products = () => {
-  // All hooks at the very top
   const [sort, setSort] = useState("");
   const [searchItem, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
@@ -57,7 +56,7 @@ const Products = () => {
   const { data, isLoading } = useGetAllCarsQuery(searchFields);
 
   const products: Cars[] = data?.data?.result ?? [];
-  console.log(products)
+
   const metaData = data?.data?.meta;
 
   // Populate allBrands only once when products arrive
