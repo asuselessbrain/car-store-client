@@ -9,10 +9,14 @@ const UserProfile = () => {
   const { data, isLoading } = useGetSingleUserQuery(undefined);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const { data: singleUserData, isLoading: singleUserLoading } = useGetSingleUserQuery(undefined);
 
   if (isLoading) return <Loader />;
 
+  if (singleUserLoading) return <Loader />;
+
   const profile = data?.data;
+  const singleUser = singleUserData?.data;
 
   return (
     <section className="relative overflow-x-auto max-h-[80vh] px-10 shadow-xl rounded-lg text-gray-900 dark:text-gray-200">
@@ -24,8 +28,8 @@ const UserProfile = () => {
       </div>
       {editModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 overflow-y-auto max-h-[90vh]">
-            <EditProfile />
+          <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-10 overflow-y-auto max-h-[90vh]">
+            <EditProfile singleUser={singleUser} setEditModal={setEditModal} />
           </div>
         </div>
       )}

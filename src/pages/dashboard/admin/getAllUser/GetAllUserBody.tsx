@@ -49,7 +49,7 @@ const GetAllUserBody = ({ user, index }: GetAllUserBodyProps) => {
       <td className="px-6 py-4">{user?.phoneNumber}</td>
       <td className="px-6 py-4 capitalize">{user?.gender}</td>
       <td className="px-6 py-4">{user?.dob ? new Date(user?.dob).toLocaleDateString() : ''}</td>
-      <td className="px-6 py-4">{user?.address}</td>
+      <td className="px-6 py-4">{user?.district}</td>
       <td className="px-6 py-4 capitalize">{user?.role}</td>
       <td className={cn("px-6 py-4 capitalize", {
         "text-red-500": user?.userStatus === 'blocked',
