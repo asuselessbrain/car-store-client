@@ -1,34 +1,34 @@
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../../../../components/ui/button";
 import { TUser } from "../../admin/getAllUser/GetAllUser";
+import { toast } from "react-toastify";
+import { useUpdateUserMutation } from "../../../../redux/fetchers/users/userAPi";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const EditProfile = ({ singleUser, setEditModal }: { singleUser: TUser, setEditModal: (editModal: boolean) => void, }) => {
 
   const { register, handleSubmit } = useForm();
+  const [updateUser, { isLoading }] = useUpdateUserMutation()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data?.data)
-    // try {
-    //   if (data?.password !== data?.confirmPassword) {
-    //     toast.error("Password and Confirm Password must match.")
-    //   }
 
-    //   const formData = new FormData()
-
-    //   formData.append("data", JSON.stringify(data))
-    //   formData.append("profileImg", image[0])
-    //   const res = await registration(formData);
+    const userData = {
+      ...data,
+      id: singleUser?._id
+    }
+    try {
+      const res = await updateUser(userData);
 
 
-    //   if (res?.data?.success) {
-    //     toast.success(res?.data?.message);
-    //     navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
-    //   }
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+        setEditModal(false)
+      }
 
-    // } catch (err) {
-    //   const error = err as { data?: { errorMessage?: string } };
-    //   toast.error(error?.data?.errorMessage ?? 'Something went wrong');
-    // }
+    } catch (err) {
+      const error = err as { data?: { errorMessage?: string } };
+      toast.error(error?.data?.errorMessage ?? 'Something went wrong');
+    }
 
   };
 
@@ -218,26 +218,26 @@ const EditProfile = ({ singleUser, setEditModal }: { singleUser: TUser, setEditM
             </textarea>
           </div>
         </div>
-        {/* {isLoading ? (
-                <button disabled={isLoading} className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
-                </button>
-              ) : ( */}
-        <div className="flex items-center gap-6">
-          <Button
-            type="submit"
-            className="w-full"
-          >
-            Update Profile
-          </Button>
-          <button
-            type="submit"
-            onClick={()=>setEditModal(false)}
-            className="w-full text-black bg-[#dee9ff] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          >
-            Close
+        {isLoading ? (
+          <button disabled={isLoading} className="w-full">
+            <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
           </button>
-        </div>
+        ) : (
+          <div className="flex items-center gap-6">
+            <Button
+              type="submit"
+              className="w-full"
+            >
+              Update Profile
+            </Button>
+            <button
+              type="submit"
+              onClick={() => setEditModal(false)}
+              className="w-full text-black bg-[#dee9ff] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            >
+              Close
+            </button>
+          </div>)}
       </form>
     </div>
   );
