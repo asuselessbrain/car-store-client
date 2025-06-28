@@ -5,6 +5,7 @@ import GetAllOrder from "../pages/dashboard/admin/getAllOrders/GetAllOrder";
 import GetAllProducts from "../pages/dashboard/admin/getAllProduct/GetAllProducts";
 import GetAllUser from "../pages/dashboard/admin/getAllUser/GetAllUser";
 import UpdateProduct from "../pages/dashboard/admin/updateProducts/UpdateProduct";
+import UserProfile from "../pages/dashboard/user/profile/UseProfile";
 
 export const AdminPath = [
   {
@@ -37,6 +38,11 @@ export const AdminPath = [
     path: "create-admin",
     element: <CreateAdmin />,
   },
+  {
+    name: "Profile",
+    path: "profile",
+    element: <UserProfile />,
+  },,
   {
     name: "Update Product",
     path: "update-product/:id",
