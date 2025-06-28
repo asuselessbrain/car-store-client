@@ -29,6 +29,8 @@ const Registration = () => {
       formData.append("profileImg", image[0])
       const res = await registration(formData);
 
+      console.log(res)
+
 
       if (res?.data?.success) {
         toast.success(res?.data?.message);
@@ -37,13 +39,14 @@ const Registration = () => {
 
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
+      console.log(error)
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
     }
 
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
+    <section className="bg-gray-50 dark:bg-gray-900 py-8">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:min-h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 max-w-4xl max-sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -183,17 +186,77 @@ const Registration = () => {
                     {...register("dob")}
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="district"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    District
+                  </label>
+                  <input
+                    type="text"
+                    id="district"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="District"
+                    {...register("district")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="upazila"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Upazila
+                  </label>
+                  <input
+                    type="text"
+                    id="upazila"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Upazila"
+                    {...register("upazila")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="postOffice"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Post Office
+                  </label>
+                  <input
+                    type="text"
+                    id="postOffice"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Post Office"
+                    {...register("postOffice")}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="postalCode"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Postal Code
+                  </label>
+                  <input
+                    type="text"
+                    id="postalCode"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Postal Code"
+                    {...register("postalCode")}
+                  />
+                </div>
               </div>
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex-1">
                   <label
-                    htmlFor="address"
+                    htmlFor="about"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Address
+                    About you
                   </label>
-                  <textarea id="address" rows={6} cols={50} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("address")}>
+                  <textarea id="about" rows={6} cols={50} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Describe yourself"
+                    {...register("about")}>
                   </textarea>
                 </div>
                 <div className="mt-8">
