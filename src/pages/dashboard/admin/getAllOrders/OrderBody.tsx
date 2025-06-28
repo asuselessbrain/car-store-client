@@ -53,7 +53,7 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
-        {order?.userId?.name}
+        {order?.userId?.firstName} {order?.userId?.lastName}
       </th>
       <td className="px-6 py-4">{order?.userId?.email}</td>
       <td className="px-6 py-4">{order?.car?.model}</td>

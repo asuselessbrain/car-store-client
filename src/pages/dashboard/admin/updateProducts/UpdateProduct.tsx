@@ -41,6 +41,8 @@ const UpdateProduct = () => {
   const [preview, setPreview] = useState<string[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
 
+  console.log(image)
+
   const { register, handleSubmit, control, reset } = useForm<CarForm>();
 
   const {

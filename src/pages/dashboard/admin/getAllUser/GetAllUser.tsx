@@ -14,7 +14,7 @@ export type TUser = {
   address: string;
   profileImg: string | null;
   role: 'user' | 'admin';
-  userStatus: 'active' | 'inactive';
+  userStatus: 'active' | 'blocked';
   verified: boolean;
 };
 
