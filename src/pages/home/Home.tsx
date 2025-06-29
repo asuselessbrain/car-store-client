@@ -7,6 +7,9 @@ const Home = () => {
     <div>
       <Banner />
       <NewArrivals />
+      <div className="m-6 mt-12">
+        <img className="rounded-md" src="https://i.ibb.co/ycqw3NhM/auauto-deals-affordable-prices-great-deals-best-experience-order-now-www-reallygreatsite-com-qualiti.png" alt="offer image" />
+      </div>
       <PopularCars />
     </div>
   );
