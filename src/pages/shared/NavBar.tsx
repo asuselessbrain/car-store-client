@@ -47,14 +47,13 @@ const NavBar = () => {
     },
   ];
   return (
-    <nav className="bg-[#1515157F] max-w-[1440px] fixed w-full z-50 border-gray-200 dark:bg-[#1515157F]">
+    <nav className="bg-black max-w-[1440px] fixed w-full z-50 border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         <Link
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img src={logo} className="h-16 dark:hidden" alt="Flowbite Logo" />
-          <img src={logo2} className="h-16 hidden dark:block" alt="Flowbite Logo" />
+          <img src={logo2} className="h-16" alt="Flowbite Logo" />
           <span className="self-center text-2xl text-white font-semibold whitespace-nowrap dark:text-white">
             AutoSphere
           </span>
@@ -117,7 +116,7 @@ const NavBar = () => {
             {!userToken ? (
               <li>
                 <Link to="/login">
-                  <Button>Login</Button>
+                  <Button className="bg-white text-black hover:bg-gray-200">Login</Button>
                 </Link>
               </li>
             ) : (

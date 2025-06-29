@@ -48,9 +48,9 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
       <td className="px-6 py-4">{order?.car?.model}</td>
       <td className="px-6 py-4">{order?.car?.brand}</td>
       <td className="px-6 py-4">{order?.car?.category}</td>
-      <td className="px-6 py-4 text-red-600">{order?.car?.price}</td>
+      <td className="px-6 py-4 text-red-600">{order?.car?.price.toLocaleString()}</td>
       <td className="px-6 py-4">{order?.quantity}</td>
-      <td className="px-6 py-4 text-red-600">{order?.totalPrice}</td>
+      <td className="px-6 py-4 text-red-600">{order?.totalPrice.toLocaleString()}</td>
       <td
         className={cn("px-6 py-4", {
           "text-green-600": order?.paymentStatus === "paid",

@@ -8,6 +8,7 @@ import { useState } from "react";
 import { ImagePreview } from "../../utils/previewImage";
 import logo2 from "/logo2.png";
 import logo from "/logo.png";
+import { Button } from "../../components/ui/button";
 
 const Registration = () => {
   const { register, handleSubmit } = useForm();
@@ -266,16 +267,16 @@ const Registration = () => {
                 </div>
               </div>
               {isLoading ? (
-                <button disabled={isLoading} className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                <Button disabled={isLoading} className="w-full">
                   <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   type="submit"
-                  className="w-full text-white bg-[#2563eb] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full"
                 >
                   Create an account
-                </button>
+                </Button>
               )}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
                 Already have an account?{" "}
