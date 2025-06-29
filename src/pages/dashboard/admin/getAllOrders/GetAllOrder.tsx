@@ -39,23 +39,26 @@ const GetAllOrder = () => {
 
   const orders = data?.data?.result || [];
   const meta = data?.data?.meta;
-  
+
   return (
     <div className="p-4">
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
+        <h2 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl flex-1">
+            Orders
+          </h2>
         <input
           type="text"
           placeholder="Search by customer email"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border rounded flex-grow min-w-[200px]"
+          className="p-2 border rounded-md flex-grow max-w-lg min-w-[100px]"
         />
 
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="p-2 border rounded"
+          className="p-2 border rounded-md"
         >
           <option value="">All Status</option>
           <option value="pending">Pending</option>
@@ -66,7 +69,7 @@ const GetAllOrder = () => {
         <select
           value={paymentStatus}
           onChange={(e) => setPaymentStatus(e.target.value)}
-          className="p-2 border rounded"
+          className="p-2 border rounded-md"
         >
           <option value="">All Payment Status</option>
           <option value="pending">Pending</option>
@@ -76,7 +79,7 @@ const GetAllOrder = () => {
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-          className="p-2 border rounded"
+          className="p-2 border rounded-md"
         >
           <option value="desc">Newest First</option>
           <option value="asc">Oldest First</option>
