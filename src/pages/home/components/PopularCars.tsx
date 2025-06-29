@@ -11,10 +11,15 @@ const PopularCars = () => {
   const products = data?.data || [];
 
 
+
+
   const popularCars = products?.map((p: {_id: string, totalQuantity: number, carDetails: Cars})=>p?.carDetails)
 
   return (
-    <ReUsableHomePageCarsSection carData={popularCars} header="Popular Car" />
+    <>{
+      popularCars?.length > 0 ? <ReUsableHomePageCarsSection carData={popularCars} header="Popular Car" /> : <p>No product found</p>
+    }</>
+    
   );
 };
 

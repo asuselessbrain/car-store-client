@@ -1,13 +1,15 @@
+import  { useState } from "react";
 import { useGetAllOrdersQuery } from "../../../../redux/fetchers/orders/orderApi";
-import OrderBody from "./OrderBody";
 import { Cars } from "../../../products/Products";
 import { TUser } from "../getAllUser/GetAllUser";
 import Loader from "../../../shared/Loader";
+import OrderBody from "./OrderBody";
+import { Pagination } from "antd";
 
 export type Order = {
   _id: string;
   car: Cars;
-  userId: TUser;
+  user: TUser;
   quantity: number;
   paymentStatus: string;
   status: string;
@@ -15,66 +17,132 @@ export type Order = {
 };
 
 const GetAllOrder = () => {
-  const { data, isLoading } = useGetAllOrdersQuery(undefined);
+  // Filter / search / sort state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [status, setStatus] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [page, setPage] = useState(1);
 
-  if (isLoading) return <Loader />;
-  const orders = data?.data;
+  const limit = 10
 
-  if (orders?.length === 0) {
-    return (
-      <div className="flex items-center min-h-[calc(80vh)] justify-center">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-5xl">
-          No products found
-        </h2>
-      </div>
-    );
-  }
+  // Fetch orders with filters applied
+  const { data, isLoading } = useGetAllOrdersQuery({
+    searchTerm,
+    status,
+    paymentStatus,
+    sortBy: "createdAt",
+    sortOrder,
+    page,
+  limit,
+  });
+
+  const orders = data?.data?.result || [];
+  const meta = data?.data?.meta;
+  
   return (
-    <div className="relative overflow-x-auto max-h-[80vh] shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-          <th scope="col" className="px-6 py-3">
-              Customer Name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Email
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Model
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Brand
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Category
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Unit Price
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Quantity
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Total Price
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Payment Status
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Status
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order: Order, index: number) => (
+    <div className="p-4">
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="Search by customer email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border rounded flex-grow min-w-[200px]"
+        />
+
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="delivered">Delivered</option>
+        </select>
+
+        <select
+          value={paymentStatus}
+          onChange={(e) => setPaymentStatus(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="">All Payment Status</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+        </select>
+
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
+          className="p-2 border rounded"
+        >
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+      </div>
+
+      {/* Loading */}
+      {isLoading ? (
+        <Loader />
+      ) : orders.length === 0 ? (
+        <div className="flex items-center min-h-[calc(80vh)] justify-center">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-5xl">
+            No orders found
+          </h2>
+        </div>
+      ) : (
+        <div className="relative overflow-x-auto max-h-[80vh] shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Customer Name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Email
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Model
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Brand
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Category
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Unit Price
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Quantity
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total Price
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Payment Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order: Order, index: number) => (
             <OrderBody key={order._id} order={order} index={index} />
           ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      )}
+<div className="my-6">
+        <Pagination align="center" pageSize={meta?.limit} current={page} onChange={(value) => setPage(value)} total={meta?.total} />
+      </div>
     </div>
   );
 };
