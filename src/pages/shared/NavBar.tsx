@@ -3,7 +3,6 @@ import { cn } from "../../lib/utils";
 import { useState } from "react";
 import { ThemeToggle } from "../component/themeToggle";
 import logo2 from "/logo2.png";
-import logo from "/logo.png";
 import { Button } from "../../components/ui/button";
 import { useSelector } from "react-redux";
 import {
@@ -48,7 +47,7 @@ const NavBar = () => {
   ];
   return (
     <nav className="bg-black max-w-[1440px] fixed w-full z-50 border-gray-200">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-2">
         <Link
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -121,7 +120,7 @@ const NavBar = () => {
               </li>
             ) : (
               <li>
-                <Button onClick={handleLogout}>LogOut</Button>
+                <Button className="bg-white text-black hover:bg-gray-200" onClick={handleLogout}>LogOut</Button>
               </li>
             )}
             <li>

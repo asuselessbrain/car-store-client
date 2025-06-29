@@ -7,7 +7,7 @@ const ReUsableHomePageCarsSection = ({carData, header}: {carData: any, header: s
   const navigate = useNavigate();
 
   return (
-    <div className="p-6">
+    <div className="py-6">
       <h2 className="font-display text-xl md:text3xl lg:text-4xl tracking-tight text-slate-900 dark:text-white font-semibold font-cinzel my-8 text-center">
         {header}
       </h2>
