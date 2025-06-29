@@ -2,6 +2,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useCreateContactMutation } from "../../redux/fetchers/orders/orderApi";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Button } from "../../components/ui/button";
 
 class CustomError extends Error {
   data?: { message?: string };
@@ -62,9 +63,9 @@ const Contact = () => {
               {...register("message")}
               className="w-full p-3 mb-4 border rounded-lg dark:bg-gray-700 dark:border-gray-600"
             ></textarea>
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold">
+            <Button className="w-full">
               Submit
-            </button>
+            </Button>
           </form>
         </div>
         <div className="w-full md:w-1/2 relative justify-center hidden lg:flex">
