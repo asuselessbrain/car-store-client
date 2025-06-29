@@ -40,7 +40,7 @@ const AdminDashboardHeader = () => {
     return <Loader />;
   }
 
-  const orders = orderData?.data;
+  const orders = orderData?.data?.result;
 
   const needToDelivery = orders.filter(
     (order: { status: string }) => order?.status === "in-progress"
@@ -69,7 +69,7 @@ const AdminDashboardHeader = () => {
             <ShoppingCart size={28} />
             <p className="font-bold text-lg">Orders</p>
           </div>
-          <h3 className="font-semibold text-6xl">{orderData?.data?.length}</h3>
+          <h3 className="font-semibold text-6xl">{orderData?.data?.result?.length}</h3>
         </div>
         <div className="text-white bg-gradient-to-r from-[#D623FE] to-[#A530F2] px-[26px] py-[28px] rounded-xl flex items-start justify-between flex-1">
           <div className="flex items-start gap-2">
@@ -97,7 +97,7 @@ const AdminDashboardHeader = () => {
             <Users size={28} />
             <p className="font-bold text-lg">Users</p>
           </div>
-          <h3 className="font-semibold text-6xl">{users?.data?.length}</h3>
+          <h3 className="font-semibold text-6xl">{users?.data?.result?.length}</h3>
         </div>
       </div>
     </div>
