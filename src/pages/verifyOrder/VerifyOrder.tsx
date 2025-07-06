@@ -81,7 +81,7 @@ export default function VerifyOrder() {
                 <dd>
                   <Badge
                     variant={
-                      orderData?.bank_status === "Success"
+                      orderData?.bank_status == "Success"
                         ? "default"
                         : "destructive"
                     }
@@ -141,7 +141,7 @@ export default function VerifyOrder() {
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
-                {orderData?.sp_message === "Success" ? (
+                {orderData?.sp_message == "Success" ? (
                   <>
                     <CheckCircle className="text-green-500" />
                     <span>Verified</span>

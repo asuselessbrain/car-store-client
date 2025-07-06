@@ -54,13 +54,13 @@ const VerifyOTP = () => {
     try {
       const response = await verifyOTP(otpInfo);
 
-      if (context === 'login' && response?.data?.success && response?.data?.data?.token) {
+      if (context == 'login' && response?.data?.success && response?.data?.data?.token) {
         const user = decodeToken(response?.data?.data?.token);
         dispatch(setUser({ user, token: response?.data?.data?.token }));
         await navigate(from, { replace: true });
         toast.success("Login successful");
       }
-      if (context === "signup" && response?.data?.success) {
+      if (context == "signup" && response?.data?.success) {
         toast.success("OTP verified successfully!");
         navigate("/login");
       }

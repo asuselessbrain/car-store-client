@@ -89,7 +89,7 @@ const GetAllOrder = () => {
       {/* Loading */}
       {isLoading ? (
         <Loader />
-      ) : orders.length === 0 ? (
+      ) : orders.length == 0 ? (
         <div className="flex items-center min-h-[calc(80vh)] justify-center">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-5xl">
             No orders found

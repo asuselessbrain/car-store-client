@@ -45,7 +45,7 @@ const GetAllProductBody = ({ product, index }: GetAllProductBodyProps) => {
     <tr
       key={product._id} // Ensure each row has a unique key
       className={`${
-        index % 2 === 0
+        index % 2 == 0
           ? "bg-gray-50 dark:bg-gray-800"
           : "bg-white dark:bg-gray-900"
       } border-b dark:border-gray-700 border-gray-200`}

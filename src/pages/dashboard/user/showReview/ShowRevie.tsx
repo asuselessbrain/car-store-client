@@ -92,7 +92,7 @@ const ShowReview = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {reviews.length === 0 ? (
+                    {reviews.length == 0 ? (
                         <tr>
                             <td colSpan={6} className="text-center py-4 text-gray-500">
                                 No reviews found.

@@ -28,7 +28,7 @@ const GetAllUserBody = ({ user, index }: GetAllUserBodyProps) => {
   return (
     <tr
       key={user._id} // Ensure each row has a unique key
-      className={`${index % 2 === 0
+      className={`${index % 2 == 0
           ? "bg-gray-50 dark:bg-gray-800"
           : "bg-white dark:bg-gray-900"
         } border-b dark:border-gray-700 border-gray-200`}
@@ -52,8 +52,8 @@ const GetAllUserBody = ({ user, index }: GetAllUserBodyProps) => {
       <td className="px-6 py-4">{user?.district}</td>
       <td className="px-6 py-4 capitalize">{user?.role}</td>
       <td className={cn("px-6 py-4 capitalize", {
-        "text-red-500": user?.userStatus === 'blocked',
-        "text-green-500": user?.userStatus === 'active',
+        "text-red-500": user?.userStatus == 'blocked',
+        "text-green-500": user?.userStatus == 'active',
       })}>{user?.userStatus}</td>
       <td className={cn("px-6 py-4 capitalize", {
         "text-green-500": user?.verified,

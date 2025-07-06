@@ -15,18 +15,18 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
 
   const handleUpdateOrderStatus = async (id: string) => {
     try {
-      if (order?.status === "delivered") {
+      if (order?.status == "delivered") {
         toast.info("This order has already been delivered.");
         return;
       }
 
-      if(order?.status === 'cancelled') {
+      if(order?.status == 'cancelled') {
         toast.info("Order already cancelled!")
         return;
       }
 
       const res = await cancelOrder(id).unwrap();
-      if (res.statusCode === 200) {
+      if (res.statusCode == 200) {
         toast.success("Order status updated successfully!");
       }
 
@@ -40,7 +40,7 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
     <tr
       key={order._id} // Ensure each row has a unique key
       className={`${
-        index % 2 === 0
+        index % 2 == 0
           ? "bg-gray-50 dark:bg-gray-800"
           : "bg-white dark:bg-gray-900"
       } border-b dark:border-gray-700 border-gray-200`}
@@ -53,18 +53,18 @@ const OrderBody = ({ order, index }: GetAllProductBodyProps) => {
       <td className="px-6 py-4 text-red-600">{order?.totalPrice.toLocaleString()}</td>
       <td
         className={cn("px-6 py-4", {
-          "text-green-600": order?.paymentStatus === "paid",
-          "text-yellow-600": order?.paymentStatus === "pending",
-          "text-red-600": order?.paymentStatus === "cancelled",
+          "text-green-600": order?.paymentStatus == "paid",
+          "text-yellow-600": order?.paymentStatus == "pending",
+          "text-red-600": order?.paymentStatus == "cancelled",
         })}
       >
         {order?.paymentStatus}
       </td>
       <td
         className={cn("px-6 py-4", {
-          "text-green-600": order?.status === "delivered",
-          "text-yellow-600": order?.status === "in-progress",
-          "text-red-600": order?.status === "cancelled",
+          "text-green-600": order?.status == "delivered",
+          "text-yellow-600": order?.status == "in-progress",
+          "text-red-600": order?.status == "cancelled",
         })}
       >
         {order?.status}

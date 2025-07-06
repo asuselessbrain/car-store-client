@@ -26,7 +26,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithRefreshToken: BaseQueryFn<FetchArgs, BaseQueryApi, DefinitionType > = async (args, api, extraOptions) : Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error?.status === 401) {
+  if (result.error?.status == 401) {
     const res = await fetch(
       `http://ug2002040.cse.pstu.ac.bd:20040/api/auth/generate-new-token`,
       {

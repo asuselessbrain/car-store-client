@@ -117,7 +117,7 @@ const ViewDetails = () => {
               {
                 product?.images?.map((image: string, index: number) =>
                   <img key={index} src={image} alt="Product" onClick={() => setImageIndex(index)}
-                    className={index === imageIndex ? "rounded-lg border-2 border-blue-500 w-full max-w-36 h-20 shadow-lg shadow-gray-800" : "rounded-lg shadow-lg w-full max-w-36 h-20 dark:shadow-gray-800"} />
+                    className={index == imageIndex ? "rounded-lg border-2 border-blue-500 w-full max-w-36 h-20 shadow-lg shadow-gray-800" : "rounded-lg shadow-lg w-full max-w-36 h-20 dark:shadow-gray-800"} />
                 )
               }
             </div>
@@ -159,7 +159,7 @@ const ViewDetails = () => {
                   className={cn(
                     "ml-2 font-semibold",
                     {
-                      "text-green-500": product?.inStock === true,
+                      "text-green-500": product?.inStock == true,
                     },
                     { "text-red-500": !product?.inStock }
                   )}

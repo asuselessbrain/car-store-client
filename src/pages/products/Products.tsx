@@ -66,7 +66,7 @@ const Products = () => {
 
   // ✅ New: Load all options from products initially
   useEffect(() => {
-    if (products.length > 0 && allFilterValues.brand.length === 0) {
+    if (products.length > 0 && allFilterValues.brand.length == 0) {
       setAllFilterValues({
         brand: getUniqueValues("brand"),
         color: getUniqueValues("color"),
@@ -197,7 +197,7 @@ const Products = () => {
           </div>
 
           {
-            products.length === 0 ?
+            products.length == 0 ?
               <div className="flex items-center justify-center min-h-[calc(100vh-450px)]">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
                   No products found

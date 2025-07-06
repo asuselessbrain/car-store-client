@@ -27,9 +27,9 @@ const AdminDashboardHeader = () => {
   const orders = orderData?.data?.result || [];
 
   const needToDelivery = orders.filter(
-    (order: { status: string }) => order?.status === "in-progress"
+    (order: { status: string }) => order?.status == "in-progress"
   );
-  const delivered = orders.filter((order: { status: string }) => order?.status === "delivered");
+  const delivered = orders.filter((order: { status: string }) => order?.status == "delivered");
 
   const revenue = totalRevenue?.data?.totalRevenue?.totalRevenue || 0;
   const formatNumber = (num: number) => new Intl.NumberFormat("en-BD").format(num);

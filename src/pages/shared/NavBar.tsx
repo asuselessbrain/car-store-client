@@ -84,7 +84,7 @@ const NavBar = () => {
         </button>
         <div
           className={cn("hidden w-full md:block md:w-auto", {
-            block: isVisible === true,
+            block: isVisible == true,
           })}
           id="navbar-default"
         >

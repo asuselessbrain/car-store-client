@@ -127,7 +127,7 @@ const GetAllUser = () => {
                       className="mr-2"
                     />
                     <label className="text-sm text-gray-700 dark:text-white capitalize">
-                      {val === "true" ? "Verified" : "Not Verified"}
+                      {val == "true" ? "Verified" : "Not Verified"}
                     </label>
 
                   </div>

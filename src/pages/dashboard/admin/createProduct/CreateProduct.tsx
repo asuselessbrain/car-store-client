@@ -77,7 +77,7 @@ const CreateProduct = () => {
       }
 
       const res = await CreateProduct(formData).unwrap()
-      if (res?.statusCode === 201) {
+      if (res?.statusCode == 201) {
         toast.success(res?.message)
         navigate('/admin/get-all-products');
       }

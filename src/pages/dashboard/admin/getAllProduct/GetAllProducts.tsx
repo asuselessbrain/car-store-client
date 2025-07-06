@@ -51,7 +51,7 @@ const GetAllProducts = () => {
 
   // ✅ New: Load all options from products initially
   useEffect(() => {
-    if (products.length > 0 && allFilterValues.brand.length === 0) {
+    if (products.length > 0 && allFilterValues.brand.length == 0) {
       setAllFilterValues({
         brand: getUniqueValues("brand"),
         color: getUniqueValues("color"),
