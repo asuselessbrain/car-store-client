@@ -9,6 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import { router } from "./routers/router.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
+import ScrollToTop from "react-scroll-to-top";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <RouterProvider router={router} />
           <ToastContainer />
+          <ScrollToTop smooth />
           <Toaster />
         </ThemeProvider>
       </PersistGate>

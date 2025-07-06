@@ -13,7 +13,6 @@ import Home from "../pages/home/Home";
 import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 import Contact from "../pages/contact/Contact";
 import VerifyOTP from "../pages/verifyOTP/verifyOTP";
-import Page from "../layout/page";
 
 export const router = createBrowserRouter([
   {
@@ -45,10 +44,6 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/dashboard",
-    element: <Page />,
   },
   {
     path: "/registration",
