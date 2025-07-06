@@ -10,7 +10,7 @@ import { RootState } from "../store";
 import { logOut, setUser } from "../fetchers/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://car-server-with-auth.vercel.app/api",
+  baseUrl: "http://ug2002040.cse.pstu.ac.bd:20040/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -28,7 +28,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<FetchArgs, BaseQueryApi, Definition
 
   if (result.error?.status === 401) {
     const res = await fetch(
-      `https://car-server-with-auth.vercel.app/api/auth/generate-new-token`,
+      `http://ug2002040.cse.pstu.ac.bd:20040/api/auth/generate-new-token`,
       {
         method: "POST",
         credentials: "include",
