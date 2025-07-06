@@ -20,34 +20,19 @@ const AdminDashboardHeader = () => {
     useGetAllCarsQuery(undefined);
 
 
-  if (productLoading) {
-    return <Loader />;
-  }
+ if (isLoading || Loading || orderLoading || userLoading || productLoading) {
+  return <Loader />;
+}
 
-  if (userLoading) {
-    return <Loader />;
-  }
-
-  if (orderLoading) {
-    return <Loader />;
-  }
-
-  if (Loading) {
-    return <Loader />;
-  }
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  const orders = orderData?.data?.result;
+  const orders = orderData?.data?.result || [];
 
   const needToDelivery = orders.filter(
     (order: { status: string }) => order?.status === "in-progress"
   );
   const delivered = orders.filter((order: { status: string }) => order?.status === "delivered");
 
-  const revenue = totalRevenue?.data?.totalRevenue?.totalRevenue;
+  const revenue = totalRevenue?.data?.totalRevenue?.totalRevenue || 0;
+  const formatNumber = (num: number) => new Intl.NumberFormat("en-BD").format(num);
   return (
     <div>
       <h1 className="text-3xl font-semibold dark:text-white font-cinzel mb-3">
@@ -59,7 +44,7 @@ const AdminDashboardHeader = () => {
       </h1>
       <p className="text-lg font-medium dark:text-white">
         Total Revenue:{" "}
-        <span className="text-green-600 font-bold text-2xl"> {revenue} </span>
+        <span className="text-green-600 font-bold text-2xl"> {formatNumber(revenue)} </span>
         Taka
       </p>
 

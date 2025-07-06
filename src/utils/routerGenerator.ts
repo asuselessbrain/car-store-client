@@ -8,14 +8,6 @@ export const routerGenerator = (item: TUser[]) => {
         element: item.element,
       });
     }
-    //   if (item.children) {
-    //     item.children.forEach((children) => {
-    //       acc.push({
-    //         path: children.path,
-    //         Component: children.Component,
-    //       });
-    //     });
-    //   }
     return acc;
   }, []);
   return routes;

@@ -42,7 +42,7 @@ const MonthlyRevenueChart = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
 
   useEffect(() => {
-    if (data?.data?.totalRevenue) {
+    if (Array.isArray(data?.data?.totalRevenue)) {
       const revenueData = data.data.totalRevenue;
 
       const getMonthName = (month: number) => {

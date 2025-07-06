@@ -11,14 +11,6 @@ export const sideBarGenerator = (item: TUser[], role: string) => {
             label: <NavLink to={`/${role}/${item.path}`}>{item.name}</NavLink>,
           });
         }
-        // if(item.children){
-        //     item.children.forEach(children => {
-        //         acc.push({
-        //             key: item.path,
-        //         label: item.name
-        //         })
-        //     })
-        // }
         return acc;
       }, []);
       return sidebar;

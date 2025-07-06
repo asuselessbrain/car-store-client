@@ -8,7 +8,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const SellByBrand = () => {
   const { data, isLoading } = useGetProductSellByBrandQuery(undefined);
 
-  const products = data?.data;
+  // const products = data?.data;
+
+  const products = Array.isArray(data?.data) ? data.data : [];
 
   const label = products?.map((product: {brand: string}) => product?.brand);
   const orderCount = products?.map((product: {orderCount: number}) => product?.orderCount);
