@@ -30,17 +30,25 @@ export const carApi = baseApi.injectEndpoints({
     }),
 
     getNewArrivals: builder.query({
-      query: () => ({ 
-        url: '/cars/new-arrivals', 
-        method: "GET" 
+      query: () => ({
+        url: '/cars/new-arrivals',
+        method: "GET"
+      }),
+      providesTags: ["Cars"],
+    }),
+
+    getSimilarCars: builder.query({
+      query: ({ carId, model }) => ({
+        url: `/cars/similar/${carId}/${model}`,
+        method: "GET"
       }),
       providesTags: ["Cars"],
     }),
 
     getPopularCar: builder.query({
-      query: () => ({ 
-        url: '/orders/popular-cars', 
-        method: "GET" 
+      query: () => ({
+        url: '/orders/popular-cars',
+        method: "GET"
       }),
       providesTags: ["Cars"],
     }),
@@ -83,5 +91,6 @@ export const {
   useCreateCarMutation,
   useUpdateCarMutation,
   useGetPopularCarQuery,
-  useGetNewArrivalsQuery
+  useGetNewArrivalsQuery,
+  useGetSimilarCarsQuery
 } = carApi;

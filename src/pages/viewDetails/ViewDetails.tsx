@@ -1,7 +1,7 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import Loader from "../shared/Loader";
 import { cn } from "../../lib/utils";
-import { useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
+import { useGetSimilarCarsQuery, useGetSingleCarQuery } from "../../redux/fetchers/cars/carApi";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCreateOrderMutation } from "../../redux/fetchers/orders/orderApi";
@@ -86,6 +86,11 @@ const ViewDetails = () => {
     }
   }, [createOrderData?.data, createOrderData?.message, error, isError, createOrderLoading, isSuccess]);
 
+  const { data: similarProducts, isLoading: similarProductsLoading } =
+    useGetSimilarCarsQuery({ carId: id as string, model: data?.data?.model });
+
+
+
   if (isLoading) {
     return <Loader />;
   }
@@ -93,13 +98,17 @@ const ViewDetails = () => {
     return <Loader />
   }
 
+  if (similarProductsLoading) {
+    return <Loader />
+  }
   const product = data?.data;
 
   const reviews = (review?.data)
 
+
   const averageRatting = reviews.length > 0
-  ? reviews.reduce((sum:number, review:IReview) => sum + review.ratting, 0) / reviews.length
-  : 0;
+    ? reviews.reduce((sum: number, review: IReview) => sum + review.ratting, 0) / reviews.length
+    : 0;
 
 
   return (
@@ -140,13 +149,13 @@ const ViewDetails = () => {
 
             <div className="my-2">
               <p className="flex items-center gap-2 font-semibold text-gray-700 dark:text-gray-300">Average Review: <ReactStars
-            count={5}
-            value={averageRatting}
-            size={24}
-            isHalf={true}
-            edit={false}
-            activeColor="#ffd700"
-          /><span className="text-sm">({reviews?.length})</span></p>
+                count={5}
+                value={averageRatting}
+                size={24}
+                isHalf={true}
+                edit={false}
+                activeColor="#ffd700"
+              /><span className="text-sm">({reviews?.length})</span></p>
             </div>
 
             <div className="flex items-center justify-start mb-4 gap-6">
@@ -194,10 +203,10 @@ const ViewDetails = () => {
             </div>
 
             <div>
-              <p className="dark:text-gray-300 font-semibold text-gray-700 flex items-center gap-2">Tags: 
-              {
-                product?.tags?.map((tag:string, index:number)=><span key={index} className="mr-3 font-medium">#{tag} </span>)
-              }</p>
+              <p className="dark:text-gray-300 font-semibold text-gray-700 flex items-center gap-2">Tags:
+                {
+                  product?.tags?.map((tag: string, index: number) => <span key={index} className="mr-3 font-medium">#{tag} </span>)
+                }</p>
             </div>
 
             {/* Quantity and Add to Cart */}
@@ -233,90 +242,110 @@ const ViewDetails = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-        <p className="dark:text-black text-xl bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Specification</p>
-      </div>
-      <div className="max-w-full bg-gray-100 dark:bg-gray-900 shadow rounded-md mt-6">
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Brand</div>
-          <div className="flex-1">{product?.brand}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Model</div>
-          <div className="flex-1">{product?.model}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Release Year</div>
-          <div className="flex-1">{new Date(product?.releaseYear).getFullYear()}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Body Type</div>
-          <div className="flex-1">{product?.bodyType}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Color</div>
-          <div className="flex-1">{product?.color}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Transmission</div>
-          <div className="flex-1">{product?.transmission}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Fuel Type</div>
-          <div className="flex-1">{product?.fuelType}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Engine Size</div>
-          <div className="flex-1">{product?.engineSize}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Mileage</div>
-          <div className="flex-1">{product?.mileage}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Category</div>
-          <div className="flex-1">{product?.category}</div>
-        </div>
-        <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">Features</div>
-          <div className="flex flex-col gap-2 w-full pl-2">
-            {
-              product?.features.map((item: string, index: number) => <li key={index} className="flex-1">{item}</li>)
+      {/* specification */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="col-span-1 lg:col-span-2">
+          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
+            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Specification</p>
+          </div>
+          <div className="max-w-full bg-gray-100 dark:bg-gray-900 shadow rounded-md mt-6">
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Brand</div>
+              <div className="flex-1">{product?.brand}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Model</div>
+              <div className="flex-1">{product?.model}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Release Year</div>
+              <div className="flex-1">{new Date(product?.releaseYear).getFullYear()}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Body Type</div>
+              <div className="flex-1">{product?.bodyType}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Color</div>
+              <div className="flex-1">{product?.color}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Transmission</div>
+              <div className="flex-1">{product?.transmission}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Fuel Type</div>
+              <div className="flex-1">{product?.fuelType}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Engine Size</div>
+              <div className="flex-1">{product?.engineSize}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Mileage</div>
+              <div className="flex-1">{product?.mileage}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Category</div>
+              <div className="flex-1">{product?.category}</div>
+            </div>
+            <div className="flex justify-between border-b text-gray-800 dark:text-gray-300 border-gray-800 dark:border-gray-500 px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">Features</div>
+              <div className="flex flex-col gap-2 w-full pl-2">
+                {
+                  product?.features.map((item: string, index: number) => <li key={index} className="flex-1">{item}</li>)
+                }
+              </div>
+            </div>
+            <div className="flex justify-between px-4 py-4 mx-2 text-left">
+              <div className="font-semibold min-w-52">
+                Warranty Details
+              </div>
+              <div className="flex-1">{product?.warranty}</div>
+            </div>
+          </div>
+          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
+            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Reviews</p>
+          </div>
+          <div className="my-4">
+            <p className="font-semibold dark:tect-gray-800">Customer Reviews</p>
+            {reviews?.slice(0, 10)?.map((review: IReview, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
+              <ReactStars
+                count={5}
+                value={review?.ratting}
+                size={24}
+                isHalf={true}
+                edit={false}
+                activeColor="#ffd700"
+              />
+              <p className="dark:text-gray-100">{review?.comment}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">by {review?.userId?.firstName} {review?.userId?.lastName}, {new Date(review?.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+              })}</p>
+            </div>)
+
             }
           </div>
+          <p className="font-semibold dark:tect-gray-800 mt-2">Your Review</p>
+          <Review id={product?._id} />
         </div>
-        <div className="flex justify-between px-4 py-4 mx-2 text-left">
-          <div className="font-semibold min-w-52">
-            Warranty Details
+        <div className="col-span-1">
+          <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
+            <p className="dark:text-black text-sm bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Similar Products</p>
           </div>
-          <div className="flex-1">{product?.warranty}</div>
+          {
+            similarProducts?.data?.length > 0 ? similarProducts?.data?.map((product: any, index: number) => (<Link to={`/view-details/${product?._id}`}>
+              <div key={index} className="flex items-center gap-4 mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
+                <img src={product?.images[0]} alt="Similar Product" className="w-20 h-20 object-cover rounded-md" />
+                <div>
+                  <h3 className="font-semibold dark:text-gray-800">{product?.name}</h3>
+                  <p className="text-sm dark:text-gray-600">{product?.price.toLocaleString()} Tk</p>
+                </div>
+              </div></Link>)) : <p className="dark:text-gray-300 mt-4">No similar products found.</p>
+          }
         </div>
       </div>
-      <div className="mt-10 border-b-2 border-solid border-gray-800 dark:border-gray-200">
-        <p className="dark:text-black text-xl bg-black dark:bg-white text-white font-semibold inline-block border-2 border-solid border-gray-800 dark:border-gray-200 p-2 border-b-0 rounded-t-sm">Reviews</p>
-      </div>
-      <div className="my-4">
-        <p className="font-semibold dark:tect-gray-800">Customer Reviews</p>
-        {reviews?.slice(0,10)?.map((review: IReview, index: number) => <div key={index} className="p-4 w-full rounded-md bg-gray-200 dark:bg-gray-800 mt-4">
-          <ReactStars
-            count={5}
-            value={review?.ratting}
-            size={24}
-            isHalf={true}
-            edit={false}
-            activeColor="#ffd700"
-          />
-          <p className="dark:text-gray-100">{review?.comment}</p>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">by {review?.userId?.firstName} {review?.userId?.lastName}, {new Date(review?.createdAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-          })}</p>
-        </div>)
-
-        }
-      </div>
-      <p className="font-semibold dark:tect-gray-800 mt-2">Your Review</p>
-      <Review id={product?._id} />
     </div>
   );
 };
