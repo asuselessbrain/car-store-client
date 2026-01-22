@@ -28,7 +28,7 @@ const CreateProduct = () => {
       category: "",
       description: "",
       features: [{ value: "" }],
-      tags: [{ value: "" }]
+      tags: [{ value: "" }],
     }
   });
   const navigate = useNavigate()
@@ -37,6 +37,7 @@ const CreateProduct = () => {
 
   const [image, setImage] = useState<File[] | []>([])
   const [preview, setPreview] = useState<string[] | []>([])
+  const [loading, setLoading] = useState(false)
 
   const { fields: featuresFields, append: featuresAppend, remove: featuresRemove } = useFieldArray({
     control,
@@ -55,33 +56,40 @@ const CreateProduct = () => {
 
     const features = data?.features.map((features: { value: string }) => features?.value)
     const tags = data?.tags.map((tag: { value: string }) => tag?.value)
+    const images: string[] = []
 
     const carData = {
       ...data,
       price: parseFloat(data?.price),
       quantity: parseInt(data?.quantity),
       features: features,
-      tags: tags
+      tags: tags,
+      images
     }
 
-
-
-
-    // console.log(features, tags)
     try {
-      const formData = new FormData()
-
-      formData.append("data", JSON.stringify(carData))
+      setLoading(true)
+      const imageFromData = new FormData()
       for (const file of image) {
-        formData.append("images", file)
+        imageFromData.append("file", file)
+        imageFromData.append('upload_preset', "my_preset")
+
+        const imgRes = await fetch('https://api.cloudinary.com/v1_1/dwduymu1l/image/upload', {
+          method: "POST",
+          body: imageFromData
+        })
+        const imageData = await imgRes.json()
+        images.push(imageData?.secure_url)
       }
 
-      const res = await CreateProduct(formData).unwrap()
+
+      const res = await CreateProduct(carData).unwrap()
       if (res?.statusCode == 201) {
         toast.success(res?.message)
         navigate('/admin/get-all-products');
       }
-       
+      setLoading(false)
+
     } catch (err: any) {
       const errorMessage = err?.data?.errorMessage || "Something went wrong";
       toast.error(errorMessage);
@@ -382,15 +390,17 @@ const CreateProduct = () => {
               <ImagePreview setImage={setImage} setPreview={setPreview} preview={preview} />
             </div>
           </div>
-          {isLoading ? (
+          {isLoading || loading ? (
             <button
               type="submit"
+              disabled={isLoading || loading}
               className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
             >
               <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
             </button>
           ) : <button
             type="submit"
+            disabled={isLoading || loading}
             className="flex items-center mx-auto justify-center w-full px-5 py-2.5 mt-4 sm:mt-6 text-lg font-medium text-center text-white bg-[#1d4ed8] rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-[#1d4ed8]"
           >
             Add product

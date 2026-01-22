@@ -20,7 +20,6 @@ export interface IReview {
   createdAt: string
 }
 
-
 const ViewDetails = () => {
   const { id } = useParams();
   const [quantitySell, setQuantity] = useState(1);
