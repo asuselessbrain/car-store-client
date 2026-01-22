@@ -19,13 +19,23 @@ const CreateAdmin = () => {
       if (data?.password !== data?.confirmPassword) {
         toast.error("Password and Confirm Password must match")
       }
-      const formData = new FormData();
+      const imageFromData = new FormData()
 
-      formData.append("data", JSON.stringify(data))
-      formData.append("profileImg", image[0])
+      imageFromData.append("file", image[0])
+
+      imageFromData.append('upload_preset', "my_preset")
+
+      const imgRes = await fetch('https://api.cloudinary.com/v1_1/dwduymu1l/image/upload', {
+        method: "POST",
+        body: imageFromData
+      })
+      const imageData = await imgRes.json()
+      const photoURL = imageData.secure_url
+
+      data.profileImg = photoURL
 
 
-      const res = await createAdmin(formData).unwrap()
+      const res = await createAdmin(data).unwrap()
       if (res?.success) {
         toast.success(res?.message);
         navigate("/admin/get-all-user");
@@ -421,7 +431,7 @@ const CreateAdmin = () => {
         </div>
         <div className="flex items-center justify-center mt-6">
           {isLoading ? (
-            <button className="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">
+            <button disabled={isLoading} className="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">
               <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
             </button>
           ) : (

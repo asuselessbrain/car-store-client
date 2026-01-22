@@ -1,35 +1,50 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/fetchers/auth/authApi";
 import { toast } from "react-toastify";
 import { TbFidgetSpinner } from "react-icons/tb";
 import logo from "/logo.png";
 import logo2 from "/logo2.png";
-import { useState } from "react";
 import { Button } from "../../components/ui/button";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/fetchers/auth/authSlice";
+import { decodeToken } from "../../utils/jwtDecode";
+
 const Login = () => {
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState("");
-  const [userPass, setUserPass] = useState("")
-
-  const handleAutoInput = (email: string, pass: string) => {
-    setUserEmail(email),
-    setUserPass(pass)
-  }
-
+  const { register, handleSubmit, setValue } = useForm();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const dispatch = useAppDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
+
+  const demoCredential = {
+    admin: {
+      email: "anomious313@gmail.com",
+      password: "Arfan@gmail.com"
+    },
+    user: {
+      email: "anomious3@gmail.com",
+      password: "Arfan@gmail.com"
+    }
+  }
+
+  const fillDemo = (role: "admin" | "user") => {
+    setValue("email", demoCredential[role].email)
+    setValue("password", demoCredential[role].password)
+  }
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
       const res = await login(formData).unwrap();
+      console.log(res)
 
       if (res?.success) {
         toast.success(res?.message);
-        navigate("/verify-otp", { state: { email: formData.email, context: "login" } });
+        const user = decodeToken(res?.data?.token);
+        dispatch(setUser({ user, token: res?.data?.token }));
+        navigate(location.state?.from || "/")
       }
-
     } catch (err) {
       const error = err as { data?: { errorMessage?: string } };
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
@@ -61,8 +76,8 @@ const Login = () => {
               Sign in to your account
             </h1>
             <div className="flex items-center justify-around">
-              <Button onClick={()=>handleAutoInput("arfan18@cse.pstu.ac.bd", "arfanahmed")}>User Credential</Button>
-              <Button onClick={()=>handleAutoInput("anomious31@gmail.com", "arfanahmed")}>Admin Credential</Button>
+              <Button onClick={() => fillDemo("user")}>User Credential</Button>
+              <Button onClick={() => fillDemo("admin")}>Admin Credential</Button>
             </div>
             <form
               className="space-y-4 md:space-y-6"
@@ -78,7 +93,6 @@ const Login = () => {
                 <input
                   type="email"
                   id="email"
-                  defaultValue={userEmail}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                   {...register("email")}
@@ -94,7 +108,6 @@ const Login = () => {
                 <input
                   type="password"
                   id="password"
-                  defaultValue={userPass}
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register("password")}

@@ -1,13 +1,13 @@
-import { useGetAllCarsQuery } from "../../../redux/fetchers/cars/carApi";
+import { useGetNewArrivalsQuery } from "../../../redux/fetchers/cars/carApi";
 import Loader from "../../shared/Loader";
 import ReUsableHomePageCarsSection from "./ReUsableHomePageCarsSection";
 
 const NewArrivals = () => {
-  const { data, isLoading } = useGetAllCarsQuery(undefined);
+  const { data, isLoading } = useGetNewArrivalsQuery(undefined);
 
   if (isLoading) return <Loader />;
 
-  const products = data?.data?.result || [];
+  const products = data?.data || [];
 
   const newArrivals = products?.slice(0, 8) || [];
 

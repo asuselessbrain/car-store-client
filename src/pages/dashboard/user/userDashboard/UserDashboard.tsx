@@ -24,9 +24,11 @@ const UserDashboard = () => {
   if (isLoading) {
     return <Loader />;
   }
+
   const transaction = (orderData?.data || []).filter(
-    (data: Order) => data.transaction.sp_message == "Success"
+    (data: Order) => (data.transaction && data.transaction.sp_message == "Success")
   );
+
 
   const orders = orderData?.data?.length;
   const totalReview = userReview?.data?.length;

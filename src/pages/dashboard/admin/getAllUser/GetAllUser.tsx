@@ -159,7 +159,6 @@ const GetAllUser = () => {
             <th className="px-6 py-3">Address</th>
             <th className="px-6 py-3">Role</th>
             <th className="px-6 py-3">Status</th>
-            <th className="px-6 py-3">Verified</th>
             <th className="px-6 py-3">Action</th>
           </tr>
         </thead>

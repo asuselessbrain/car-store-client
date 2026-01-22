@@ -81,7 +81,7 @@ const CreateProduct = () => {
         toast.success(res?.message)
         navigate('/admin/get-all-products');
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
     } catch (err: any) {
       const errorMessage = err?.data?.errorMessage || "Something went wrong";
       toast.error(errorMessage);

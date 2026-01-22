@@ -14,29 +14,45 @@ const Registration = () => {
   const { register, handleSubmit } = useForm();
   const [image, setImage] = useState<File[] | []>([])
   const [preview, setPreview] = useState<string[] | []>([])
+  const [loading, setLoading] = useState(false)
 
   const [registration, { isLoading }] = useRegisterMutation();
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
+      setLoading(true)
       if (data?.password !== data?.confirmPassword) {
         toast.error("Password and Confirm Password must match.")
       }
+      const imageFromData = new FormData()
 
-      const formData = new FormData()
+      imageFromData.append("file", image[0])
 
-      formData.append("data", JSON.stringify(data))
-      formData.append("profileImg", image[0])
-      const res = await registration(formData);
+      imageFromData.append('upload_preset', "my_preset")
+
+      const imgRes = await fetch('https://api.cloudinary.com/v1_1/dwduymu1l/image/upload', {
+        method: "POST",
+        body: imageFromData
+      })
+      const imageData = await imgRes.json()
+      const photoURL = imageData.secure_url
+
+      data.profileImg = photoURL
+
+
+      const res = await registration(data);
+
 
 
       if (res?.data?.success) {
+        setLoading(false)
         toast.success(res?.data?.message);
-        navigate("/verify-otp", { state: { email: data.email, context: "signup" } });
+        navigate('/login')
       }
 
     } catch (err) {
+      setLoading(false)
       const error = err as { data?: { errorMessage?: string } };
       toast.error(error?.data?.errorMessage ?? 'Something went wrong');
     }
@@ -154,110 +170,9 @@ const Registration = () => {
                     {...register("confirmPassword")}
                   />
                 </div>
-                <div>
-
-                  <label
-                    htmlFor="gender"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Gender
-                  </label>
-                  <select defaultValue="" id="gender" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("gender")}>
-                    <option value="" disabled>Select your gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="others">Others</option>
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="dob"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Date of Birth
-                  </label>
-                  <input
-                    type="date"
-                    id="dob"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register("dob")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="district"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    District
-                  </label>
-                  <input
-                    type="text"
-                    id="district"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="District"
-                    {...register("district")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="upazila"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Upazila
-                  </label>
-                  <input
-                    type="text"
-                    id="upazila"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Upazila"
-                    {...register("upazila")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="postOffice"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Post Office
-                  </label>
-                  <input
-                    type="text"
-                    id="postOffice"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Post Office"
-                    {...register("postOffice")}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="postalCode"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Postal Code
-                  </label>
-                  <input
-                    type="text"
-                    id="postalCode"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Postal Code"
-                    {...register("postalCode")}
-                  />
-                </div>
               </div>
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex-1">
-                  <label
-                    htmlFor="about"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    About you
-                  </label>
-                  <textarea id="about" rows={6} cols={50} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Describe yourself"
-                    {...register("about")}>
-                  </textarea>
-                </div>
-                <div className="mt-8">
+                <div className="mt-2">
                   {
                     preview?.length > 0 ?
                       <ImagePreview setImage={setImage} preview={preview} setPreview={setPreview} /> :
@@ -266,9 +181,9 @@ const Registration = () => {
 
                 </div>
               </div>
-              {isLoading ? (
-                <Button disabled={isLoading} className="w-full">
-                  <TbFidgetSpinner className="mx-auto animate-spin" size={24} />
+              {(isLoading || loading) ? (
+                <Button disabled={(isLoading || loading)} className="w-full">
+                  <TbFidgetSpinner className="mx-auto animate-spin cursor-no-drop" size={24} />
                 </Button>
               ) : (
                 <Button

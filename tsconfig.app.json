@@ -22,11 +22,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    // ✅ ADD THESE:
-    "baseUrl": ".", // required for paths to work
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    /* Silence baseUrl deprecation */
+    "ignoreDeprecations": "6.0"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["dist", "node_modules/"]
 }

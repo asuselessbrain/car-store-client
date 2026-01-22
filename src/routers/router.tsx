@@ -12,7 +12,6 @@ import ProtectedRoute from "../layout/ProtectedRoute";
 import Home from "../pages/home/Home";
 import VerifyOrder from "../pages/verifyOrder/VerifyOrder";
 import Contact from "../pages/contact/Contact";
-import VerifyOTP from "../pages/verifyOTP/verifyOTP";
 
 export const router = createBrowserRouter([
   {
@@ -48,10 +47,6 @@ export const router = createBrowserRouter([
   {
     path: "/registration",
     element: <Registration />,
-  },
-  {
-    path: "/verify-otp",
-    element: <VerifyOTP />,
   },
   {
     path: "/admin",

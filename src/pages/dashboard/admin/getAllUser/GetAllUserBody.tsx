@@ -55,10 +55,6 @@ const GetAllUserBody = ({ user, index }: GetAllUserBodyProps) => {
         "text-red-500": user?.userStatus == 'blocked',
         "text-green-500": user?.userStatus == 'active',
       })}>{user?.userStatus}</td>
-      <td className={cn("px-6 py-4 capitalize", {
-        "text-green-500": user?.verified,
-        "text-red-500": !user?.verified
-      })}>{user?.verified ? 'Verified' : 'Not Verified'}</td>
       <td className="px-6 py-4 flex items-center justify-cente">
         <button
           onClick={() => handleBlock(user?._id as string)}
