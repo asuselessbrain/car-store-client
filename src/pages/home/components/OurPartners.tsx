@@ -18,7 +18,7 @@ const OurPartners: React.FC<OurPartnersProps> = ({ brands }) => {
   const duplicatedBrands = [...brands, ...brands, ...brands];
 
   return (
-    <section className="bg-white py-16 dark:bg-slate-900 md:py-20 lg:py-24">
+    <section className="py-16 md:py-20 lg:py-24">
       <div className="px-4 sm:px-6 lg:px-8 2xl:px-0">
         {/* Header */}
         <div className="mb-16 text-center">

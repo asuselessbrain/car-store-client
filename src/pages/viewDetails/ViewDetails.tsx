@@ -113,7 +113,7 @@ const ViewDetails = () => {
               alt="Product"
               className="rounded-lg shadow-lg w-full h-96 object-cover dark:shadow-gray-800"
             />
-            <div className="flex items-center gap-6 justify-between">
+            <div className="flex items-center gap-6 justify-start">
               {
                 product?.images?.map((image: string, index: number) =>
                   <img key={index} src={image} alt="Product" onClick={() => setImageIndex(index)}

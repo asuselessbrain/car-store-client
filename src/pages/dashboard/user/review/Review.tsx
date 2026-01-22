@@ -13,7 +13,9 @@ export class CustomError extends Error {
     this.data = data;
   }
 }
-const Review = ({id}: {id: string}) => {
+
+
+const Review = ({ id }: { id: string }) => {
   const [ratting, setRatting] = useState(0);
   const [createRating, { isError, data, isSuccess, isLoading }] =
     useCreateReviewsMutation();
@@ -33,8 +35,10 @@ const Review = ({id}: {id: string}) => {
       comment: review,
       ratting: ratting,
     };
-
     await createRating(reviewInfo);
+
+    e.target.reset()
+    setRatting(0);
   };
 
   const toastId = "rating";
@@ -42,6 +46,9 @@ const Review = ({id}: {id: string}) => {
   useEffect(() => {
     if (isLoading) {
       toast.loading("processing.....", { id: toastId });
+    }
+    if (isError) {
+      toast.error("Something went wrong!", { id: toastId });
     }
     if (isSuccess) {
       toast.success(data?.message, { id: toastId });
@@ -63,7 +70,9 @@ const Review = ({id}: {id: string}) => {
           <ReactStars
             count={5}
             onChange={ratingChanged}
+            value={ratting}
             size={24}
+            key={ratting} 
             activeColor="#ffd700"
           />
           <textarea
